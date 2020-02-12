@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">BlipAndroid</string>
+    <string name="parent">Parent</string>
+    <string name="instructor">Instructor</string>
+    <string name="login">LOGIN</string>
+    <string name="login_desc_text">Login to unlock stunning features</string>
+    <string name="phone_number">Enter your mobile number</string>
+    <string name="phn_num">9000457868</string>
+    <string name="login_with_otp">Login with OTP</string>
+    <string name="mobile_number">Mobile number</string>
+    <string name="user_validation_error">Entered mobile number doesn\'t exists contact your
+        institution administrators.</string>
+    <string name="didn_t_get_code">Didn\'t get code ?</string>
+    <string name="resend">Resend</string>
+</resources>
