@@ -4,40 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.LoginUsingOtpActivity">
+    tools:context=".view.ui.LoginUsingOtpActivity">
 
     <RelativeLayout
         android:id="@+id/llLogin"
         android:layout_width="match_parent"
         android:layout_height="175dp"
-        android:orientation="horizontal"
         android:background="@color/colorGreen"
+        android:orientation="horizontal"
         android:weightSum="2"
-        tools:ignore="MissingConstraints"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </RelativeLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"></RelativeLayout>
 
     <com.at2t.blipandroid.utils.OtpEditText
         android:id="@+id/et_otp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:cursorVisible="false"
         android:layout_marginLeft="64dp"
-        android:layout_marginRight="64dp"
-        android:digits="1234567890"
         android:layout_marginTop="64dp"
+        android:layout_marginRight="64dp"
+        android:cursorVisible="false"
+        android:digits="1234567890"
         android:inputType="number"
         android:maxLength="4"
         android:textIsSelectable="false"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/llLogin"/>
+        app:layout_constraintTop_toBottomOf="@id/llLogin" />
 
     <TextView
         android:id="@+id/tvPhoneNumberText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_marginStart="120dp"
         android:layout_marginTop="56dp"
         android:fontFamily="sans-serif"
@@ -45,7 +45,6 @@
         android:text="@string/didn_t_get_code"
         android:textColor="@color/black"
         android:textSize="16sp"
-        android:layout_centerVertical="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_otp" />
 
@@ -53,11 +52,11 @@
         android:id="@+id/tvResend"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
         android:fontFamily="sans-serif"
         android:gravity="center_vertical"
         android:text="@string/resend"
-        android:layout_marginLeft="8dp"
-        android:layout_centerVertical="true"
         android:textColor="@color/colorGreen"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@id/tvPhoneNumberText"

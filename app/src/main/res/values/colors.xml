@@ -11,5 +11,9 @@
 
     <color name="auth_colorPrimaryDark">#BC2126</color>
     <color name="auth_colorAccent">@color/white</color>
+    <color name="sky_blue">#2580cf</color>
+    <color name="orange">#ff7316</color>
+    <color name="lime">#def345</color>
+    <color name="active_dot">#8b3bf3</color>
 
 </resources>

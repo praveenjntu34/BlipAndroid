@@ -1,12 +1,10 @@
-package com.at2t.blipandroid.view;
+package com.at2t.blipandroid.view.ui;
 
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableWrapper;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -31,13 +29,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-
         binding = DataBindingUtil.setContentView(MainActivity.this, R.layout.activity_main);
-
         binding.setLifecycleOwner(this);
-
         binding.setLoginViewModel(loginViewModel);
-
         loginViewModel.getUser().observe(this, new Observer<LoginUser>() {
             @Override
             public void onChanged(@Nullable LoginUser loginUser) {
@@ -59,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         else {
             binding.EtPhoneNumber.setText(loginUser.getPhoneNumber());
             binding.btnLogin.setBackground(ContextCompat.getDrawable(this, R.drawable.enabled_login_button));
-            startActivity(new Intent(MainActivity.this,LoginUsingOtpActivity.class));
+            startActivity(new Intent(MainActivity.this, LoginUsingOtpActivity.class));
         }
     }
 }
