@@ -4,15 +4,23 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.at2t.blipandroid.R;
 import com.at2t.blipandroid.model.EventSlides;
@@ -39,18 +47,66 @@ public class DashboardActivity extends AppCompatActivity {
     DashBoardViewModel viewModel;
     RecyclerView recyclerView;
     PostsAdapter postsRecyclerViewAdapter;
+    private DrawerLayout dl;
+    private ActionBarDrawerToggle t;
+    private NavigationView nv;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
-        context = this;
+        setContentView(R.layout.activity_navigation_home);
+
+        intializeNavigationView();
         recyclerView = findViewById(R.id.rv_posts);
         viewModel = ViewModelProviders.of(context).get(DashBoardViewModel.class);
         viewModel.getUserMutableLiveData().observe(context, userListUpdateObserver);
         initializeViews();
     }
 
+    public void intializeNavigationView() {
+        dl = (DrawerLayout) findViewById(R.id.drawer_layout);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        t = new ActionBarDrawerToggle(this, dl, toolbar, R.string.app_name, R.string.Close);
+        t.syncState();
+        dl.addDrawerListener(t);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        nv = (NavigationView) findViewById(R.id.nv);
+        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+                switch (id) {
+                    case R.id.account:
+                        Toast.makeText(DashboardActivity.this, "My Account", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.settings:
+                        Toast.makeText(DashboardActivity.this, "Settings", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.mycart:
+                        Toast.makeText(DashboardActivity.this, "My Cart", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        return true;
+                }
+
+
+                return true;
+
+            }
+        });
+        context = this;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home)
+            dl.openDrawer(Gravity.LEFT);
+
+        return super.onOptionsItemSelected(item);
+    }
 
     Observer<ArrayList<PostsData>> userListUpdateObserver = new Observer<ArrayList<PostsData>>() {
         @Override
@@ -82,7 +138,7 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     public void prepareSlide() {
-        int[] imgSlide = {R.drawable.rect1, R.drawable.rect3, R.drawable.rect4, R.drawable.rect5};
+        int[] imgSlide = {R.drawable.rect1, R.drawable.rect3, R.drawable.rect4, R.drawable.event1};
 
         for (int i = 0; i < imgSlide.length; i++) {
             slidesList.add(new EventSlides(imgSlide[i]));
@@ -138,6 +194,6 @@ public class DashboardActivity extends AppCompatActivity {
             public void run() {
                 handler.post(runnable);
             }
-        }, 250, 1500);
+        }, 250, 3000);
     }
 }

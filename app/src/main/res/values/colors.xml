@@ -15,5 +15,6 @@
     <color name="orange">#ff7316</color>
     <color name="lime">#def345</color>
     <color name="active_dot">#8b3bf3</color>
+    <color name="drawer_background_header">#0066cc</color>
 
 </resources>

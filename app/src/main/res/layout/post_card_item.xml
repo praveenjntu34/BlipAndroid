@@ -8,8 +8,6 @@
     android:layout_marginTop="16dp"
     android:layout_marginRight="12dp"
     android:background="?attr/selectableItemBackground"
-    android:clickable="true"
-    android:elevation="2dp"
     android:foreground="?android:attr/selectableItemBackground"
     card_view:cardUseCompatPadding="true">
 
@@ -65,6 +63,19 @@
                 app:layout_constraintRight_toRightOf="@id/rl_top_header" />
         </android.support.constraint.ConstraintLayout>
 
+        <ImageView
+            android:id="@+id/iv_event_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tv_post_information"
             android:layout_width="wrap_content"
@@ -72,51 +83,13 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="14dp"
             android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
             android:background="@color/white"
             android:text="@string/post_desc"
             android:textColor="@color/black"
             android:textSize="8sp"
             app:layout_constraintBottom_toTopOf="@id/tv_full_name"
             app:layout_constraintRight_toRightOf="@id/rl_top_header" />
-
-        <LinearLayout
-            android:id="@+id/cl_three_dots"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginTop="6dp">
-
-            <ImageView
-                android:id="@+id/first_dot"
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_below="@id/tv_post_information"
-                android:layout_alignParentLeft="true"
-                android:layout_gravity="right"
-                android:layout_marginRight="6dp"
-                android:background="@drawable/active_dot" />
-
-            <ImageView
-                android:id="@+id/second_dot"
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_alignParentLeft="true"
-                android:layout_gravity="right"
-                android:layout_marginRight="6dp"
-                android:layout_marginBottom="12sp"
-                android:background="@drawable/active_dot" />
-
-            <ImageView
-                android:id="@+id/third_dot"
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_alignParentLeft="true"
-                android:layout_gravity="right"
-                android:layout_marginRight="6dp"
-                android:layout_marginBottom="12sp"
-                android:background="@drawable/inactive_dot" />
-        </LinearLayout>
-
 
     </LinearLayout>
 </android.support.design.card.MaterialCardView>
