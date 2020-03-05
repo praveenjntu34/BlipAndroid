@@ -1,27 +1,27 @@
 package com.at2t.blipandroid.view.ui;
 
 import android.annotation.SuppressLint;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 
 import com.at2t.blipandroid.R;
 import com.at2t.blipandroid.databinding.ActivityMainBinding;
 import com.at2t.blipandroid.model.LoginUser;
 import com.at2t.blipandroid.viewmodel.LoginViewModel;
+import com.msg91.sendotpandroid.library.internal.SendOTP;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
-
     private ActivityMainBinding binding;
 
     @Override
@@ -52,8 +52,17 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             binding.EtPhoneNumber.setText(loginUser.getPhoneNumber());
-            binding.btnLogin.setBackground(ContextCompat.getDrawable(this, R.drawable.enabled_login_button));
+             if(loginUser.getPhoneNumber().length() == 10) {
+                 binding.btnLogin.setBackground(ContextCompat.getDrawable(this, R.drawable.enabled_login_button));
+             }
             startActivity(new Intent(MainActivity.this, LoginUsingOtpActivity.class));
         }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SendOTP.getInstance().getTrigger().stop();
     }
 }

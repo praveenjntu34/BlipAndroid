@@ -11,14 +11,16 @@
             type="com.at2t.blipandroid.viewmodel.LoginViewModel" />
     </data>
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
+        style="@style/Theme.AppCompat.DayNight.NoActionBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:isScrollContainer="true">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="24dp"
             tools:context=".View.MainActivity">
 
             <LinearLayout
@@ -30,7 +32,7 @@
                 tools:ignore="MissingConstraints">
 
                 <RelativeLayout
-
+                    android:id="@+id/rl_parent"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -39,7 +41,7 @@
                     android:focusable="true"
                     android:gravity="center">
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/view2"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
@@ -56,7 +58,7 @@
                             android:scaleType="centerCrop"
                             android:src="@drawable/parent_login_icon"
                             android:tint="#5c000000" />
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
                     <TextView
                         android:id="@+id/tvParent"
@@ -71,6 +73,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/rl_instructor"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -79,7 +82,7 @@
                     android:focusable="true"
                     android:gravity="center">
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/view3"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
@@ -97,7 +100,7 @@
                             android:scaleType="centerCrop"
                             android:src="@drawable/instructor_login_icon"
                             android:tint="#5c000000" />
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
                     <TextView
                         android:id="@+id/tvInstructor"
@@ -140,7 +143,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvLoginText" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_input_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -170,19 +173,22 @@
                     android:textColor="@color/black"
                     android:textColorHint="#d8d8d8" />
 
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.at2t.blipandroid.utils.CustomButton
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginRight="12dp"
+                android:layout_marginBottom="24dp"
                 android:background="@drawable/disabled_login_button"
+                android:gravity="center"
                 android:onClick="@{(v) -> LoginViewModel.onLoginClick(v)}"
                 android:stateListAnimator="@null"
                 android:text="@string/login_with_otp"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -192,6 +198,6 @@
                 tools:layout_conversion_wrapHeight="105"
                 tools:layout_conversion_wrapWidth="818" />
 
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v4.widget.NestedScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

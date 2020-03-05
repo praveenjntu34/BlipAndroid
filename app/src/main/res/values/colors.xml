@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">#0066cc</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorGreen">#05c555</color>
@@ -16,5 +16,6 @@
     <color name="lime">#def345</color>
     <color name="active_dot">#8b3bf3</color>
     <color name="drawer_background_header">#0066cc</color>
+    <color name="light_blue">#4682b4</color>
 
 </resources>

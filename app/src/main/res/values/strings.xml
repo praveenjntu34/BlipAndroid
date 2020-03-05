@@ -2,7 +2,7 @@
     <string name="app_name">BlipAndroid</string>
     <string name="parent">Parent</string>
     <string name="instructor">Instructor</string>
-    <string name="login">LOGIN</string>
+    <string name="login">Login</string>
     <string name="login_desc_text">Login to unlock stunning features</string>
     <string name="phone_number">Enter your mobile number</string>
     <string name="phn_num">9000457868</string>
@@ -12,8 +12,10 @@
         institution administrators.</string>
     <string name="didn_t_get_code">Didn\'t get code ?</string>
     <string name="resend">Resend</string>
-    <string name="post_desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit.Proin nunc mi,
-        rhoncus sit amet lacus sed, eleifend faucibus ligula. Ut ullamcorper vehicular quam,
-        sed ultrices mauris ultricies a.Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
+    <string name="post_desc">Hello</string>
     <string name="Close">close</string>
+    <string name="otp_msg">One time password (OTP) has been sent to your mobile.</string>
+    <string name="my_account">My Account</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
 </resources>

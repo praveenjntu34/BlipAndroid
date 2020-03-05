@@ -6,16 +6,16 @@
     <item
         android:id="@+id/account"
         android:icon="@drawable/inactive_dot"
-        android:title="My Account" />
+        android:title="@string/my_account" />
 
     <item
         android:id="@+id/settings"
         android:icon="@drawable/active_dot"
-        android:title="Settings" />
+        android:title="@string/settings" />
 
     <item
         android:id="@+id/mycart"
         android:icon="@drawable/inactive_dot"
-        android:title="My Cart" />
+        android:title="@string/logout" />
 
 </menu>
