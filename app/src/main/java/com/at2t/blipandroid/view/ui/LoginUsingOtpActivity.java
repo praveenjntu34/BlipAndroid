@@ -4,21 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.at2t.blipandroid.R;
 import com.at2t.blipandroid.utils.CustomButton;
 import com.msg91.sendotpandroid.library.internal.SendOTP;
-import com.msg91.sendotpandroid.library.listners.VerificationListener;
-import com.msg91.sendotpandroid.library.roots.SendOTPResponseCode;
 
 import in.aabhasjindal.otptextview.OtpTextView;
 
 public class LoginUsingOtpActivity extends AppCompatActivity {
     String value;
+    boolean isParentSelected;
+    boolean isInstructorSelected;
     private OtpTextView otpTextView;
     private CustomButton customButton;
 
@@ -30,11 +28,11 @@ public class LoginUsingOtpActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             value = bundle.getString("userData");
-
+            isParentSelected = bundle.getBoolean("isParentSelected");
+            isInstructorSelected = bundle.getBoolean("isInstructorSelected");
         }
         initializeViews();
         onLogin();
-
     }
 
     private void initializeViews() {
