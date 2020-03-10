@@ -1,0 +1,2 @@
+BlipAndroid project is a mobile application which provides a dashboard for parents of students of various schools and colleges,
+to get notifications/updates of various events in their specific premises.

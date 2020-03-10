@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvLoginText"
+        android:layout_width="240dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="120dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/login_desc_text"
+        android:textColor="@color/login_desc_text_color"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvPhoneNumber"
+        android:layout_width="180dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/phone_number"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLoginText" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:hint="@string/mobile_number"
+        android:paddingBottom="12dp"
+        android:textColorHint="#deababab"
+        android:textSize="14sp"
+        android:theme="@style/TextInputLayoutCustomStyleBatch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPhoneNumber">
+
+        <com.at2t.blipandroid.utils.CustomEdittext
+            android:id="@+id/EtPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:maxLength="35"
+            android:maxLines="1"
+            android:orientation="vertical"
+            android:text="@={LoginViewModel.phoneNumber}"
+            android:textColor="@color/black"
+            android:textColorHint="#d8d8d8" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.at2t.blipandroid.utils.CustomButton
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/light_blue"
+        android:onClick="@{(v) -> LoginViewModel.onLoginClick(v)}"
+        android:stateListAnimator="@null"
+        android:text="@string/login_with_otp"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_input_phone_number" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/btm_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

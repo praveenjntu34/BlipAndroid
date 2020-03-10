@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -26,8 +26,10 @@
         <item name="colorPrimaryDark">@color/auth_colorPrimaryDark</item>
         <item name="colorAccent">@color/auth_colorAccent</item>
         <item name="android:popupMenuStyle">@style/myPopupMenuStyle</item>
-        <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge</item>
-        <item name="android:textAppearanceSmallPopupMenu">@style/myPopupMenuTextAppearanceSmall</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge
+        </item>
+        <item name="android:textAppearanceSmallPopupMenu">@style/myPopupMenuTextAppearanceSmall
+        </item>
     </style>
 
     <style name="myPopupMenuStyle" parent="@style/Widget.AppCompat.Light.PopupMenu">

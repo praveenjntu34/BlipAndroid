@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:ools="http://schemas.android.com/apk/distribution"
     package="com.at2t.blipandroid">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,14 +11,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.LoginUsingOtpActivity"></activity>
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".view.ui.LoginUsingOtpActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"></activity>
+        <activity android:name=".view.ui.LoginActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.ui.DashboardActivity"></activity>
     </application>
 
 </manifest>
