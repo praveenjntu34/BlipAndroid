@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="LoginViewModel"
             type="com.at2t.blipandroid.viewmodel.LoginViewModel" />
@@ -77,6 +76,7 @@
                         android:layout_marginLeft="18dp"
                         android:layout_marginTop="8dp"
                         android:fontFamily="sans-serif"
+                        android:textStyle="bold"
                         android:text="@string/parent"
                         android:textSize="12sp" />
                 </RelativeLayout>
@@ -119,6 +119,7 @@
                         android:layout_below="@id/view3"
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="8dp"
+                        android:textStyle="bold"
                         android:fontFamily="sans-serif"
                         android:text="@string/instructor"
                         android:textSize="12sp" />
@@ -185,7 +186,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.at2t.blipandroid.utils.CustomButton
+            <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -193,7 +194,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginRight="12dp"
                 android:layout_marginBottom="24dp"
-                android:background="@drawable/disabled_login_button"
+                android:background="@color/colorGreen"
                 android:gravity="center"
                 android:onClick="@{(v) -> LoginViewModel.onLoginClick(v)}"
                 android:stateListAnimator="@null"

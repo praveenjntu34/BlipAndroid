@@ -36,9 +36,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
         PostsData postsData = postsDataList.get(i);
         PostsViewHolder viewHolder= (PostsViewHolder) postsViewHolder;
 
-        viewHolder.txtView_name.setText(postsData.getName());
-        viewHolder.txtView_description.setText(postsData.getDescription());
-        viewHolder.txtView_time.setText(postsData.getTime());
+        viewHolder.txtView_name.setText(postsData.getTitle());
+        viewHolder.txtView_description.setText(postsData.getMessage());
     }
 
     @Override
@@ -49,15 +48,17 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
     class PostsViewHolder extends RecyclerView.ViewHolder {
         ImageView imgView_icon;
         TextView txtView_name;
+        TextView txtView_title;
+        ImageView ivTime;
         TextView txtView_description;
-        TextView txtView_time;
 
         public PostsViewHolder(@NonNull View itemView) {
             super(itemView);
             imgView_icon = itemView.findViewById(R.id.person_image);
             txtView_name = itemView.findViewById(R.id.tv_full_name);
-            txtView_description = itemView.findViewById(R.id.tv_post_information);
-            txtView_time = itemView.findViewById(R.id.tv_time);
+            txtView_title = itemView.findViewById(R.id.tv_post_information);
+            ivTime = itemView.findViewById(R.id.iv_time);
+            txtView_description = itemView.findViewById(R.id.tv_post_description);
         }
     }
 }

@@ -17,5 +17,7 @@
     <color name="active_dot">#8b3bf3</color>
     <color name="drawer_background_header">#0066cc</color>
     <color name="light_blue">#4682b4</color>
+    <color name="blue">#48a0f8</color>
+    <color name="disabledGreen">#A5D6A7</color>
 
 </resources>

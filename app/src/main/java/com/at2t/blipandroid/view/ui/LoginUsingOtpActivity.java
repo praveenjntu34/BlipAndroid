@@ -1,10 +1,14 @@
 package com.at2t.blipandroid.view.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.at2t.blipandroid.R;
@@ -19,6 +23,9 @@ public class LoginUsingOtpActivity extends AppCompatActivity {
     boolean isInstructorSelected;
     private OtpTextView otpTextView;
     private CustomButton customButton;
+    private Context mContext;
+    private LinearLayout llLoginTopHeader;
+    private TextView tvResend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +40,22 @@ public class LoginUsingOtpActivity extends AppCompatActivity {
         }
         initializeViews();
         onLogin();
+        changeOtpScreenColor();
+    }
+
+    private void changeOtpScreenColor() {
+        if(isInstructorSelected) {
+            customButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+            llLoginTopHeader.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+            tvResend.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+        }
     }
 
     private void initializeViews() {
         otpTextView = findViewById(R.id.et_otp);
         customButton = findViewById(R.id.btnLogin);
+        llLoginTopHeader = findViewById(R.id.llLogin);
+        tvResend = findViewById(R.id.tvResend);
     }
 
     public void onLogin(){
@@ -54,7 +72,7 @@ public class LoginUsingOtpActivity extends AppCompatActivity {
         otpTextView.showSuccess();
         Toast.makeText(getApplicationContext(),"OTP verified",Toast.LENGTH_SHORT).show();
         if(otp != null && otp.length() == 4){
-            startActivity(new Intent(this, DashboardActivity.class));
+            startActivity(new Intent(this, MainDashboardActivity.class));
         }
     }
 

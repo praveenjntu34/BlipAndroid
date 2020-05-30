@@ -1,48 +1,48 @@
 package com.at2t.blipandroid.view.ui;
 
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+
 import androidx.annotation.NonNull;
 
+import com.at2t.blipandroid.utils.DatePickerFragment;
 import com.google.android.material.navigation.NavigationView;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
+
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.at2t.blipandroid.R;
-import com.at2t.blipandroid.model.EventSlides;
 import com.at2t.blipandroid.model.PostsData;
-import com.at2t.blipandroid.view.adapters.CustomSwipeAdapter;
 import com.at2t.blipandroid.view.adapters.PostsAdapter;
 import com.at2t.blipandroid.viewmodel.DashBoardViewModel;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Calendar;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity implements
+        DatePickerDialog.OnDateSetListener {
 
-    private List<EventSlides> slidesList = new ArrayList<>();
-    private ViewPager mViewPager;
-    private CustomSwipeAdapter mAdapter;
-    private Timer timer;
-    private int curr_position = 0;
-    private LinearLayout dots_layout;
-    private int custom_position = 0;
     DashboardActivity context;
     DashBoardViewModel viewModel;
     RecyclerView recyclerView;
@@ -50,6 +50,9 @@ public class DashboardActivity extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
+    private Button btnNewPost;
+    CardView calendarView;
+    TextView tvDateSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +60,60 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_navigation_home);
 
         intializeNavigationView();
+        initializeUIView();
         recyclerView = findViewById(R.id.rv_posts);
         viewModel = ViewModelProviders.of(context).get(DashBoardViewModel.class);
         viewModel.getUserMutableLiveData().observe(context, userListUpdateObserver);
-        initializeViews();
+    }
+
+    private void initializeUIView() {
+        btnNewPost = findViewById(R.id.btnNewPost);
+        calendarView = findViewById(R.id.cv_calender);
+        tvDateSelected = findViewById(R.id.tvDate);
+
+        calendarView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment datePicker = new DatePickerFragment();
+                datePicker.show(getSupportFragmentManager(), "date picker");
+            }
+        });
+
+        btnNewPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToAddPostFragment();
+            }
+        });
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        String currentDateString = DateFormat.getDateInstance(DateFormat.DEFAULT).format(c.getTime());
+
+        tvDateSelected.setText(currentDateString);
+    }
+
+    private void goToAddPostFragment() {
+        AddPostFragment addPostFragment = new AddPostFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.drawer_layout, addPostFragment, AddPostFragment.TAG);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     public void intializeNavigationView() {
@@ -69,8 +122,6 @@ public class DashboardActivity extends AppCompatActivity {
         t = new ActionBarDrawerToggle(this, dl, toolbar, R.string.app_name, R.string.Close);
         t.syncState();
         dl.addDrawerListener(t);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         nv = (NavigationView) findViewById(R.id.nv);
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -90,10 +141,7 @@ public class DashboardActivity extends AppCompatActivity {
                     default:
                         return true;
                 }
-
-
                 return true;
-
             }
         });
         context = this;
@@ -101,7 +149,6 @@ public class DashboardActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         if (item.getItemId() == android.R.id.home)
             dl.openDrawer(Gravity.LEFT);
 
@@ -116,84 +163,4 @@ public class DashboardActivity extends AppCompatActivity {
             recyclerView.setAdapter(postsRecyclerViewAdapter);
         }
     };
-
-    public void prepareDots(int curr_slide_position) {
-        if (dots_layout.getChildCount() > 0)
-            dots_layout.removeAllViews();
-
-        ImageView dots[] = new ImageView[4];
-
-        for (int i = 0; i < 4; i++) {
-            dots[i] = new ImageView(this);
-            if (i == curr_slide_position)
-                dots[i].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.active_dot));
-            else
-                dots[i].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.inactive_dot));
-
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup
-                    .LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(4, 0, 4, 0);
-            dots_layout.addView(dots[i], layoutParams);
-        }
-    }
-
-    public void prepareSlide() {
-        int[] imgSlide = {R.drawable.rect1, R.drawable.rect3, R.drawable.rect4, R.drawable.event1};
-
-        for (int i = 0; i < imgSlide.length; i++) {
-            slidesList.add(new EventSlides(imgSlide[i]));
-        }
-    }
-
-    private void initializeViews() {
-        dots_layout = findViewById(R.id.dots_container);
-        mViewPager = findViewById(R.id.view_pager);
-        prepareSlide();
-        mAdapter = new CustomSwipeAdapter(slidesList, this);
-        mViewPager.setAdapter(mAdapter);
-        prepareDots(custom_position++);
-
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                if (custom_position > 3)
-                    custom_position = 0;
-                prepareDots(custom_position++);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
-
-        createSlideShow();
-    }
-
-    public void createSlideShow() {
-        final Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (curr_position == Integer.MAX_VALUE)
-                    curr_position = 0;
-
-                mViewPager.setCurrentItem(curr_position++, true);
-
-            }
-        };
-
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(runnable);
-            }
-        }, 250, 3000);
-    }
 }

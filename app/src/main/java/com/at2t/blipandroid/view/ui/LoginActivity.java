@@ -47,17 +47,12 @@ public class LoginActivity extends AppCompatActivity implements VerificationList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         SendOTP.initializeApp(getApplication());
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         binding = DataBindingUtil.setContentView(LoginActivity.this, R.layout.activity_main);
         ((ViewDataBinding) binding).setLifecycleOwner(this);
         binding.setLoginViewModel(loginViewModel);
-        loginViewModel.getUser().observe(this, new Observer<LoginUser>() {
-            @Override
-            public void onChanged(@Nullable LoginUser loginUser) {
-                validatePhoneNumber(loginUser);
-            }
-        });
 
         handler = new ClickHandler(this);
         binding.setClickHandler(handler);
@@ -65,8 +60,16 @@ public class LoginActivity extends AppCompatActivity implements VerificationList
         parentClickHandler = new ParentClickHandler(this);
         binding.setParentClickHandler(parentClickHandler);
 
-    }
+        loginViewModel.getUser().observe(this, new Observer<LoginUser>() {
+            @Override
+            public void onChanged(@Nullable LoginUser loginUser) {
+                validatePhoneNumber(loginUser);
+            }
+        });
 
+
+
+    }
 
     @SuppressLint("ResourceAsColor")
     public void validatePhoneNumber(LoginUser loginUser) {
@@ -88,6 +91,7 @@ public class LoginActivity extends AppCompatActivity implements VerificationList
                     .setCountryCode(+91)
                     .setMobileNumber(loginUser.getPhoneNumber())
                     .setSenderId("ABCDEF")
+                    .setAutoVerification(this)
                     .setMessage("##OTP## is Your verification digits.")
                     .setOtpLength(4)
                     .setVerificationCallBack(this).build();
@@ -137,7 +141,7 @@ public class LoginActivity extends AppCompatActivity implements VerificationList
             binding.btnLogin.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary));
             binding.rlParent.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
             binding.parentPanel.setImageDrawable(getDrawable(R.drawable.rsz_parent_white));
-            binding.instructorPanel.setImageDrawable(getDrawable(R.drawable.instructor_blue));
+            binding.instructorPanel.setImageDrawable(getDrawable(R.drawable.bluebook));
             binding.instructorPanel.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
         }
     }

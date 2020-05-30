@@ -1,40 +1,60 @@
 package com.at2t.blipandroid.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class PostsData {
-    private String name;
-    private String description;
-    private String imgIcon;
-    private String time;
+    @SerializedName("postText")
+    private String message;
 
-    public String getName() {
-        return name;
+    @SerializedName("postId")
+    private int postId;
+
+    @SerializedName("title")
+    private String title;
+
+    @SerializedName("sectionId")
+    private int sectionId;
+
+    @SerializedName("relTenantInstitutionId")
+    private int relTenantInstitutionId;
+
+    public String getMessage() {
+        return message;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public String getDescription() {
-        return description;
+    public int getPostId() {
+        return postId;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPostId(int postId) {
+        this.postId = postId;
     }
 
-    public String getImgIcon() {
-        return imgIcon;
+    public String getTitle() {
+        return title;
     }
 
-    public void setImgIcon(String imgIcon) {
-        this.imgIcon = imgIcon;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getTime() {
-        return time;
+    public int getSectionId() {
+        return sectionId;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setSectionId(int sectionId) {
+        this.sectionId = sectionId;
+    }
+
+    public int getRelTenantInstitutionId() {
+        return relTenantInstitutionId;
+    }
+
+    public void setRelTenantInstitutionId(int relTenantInstitutionId) {
+        this.relTenantInstitutionId = relTenantInstitutionId;
     }
 }

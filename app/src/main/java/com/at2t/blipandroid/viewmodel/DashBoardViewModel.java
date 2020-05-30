@@ -28,11 +28,10 @@ public class DashBoardViewModel extends ViewModel {
 
     public void populateList() {
         PostsData postsData = new PostsData();
-        postsData.setName("Darknight");
-        postsData.setDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit.Proin nunc mi,\n" +
+        postsData.setTitle("Darknight");
+        postsData.setMessage("Lorem ipsum dolor sit amet, consectetur adipiscing elit.Proin nunc mi,\n" +
                 "        rhoncus sit amet lacus sed, eleifend faucibus ligula. Ut ullamcorper vehicular quam,\n" +
                 "        sed ultrices mauris ultricies a.Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
-        postsData.setTime("Just now");
 
         postsDataArrayList = new ArrayList<>();
         postsDataArrayList.add(postsData);
