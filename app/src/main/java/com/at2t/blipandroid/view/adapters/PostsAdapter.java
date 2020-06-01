@@ -16,11 +16,14 @@ import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHolder> {
 
+    private static final String TAG = "PostListAdapter";
     private Context mContext;
     private List<PostsData> postsDataList;
+    private LayoutInflater layoutInflater;
 
-    public PostsAdapter(Context mContext, List<PostsData> postsDataList) {
-        this.mContext = mContext;
+    public PostsAdapter(Context context, List<PostsData> postsDataList) {
+        this.mContext = context;
+        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.postsDataList = postsDataList;
     }
 
@@ -38,6 +41,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
 
         viewHolder.txtView_name.setText(postsData.getTitle());
         viewHolder.txtView_description.setText(postsData.getMessage());
+    }
+
+    public void bindData() {
+
     }
 
     @Override

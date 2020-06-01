@@ -1,8 +1,6 @@
 package com.at2t.blipandroid.data.network;
 
 import com.at2t.blipandroid.model.InstructorLoginData;
-import com.at2t.blipandroid.model.LoginUser;
-import com.at2t.blipandroid.model.ResponseData;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -17,7 +15,7 @@ import retrofit2.http.Path;
 public interface ApiInterface {
 
     @GET("instructor/login/{phoneNumber}")
-    Call<LoginUser> loginWithPhoneNumber(@Path("phoneNumber") String phoneNumber);
+    Call<InstructorLoginData> loginWithPhoneNumber(@Path("phoneNumber") String phoneNumber);
 
     @Multipart
     @POST("post-file")

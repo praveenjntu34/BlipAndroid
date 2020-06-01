@@ -1,10 +1,16 @@
 package com.at2t.blipandroid.model;
 
+import android.util.Patterns;
+
 import com.google.gson.annotations.SerializedName;
 
+import static com.at2t.blipandroid.utils.Constants.MOBILE_NUMBER_LENGTH;
+
 public class InstructorLoginData {
+
+    private String phoneNumber;
     @SerializedName("instructorId")
-    private int instructorId;
+    private int instructorUserId;
 
     @SerializedName("sectionId")
     private int sectionId;
@@ -21,13 +27,25 @@ public class InstructorLoginData {
     @SerializedName("relTenantInstitutionId")
     private String relTenantInstitutionId;
 
-    public int getInstructorId() {
-        return instructorId;
+    @SerializedName("role")
+    private String role;
+
+    public int getInstructorUserId() {
+        return instructorUserId;
     }
 
-    public void setInstructorId(int instructorId) {
-        this.instructorId = instructorId;
+    public void setInstructorUserId(int instructorUserId) {
+        this.instructorUserId = instructorUserId;
     }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
 
     public int getSectionId() {
         return sectionId;
@@ -68,4 +86,19 @@ public class InstructorLoginData {
     public void setRelTenantInstitutionId(String relTenantInstitutionId) {
         this.relTenantInstitutionId = relTenantInstitutionId;
     }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public boolean isPhoneNumberValid() {
+        return Patterns.PHONE.matcher(getPhoneNumber()).matches()
+                && getPhoneNumber().length() == MOBILE_NUMBER_LENGTH;
+    }
+
+
 }

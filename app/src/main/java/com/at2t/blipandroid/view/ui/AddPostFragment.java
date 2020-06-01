@@ -28,8 +28,9 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.at2t.blipandroid.R;
-import com.at2t.blipandroid.managers.NetworkManager;
-import com.at2t.blipandroid.managers.RetrofitManager;
+
+import com.at2t.blipandroid.data.network.NetworkManager;
+import com.at2t.blipandroid.data.network.RetrofitManager;
 import com.at2t.blipandroid.model.ResponseData;
 import com.at2t.blipandroid.data.network.ApiInterface;
 import com.at2t.blipandroid.utils.DatePickerFragment;
@@ -141,7 +142,7 @@ public class AddPostFragment extends Fragment implements
                     getFilePath(data);
                     ivAttachment.setImageURI(selectedImage);
                     convertFileToByteArray();
-                    uploadImageToServer(attachmentFilePath);
+//                    uploadImageToServer(attachmentFilePath);
                     break;
             }
     }
@@ -214,50 +215,50 @@ public class AddPostFragment extends Fragment implements
         return new byte[0];
     }
 
-    private void uploadImageToServer(String filePath) {
-        Retrofit retrofit = RetrofitManager.getRetrofitClient(getActivity());
-        postApiService = retrofit.create(ApiInterface.class);
-        //Create a file object using file path
-        File file = new File(filePath);
-        // Create a request body with file and image media type
-        RequestBody fileReqBody = RequestBody.create(MediaType.parse("image/*"), file);
-        // Create MultipartBody.Part using file request-body,file name and part name
-        MultipartBody.Part part = MultipartBody.Part.createFormData("upload", file.getName(), fileReqBody);
-        //Create request body with text description and text media type
-        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), "image-type");
-        //
-        Call<ResponseData> postFileCall = postApiService.uploadAttachmentFile(part, description);
-        postFileCall.enqueue(new Callback<ResponseData>() {
-            @Override
-            public void onResponse(@NotNull Call<ResponseData> call, @NotNull Response<ResponseData> response) {
-                if (!response.isSuccessful()) {
-                    Log.d("Response", response.message());
-//                    Toast.makeText(getActivity(), "Unsuccessful", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-            ResponseData responseData =response.body();
-                if (responseData != null) {
-                if (responseData.getStatus().equals("success")) {
-                    Toast.makeText(getActivity(), "Uploaded successfully", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    if (responseData.getMessage().equalsIgnoreCase("Username or mobile number already exists")) {
-//                        mutableLiveData.setValue(LoginViewModel.SIGN_UP_FAILED_DUE_TO_SAME_USER_NAME);
+//    private void uploadImageToServer(String filePath) {
+//        Retrofit retrofit = RetrofitManager.getInstance().getApiInterface();
+//        postApiService = retrofit.create(ApiInterface.class);
+//        //Create a file object using file path
+//        File file = new File(filePath);
+//        // Create a request body with file and image media type
+//        RequestBody fileReqBody = RequestBody.create(MediaType.parse("image/*"), file);
+//        // Create MultipartBody.Part using file request-body,file name and part name
+//        MultipartBody.Part part = MultipartBody.Part.createFormData("upload", file.getName(), fileReqBody);
+//        //Create request body with text description and text media type
+//        RequestBody description = RequestBody.create(MediaType.parse("text/plain"), "image-type");
+//        //
+//        Call<ResponseData> postFileCall = postApiService.uploadAttachmentFile(part, description);
+//        postFileCall.enqueue(new Callback<ResponseData>() {
+//            @Override
+//            public void onResponse(@NotNull Call<ResponseData> call, @NotNull Response<ResponseData> response) {
+//                if (!response.isSuccessful()) {
+//                    Log.d("Response", response.message());
+////                    Toast.makeText(getActivity(), "Unsuccessful", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//
+//            ResponseData responseData =response.body();
+//                if (responseData != null) {
+//                if (responseData.getStatus().equals("success")) {
+//                    Toast.makeText(getActivity(), "Uploaded successfully", Toast.LENGTH_SHORT).show();
+////                } else {
+////                    if (responseData.getMessage().equalsIgnoreCase("Username or mobile number already exists")) {
+////                        mutableLiveData.setValue(LoginViewModel.SIGN_UP_FAILED_DUE_TO_SAME_USER_NAME);
+////                    }
+//                }
+//
+//            }
+//
+//        }
+//
+//                @Override
+//                public void onFailure(@NotNull Call<ResponseData> call, @NotNull Throwable t) {
+//                    if (networkManager.isNetworkAvailable(getActivity())) {
+//                        Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(getActivity(), "No internet", Toast.LENGTH_SHORT).show();
 //                    }
-                }
-
-            }
-
-        }
-
-                @Override
-                public void onFailure(@NotNull Call<ResponseData> call, @NotNull Throwable t) {
-                    if (networkManager.isNetworkAvailable(getActivity())) {
-                        Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getActivity(), "No internet", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        });
-    }
+//                }
+//        });
+//    }
 }

@@ -14,7 +14,6 @@ import androidx.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,8 +23,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.at2t.blipandroid.R;
+import com.at2t.blipandroid.data.repositories.UserLoginRepository;
 import com.at2t.blipandroid.databinding.ActivityMainBinding;
-import com.at2t.blipandroid.model.LoginUser;
+import com.at2t.blipandroid.model.InstructorLoginData;
 import com.at2t.blipandroid.viewmodel.LoginViewModel;
 import com.msg91.sendotpandroid.library.internal.SendOTP;
 import com.msg91.sendotpandroid.library.listners.VerificationListener;
@@ -33,14 +33,14 @@ import com.msg91.sendotpandroid.library.listners.VerificationListener;
 import com.msg91.sendotpandroid.library.roots.SendOTPConfigBuilder;
 import com.msg91.sendotpandroid.library.roots.SendOTPResponseCode;
 
-import java.util.Objects;
-
 public class LoginActivity extends AppCompatActivity implements VerificationListener {
 
     private LoginViewModel loginViewModel;
     private ClickHandler handler;
     private ParentClickHandler parentClickHandler;
     private ActivityMainBinding binding;
+    private String etPhoneNumber;
+    private InstructorLoginData loginData;
     public boolean isInstructorSelected;
     public boolean isParentSelected;
 
@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity implements VerificationList
 
         SendOTP.initializeApp(getApplication());
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        loginViewModel.init(getApplication());
         binding = DataBindingUtil.setContentView(LoginActivity.this, R.layout.activity_main);
         ((ViewDataBinding) binding).setLifecycleOwner(this);
         binding.setLoginViewModel(loginViewModel);
@@ -60,36 +61,45 @@ public class LoginActivity extends AppCompatActivity implements VerificationList
         parentClickHandler = new ParentClickHandler(this);
         binding.setParentClickHandler(parentClickHandler);
 
-        loginViewModel.getUser().observe(this, new Observer<LoginUser>() {
+        loginViewModel.getResponseLiveData().observe(this, new Observer<Integer>() {
             @Override
-            public void onChanged(@Nullable LoginUser loginUser) {
-                validatePhoneNumber(loginUser);
+            public void onChanged(Integer integer) {
+                if (integer != null) {
+                    if (integer == UserLoginRepository.LOGIN_SUCCESSFULL) {
+                        isInstructorSelected = true;
+                        isParentSelected = false;
+                        validatePhoneNumber();
+                        Log.d("Login PhoneNumber : ", "Success login");
+
+                    } else if(integer == UserLoginRepository.LOGIN_FAILED) {
+                        Log.d("Login PhoneNumber : ", "Failed login");
+                    }
+                }
             }
         });
-
 
 
     }
 
     @SuppressLint("ResourceAsColor")
-    public void validatePhoneNumber(LoginUser loginUser) {
-        if (TextUtils.isEmpty(Objects.requireNonNull(loginUser).getPhoneNumber())) {
+    public void validatePhoneNumber() {
+        if (binding.EtPhoneNumber.getText() != null)
+            etPhoneNumber = binding.EtPhoneNumber.getText().toString();
+
+        if (TextUtils.isEmpty(etPhoneNumber)) {
             binding.textInputPhoneNumber.setError("Enter your mobile number");
             binding.textInputPhoneNumber.requestFocus();
-        } else if (!loginUser.isPhoneNumberValid()) {
+        }
+        else if (!loginData.isPhoneNumberValid()) {
             binding.textInputPhoneNumber.setError("Enter your valid mobile number");
             binding.textInputPhoneNumber.requestFocus();
-        } else {
-            binding.EtPhoneNumber.setText(loginUser.getPhoneNumber());
-            Bundle bundle = new Bundle();
-            bundle.putString("userData", loginUser.getPhoneNumber());
-            bundle.putBoolean("isInstructorSelected", isInstructorSelected);
-            bundle.putBoolean("isParentSelected", isParentSelected);
-            Intent intent = new Intent(LoginActivity.this, LoginUsingOtpActivity.class);
-            intent.putExtras(bundle);
+        }
+        else {
+            binding.EtPhoneNumber.setText(etPhoneNumber);
+
             new SendOTPConfigBuilder()
                     .setCountryCode(+91)
-                    .setMobileNumber(loginUser.getPhoneNumber())
+                    .setMobileNumber(etPhoneNumber)
                     .setSenderId("ABCDEF")
                     .setAutoVerification(this)
                     .setMessage("##OTP## is Your verification digits.")

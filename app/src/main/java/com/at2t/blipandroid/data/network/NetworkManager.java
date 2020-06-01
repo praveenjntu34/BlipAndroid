@@ -1,4 +1,4 @@
-package com.at2t.blipandroid.managers;
+package com.at2t.blipandroid.data.network;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -24,7 +24,7 @@ public class NetworkManager {
         if (context == null) return false;
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
                 if (capabilities != null) {
                     if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {

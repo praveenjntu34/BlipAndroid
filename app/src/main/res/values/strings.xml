@@ -10,6 +10,7 @@
     <string name="mobile_number">Mobile number</string>
     <string name="user_validation_error">Entered mobile number doesn\'t exists contact your
         institution administrators.</string>
+    <string name="no_internet_msg">Please check your internet connection</string>
     <string name="didn_t_get_code">Didn\'t get code ?</string>
     <string name="resend">Resend</string>
     <string name="post_desc">A question from Nuclear Physics?</string>

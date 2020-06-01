@@ -12,18 +12,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.at2t.blipandroid.R;
+import com.at2t.blipandroid.utils.BlipUtility;
 import com.at2t.blipandroid.utils.CustomButton;
 import com.msg91.sendotpandroid.library.internal.SendOTP;
 
 import in.aabhasjindal.otptextview.OtpTextView;
 
 public class LoginUsingOtpActivity extends AppCompatActivity {
-    String value;
-    boolean isParentSelected;
-    boolean isInstructorSelected;
+
     private OtpTextView otpTextView;
     private CustomButton customButton;
-    private Context mContext;
     private LinearLayout llLoginTopHeader;
     private TextView tvResend;
 
@@ -32,22 +30,23 @@ public class LoginUsingOtpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_otp);
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            value = bundle.getString("userData");
-            isParentSelected = bundle.getBoolean("isParentSelected");
-            isInstructorSelected = bundle.getBoolean("isInstructorSelected");
-        }
         initializeViews();
         onLogin();
         changeOtpScreenColor();
     }
 
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        SendOTP.getInstance().getTrigger().stop();
+    }
+
     private void changeOtpScreenColor() {
-        if(isInstructorSelected) {
-            customButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
-            llLoginTopHeader.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
-            tvResend.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+        String role = BlipUtility.getRole(this);
+        if(role.equals("Instructor")) {
+            customButton.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            llLoginTopHeader.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            tvResend.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         }
     }
 
