@@ -42,7 +42,6 @@ public class PostDataRepository {
                 if(response.body() != null) {
                     listMutableLiveData.setValue(response.body());
                     Log.d("Post data : ", response.toString());
-                    Log.d("Post data : ", response.body().get(0).getTitle());
                 }
             }
 

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.at2t.blipandroid.R;
 import com.at2t.blipandroid.model.PostsData;
@@ -87,6 +88,22 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
             txtView_title = itemView.findViewById(R.id.tv_post_information);
             ivTime = itemView.findViewById(R.id.iv_time);
             txtView_description = itemView.findViewById(R.id.tv_post_description);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), "Position of the selected post is " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            //Long Press
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Toast.makeText(v.getContext(), "Position of the selected post is " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            });
         }
     }
 }

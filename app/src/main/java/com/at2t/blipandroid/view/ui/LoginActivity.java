@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
@@ -32,6 +33,8 @@ import com.msg91.sendotpandroid.library.listners.VerificationListener;
 
 import com.msg91.sendotpandroid.library.roots.SendOTPConfigBuilder;
 import com.msg91.sendotpandroid.library.roots.SendOTPResponseCode;
+
+import static com.at2t.blipandroid.utils.Constants.MOBILE_NUMBER_LENGTH;
 
 public class LoginActivity extends AppCompatActivity implements VerificationListener {
 
@@ -90,10 +93,10 @@ public class LoginActivity extends AppCompatActivity implements VerificationList
             binding.textInputPhoneNumber.setError("Enter your mobile number");
             binding.textInputPhoneNumber.requestFocus();
         }
-//        else if (!loginData.isPhoneNumberValid()) {
-//            binding.textInputPhoneNumber.setError("Enter your valid mobile number");
-//            binding.textInputPhoneNumber.requestFocus();
-//        }
+        else if (!isPhoneNumberValid()) {
+            binding.textInputPhoneNumber.setError("Enter your valid mobile number");
+            binding.textInputPhoneNumber.requestFocus();
+        }
         else {
             binding.EtPhoneNumber.setText(etPhoneNumber);
 
@@ -108,6 +111,7 @@ public class LoginActivity extends AppCompatActivity implements VerificationList
 
             SendOTP.getInstance().getTrigger().initiate();
             binding.progressCircular.setVisibility(View.VISIBLE);
+
             startActivity(new Intent(LoginActivity.this, LoginUsingOtpActivity.class));
         }
     }
@@ -137,6 +141,10 @@ public class LoginActivity extends AppCompatActivity implements VerificationList
         });
     }
 
+    public boolean isPhoneNumberValid() {
+        return Patterns.PHONE.matcher(etPhoneNumber).matches()
+                && etPhoneNumber.length() == MOBILE_NUMBER_LENGTH;
+    }
 
     public class ClickHandler {
 
