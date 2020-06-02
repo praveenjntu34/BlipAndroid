@@ -18,6 +18,7 @@ public class Constants {
     public static final String ACCESS_TOKEN = "access_token";
     public static final String SECTION_ID = "sectionId";
     public static final String INSTRUCTOR_ID = "instructorId";
+    public static final String INSTITUTE_ID = "instituteId";
     public static final String ROLE = "role";
     public static final String PARENTLOGIN = "parentLogin";
     public static final String INSTRUCTORLOGIN = "instructorLogin";

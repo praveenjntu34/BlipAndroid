@@ -25,7 +25,7 @@ public class InstructorLoginData {
     private String lastName;
 
     @SerializedName("relTenantInstitutionId")
-    private String relTenantInstitutionId;
+    private int relTenantInstitutionId;
 
     @SerializedName("role")
     private String role;
@@ -79,11 +79,11 @@ public class InstructorLoginData {
         this.lastName = lastName;
     }
 
-    public String getRelTenantInstitutionId() {
+    public int getRelTenantInstitutionId() {
         return relTenantInstitutionId;
     }
 
-    public void setRelTenantInstitutionId(String relTenantInstitutionId) {
+    public void setRelTenantInstitutionId(int relTenantInstitutionId) {
         this.relTenantInstitutionId = relTenantInstitutionId;
     }
 

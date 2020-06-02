@@ -14,8 +14,7 @@
         android:id="@+id/post_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+
         android:layout_gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -31,8 +30,8 @@
 
             <ImageView
                 android:id="@+id/person_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="35dp"
+                android:layout_height="60dp"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="8dp"
                 android:src="@drawable/rounded_2"
@@ -59,7 +58,7 @@
                     android:maxLines="1"
                     android:text="Shaily Sahoo"
                     android:textColor="@color/colorGreen"
-                    android:textSize="8sp" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tv_date"
@@ -71,7 +70,7 @@
                     android:maxLines="1"
                     android:text="25 May 2020"
                     android:textColor="@color/grey"
-                    android:textSize="8sp"
+                    android:textSize="10sp"
                     app:layout_constraintLeft_toRightOf="@+id/person_image"
                     app:layout_constraintTop_toBottomOf="@id/tv_full_name" />
             </LinearLayout>
@@ -89,30 +88,16 @@
                 app:layout_constraintTop_toTopOf="@id/llNameDate" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
-            android:id="@+id/iv_event_img"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginBottom="8dp"
-            android:layout_gravity="center"
-            android:src="@drawable/imperia"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@id/rl_top_header"
-            app:layout_constraintLeft_toLeftOf="parent"
-             />
-
         <TextView
             android:id="@+id/tv_post_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="12dp"
             android:background="@color/white"
-            android:text="@string/post_desc"
             android:textColor="@color/black"
-            android:textSize="8sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@id/iv_event_img"
             app:layout_constraintRight_toRightOf="@id/rl_top_header" />
 
@@ -124,11 +109,22 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             android:background="@color/white"
-            android:text="@string/description"
             android:textColor="@color/grey"
-            android:textSize="8sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@id/tv_post_description"
             app:layout_constraintRight_toRightOf="@id/rl_top_header" />
+
+        <ImageView
+            android:id="@+id/iv_event_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@id/tv_post_description"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
 
 
     </LinearLayout>

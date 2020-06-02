@@ -12,11 +12,8 @@ public class PostsData {
     @SerializedName("title")
     private String title;
 
-    @SerializedName("sectionId")
-    private int sectionId;
-
-    @SerializedName("relTenantInstitutionId")
-    private int relTenantInstitutionId;
+    @SerializedName("attachmentStreamId")
+    private String postAttachmentId;
 
     public String getMessage() {
         return message;
@@ -42,19 +39,11 @@ public class PostsData {
         this.title = title;
     }
 
-    public int getSectionId() {
-        return sectionId;
+    public String getPostAttachmentId() {
+        return postAttachmentId;
     }
 
-    public void setSectionId(int sectionId) {
-        this.sectionId = sectionId;
-    }
-
-    public int getRelTenantInstitutionId() {
-        return relTenantInstitutionId;
-    }
-
-    public void setRelTenantInstitutionId(int relTenantInstitutionId) {
-        this.relTenantInstitutionId = relTenantInstitutionId;
+    public void setPostAttachmentId(String postAttachmentId) {
+        this.postAttachmentId = postAttachmentId;
     }
 }

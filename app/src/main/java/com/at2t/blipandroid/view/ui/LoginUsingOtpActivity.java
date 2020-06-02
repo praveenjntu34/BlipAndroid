@@ -43,7 +43,7 @@ public class LoginUsingOtpActivity extends AppCompatActivity {
 
     private void changeOtpScreenColor() {
         String role = BlipUtility.getRole(this);
-        if(role.equals("Instructor")) {
+        if(role != null && role.equals("Instructor")) {
             customButton.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
             llLoginTopHeader.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
             tvResend.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));

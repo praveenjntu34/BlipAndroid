@@ -12,6 +12,7 @@ public class BlipUtility {
             SharedPreferencesActivtiy.setSharedPrefString(context, Constants.USER_LAST_NAME, user.getLastName());
             SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.INSTRUCTOR_ID, user.getInstructorUserId());
             SharedPreferencesActivtiy.setSharedPrefString(context, Constants.ROLE, user.getRole());
+            SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.INSTITUTE_ID, user.getRelTenantInstitutionId());
         }
     }
 
@@ -31,6 +32,15 @@ public class BlipUtility {
         }
 
         return role;
+    }
+
+    public static int getInstituteId(Context context) {
+        int instituteId = 0;
+        if (SharedPreferencesActivtiy.getSharedPrefInteger(context, Constants.INSTITUTE_ID) != 0) {
+            instituteId = SharedPreferencesActivtiy.getSharedPrefInteger(context, Constants.INSTITUTE_ID);
+        }
+
+        return instituteId;
     }
 
     public static int getSectionId(Context context) {

@@ -90,10 +90,10 @@ public class LoginActivity extends AppCompatActivity implements VerificationList
             binding.textInputPhoneNumber.setError("Enter your mobile number");
             binding.textInputPhoneNumber.requestFocus();
         }
-        else if (!loginData.isPhoneNumberValid()) {
-            binding.textInputPhoneNumber.setError("Enter your valid mobile number");
-            binding.textInputPhoneNumber.requestFocus();
-        }
+//        else if (!loginData.isPhoneNumberValid()) {
+//            binding.textInputPhoneNumber.setError("Enter your valid mobile number");
+//            binding.textInputPhoneNumber.requestFocus();
+//        }
         else {
             binding.EtPhoneNumber.setText(etPhoneNumber);
 
@@ -121,6 +121,7 @@ public class LoginActivity extends AppCompatActivity implements VerificationList
                 if (responseCode == SendOTPResponseCode.DIRECT_VERIFICATION_SUCCESSFUL_FOR_NUMBER || responseCode == SendOTPResponseCode.OTP_VERIFIED) {
                     //otp verified OR direct verified by send otp 2.O
                     Toast.makeText(getApplicationContext(), "OTP verified", Toast.LENGTH_SHORT).show();
+                    finish();
                 } else if (responseCode == SendOTPResponseCode.READ_OTP_SUCCESS) {
                     //Auto read otp from sms successfully
                     // you can get otp form message filled

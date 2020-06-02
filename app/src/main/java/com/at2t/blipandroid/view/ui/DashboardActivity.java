@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,11 +23,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,8 +39,8 @@ import com.at2t.blipandroid.view.adapters.PostsAdapter;
 import com.at2t.blipandroid.viewmodel.DashBoardViewModel;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity implements
         DatePickerDialog.OnDateSetListener {
@@ -50,7 +53,7 @@ public class DashboardActivity extends AppCompatActivity implements
     private ActionBarDrawerToggle t;
     private NavigationView nv;
     private Button btnNewPost;
-    CardView calendarView;
+    LinearLayout calendarView;
     TextView tvDateSelected;
 
     @Override
@@ -61,13 +64,41 @@ public class DashboardActivity extends AppCompatActivity implements
         intializeNavigationView();
         initializeUIView();
         recyclerView = findViewById(R.id.rv_posts);
-        viewModel = ViewModelProviders.of(context).get(DashBoardViewModel.class);
-        viewModel.getUserMutableLiveData().observe(context, userListUpdateObserver);
+
+        viewModel = ViewModelProviders.of(this).get(DashBoardViewModel.class);
+        viewModel.init(getApplication());
+        observerViewModel(viewModel);
+
+    }
+
+    public void observerViewModel(DashBoardViewModel dashBoardViewModel){
+        dashBoardViewModel.getPostLiveDataObservables().observe(this, new
+                Observer<List<PostsData>>() {
+                    @Override
+                    public void onChanged(List<PostsData> postsDataList) {
+                        if (postsDataList != null && postsDataList.size() > 0) {
+
+                            if (recyclerView != null) {
+                                postsRecyclerViewAdapter = (PostsAdapter) recyclerView.getAdapter();
+                                if (postsRecyclerViewAdapter == null) {
+                                    postsRecyclerViewAdapter = new PostsAdapter(getApplicationContext(), postsDataList);
+                                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+                                    recyclerView.setLayoutManager(linearLayoutManager);
+                                    recyclerView.setAdapter(postsRecyclerViewAdapter);
+                                } else {
+                                    postsRecyclerViewAdapter.setdata(postsDataList);
+                                }
+                            }
+                        } else {
+                            Log.d("Post failed: ", "Try again");
+                        }
+                    }
+                });
     }
 
     private void initializeUIView() {
         btnNewPost = findViewById(R.id.btnNewPost);
-        calendarView = findViewById(R.id.cv_calender);
+        calendarView = findViewById(R.id.llDateSelector);
         tvDateSelected = findViewById(R.id.tvDate);
 
         calendarView.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +112,7 @@ public class DashboardActivity extends AppCompatActivity implements
         btnNewPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToAddPostFragment();
+                goToAddPostActivity();
             }
         });
     }
@@ -97,13 +128,8 @@ public class DashboardActivity extends AppCompatActivity implements
         tvDateSelected.setText(currentDateString);
     }
 
-    private void goToAddPostFragment() {
-        AddPostFragment addPostFragment = new AddPostFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.drawer_layout, addPostFragment, AddPostFragment.TAG);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+    private void goToAddPostActivity() {
+        startActivity(new Intent(DashboardActivity.this, AddPostActivity.class));
     }
 
     @Override
@@ -153,13 +179,4 @@ public class DashboardActivity extends AppCompatActivity implements
 
         return super.onOptionsItemSelected(item);
     }
-
-    Observer<ArrayList<PostsData>> userListUpdateObserver = new Observer<ArrayList<PostsData>>() {
-        @Override
-        public void onChanged(ArrayList<PostsData> userArrayList) {
-            postsRecyclerViewAdapter = new PostsAdapter(context, userArrayList);
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(postsRecyclerViewAdapter);
-        }
-    };
 }

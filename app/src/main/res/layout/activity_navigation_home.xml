@@ -19,65 +19,74 @@
         android:layout_margin="8dp">
 
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_calender"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:backgroundTint="@color/blue"
-            android:elevation="12dp"
-            android:foregroundGravity="center"
-            app:cardCornerRadius="40dp"
+        <LinearLayout
+            android:id="@+id/llDateSelector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/imgCalendar"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_calender"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="@color/blue"
+                android:elevation="12dp"
                 android:foregroundGravity="center"
-                android:scaleType="centerCrop"
-                android:src="@drawable/calendar_icon" />
-        </androidx.cardview.widget.CardView>
+                app:cardCornerRadius="40dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:id="@+id/ll_dateView"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:background="#f7f7f7"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            app:layout_constraintLeft_toRightOf="@+id/cv_calender"
-            app:layout_constraintTop_toTopOf="parent">
+                <ImageView
+                    android:id="@+id/imgCalendar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:foregroundGravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/calendar_icon" />
+            </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/tvDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:fontFamily="sans-serif-medium"
+            <LinearLayout
+                android:id="@+id/ll_dateView"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:background="#f7f7f7"
                 android:gravity="center_vertical"
-                android:text="25 May, 2020"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:typeface="sans" />
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toRightOf="@+id/cv_calender"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/ivDateMark"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="24dp"
-                android:foregroundGravity="center"
-                android:scaleType="centerCrop"
-                android:src="@drawable/tick_mark" />
+                <TextView
+                    android:id="@+id/tvDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center_vertical"
+                    android:text="25 May, 2020"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:typeface="sans" />
+
+                <ImageView
+                    android:id="@+id/ivDateMark"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="24dp"
+                    android:foregroundGravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/tick_mark" />
+            </LinearLayout>
         </LinearLayout>
 
         <Button
@@ -94,7 +103,7 @@
             android:textColor="@color/blue"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_dateView" />
+            app:layout_constraintTop_toBottomOf="@id/llDateSelector" />
 
         <ScrollView
             android:layout_width="match_parent"

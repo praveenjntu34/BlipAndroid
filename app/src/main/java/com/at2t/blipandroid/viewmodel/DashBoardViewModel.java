@@ -1,44 +1,46 @@
 package com.at2t.blipandroid.viewmodel;
 
-import androidx.lifecycle.MutableLiveData;
+import android.app.Application;
+
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.at2t.blipandroid.data.network.ApiInterface;
+import com.at2t.blipandroid.data.network.NetworkManager;
+import com.at2t.blipandroid.data.network.RetrofitManager;
+import com.at2t.blipandroid.data.repositories.PostDataRepository;
 import com.at2t.blipandroid.model.PostsData;
+import com.at2t.blipandroid.utils.BlipUtility;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class DashBoardViewModel extends ViewModel {
 
-    MutableLiveData<ArrayList<PostsData>> postsLiveData;
-    ArrayList<PostsData> postsDataArrayList;
+    private LiveData<List<PostsData>> postsLiveData;
+    public Integer sectionId;
+    private Application application;
+    private PostDataRepository postDataRepository;
+    private NetworkManager networkManager;
+    private RetrofitManager retrofitManager;
+    private ApiInterface apiInterface;
 
     public DashBoardViewModel() {
-        postsLiveData = new MutableLiveData<>();
-        init();
+        networkManager = NetworkManager.getInstance();
+        apiInterface = RetrofitManager.getInstance().getApiInterface();
     }
 
-    public MutableLiveData<ArrayList<PostsData>> getUserMutableLiveData() {
+    public void init(Application application) {
+        postDataRepository = new PostDataRepository(application);
+        postsLiveData = postDataRepository.getLiveData();
+        getPostList(BlipUtility.getSectionId(application));
+    }
+
+    public void getPostList(Integer sectionId){
+        postDataRepository.getListofPost(sectionId);
+    }
+
+    public LiveData<List<PostsData>> getPostLiveDataObservables() {
         return postsLiveData;
     }
 
-    public void init() {
-        populateList();
-        postsLiveData.setValue(postsDataArrayList);
-    }
-
-    public void populateList() {
-        PostsData postsData = new PostsData();
-        postsData.setTitle("Darknight");
-        postsData.setMessage("Lorem ipsum dolor sit amet, consectetur adipiscing elit.Proin nunc mi,\n" +
-                "        rhoncus sit amet lacus sed, eleifend faucibus ligula. Ut ullamcorper vehicular quam,\n" +
-                "        sed ultrices mauris ultricies a.Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
-
-        postsDataArrayList = new ArrayList<>();
-        postsDataArrayList.add(postsData);
-        postsDataArrayList.add(postsData);
-        postsDataArrayList.add(postsData);
-        postsDataArrayList.add(postsData);
-        postsDataArrayList.add(postsData);
-        postsDataArrayList.add(postsData);
-    }
 }
