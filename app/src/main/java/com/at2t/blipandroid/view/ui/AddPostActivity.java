@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
@@ -42,7 +41,6 @@ import com.at2t.blipandroid.viewmodel.AddPostViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -154,22 +152,8 @@ public class AddPostActivity extends AppCompatActivity implements
         postTitle = findViewById(R.id.etTitle);
         postMessage = findViewById(R.id.etMessage);
         ivAttachment = findViewById(R.id.ivAttachment);
-        calendarView = findViewById(R.id.llDateSelector);
-        tvDateSelected = findViewById(R.id.tvDate);
         btnAddPost = findViewById(R.id.btnAddPost);
 
-        sectionId = BlipUtility.getSectionId(this);
-        relTenantInstitutionId = BlipUtility.getInstituteId(this);
-
-        calendarView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment datePicker = new DatePickerFragment();
-                if (getFragmentManager() != null) {
-                    datePicker.show(getSupportFragmentManager(), "date picker");
-                }
-            }
-        });
         onClickListener();
         addingPost();
     }

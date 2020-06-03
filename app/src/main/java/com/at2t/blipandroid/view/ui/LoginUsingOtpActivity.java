@@ -47,10 +47,6 @@ public class LoginUsingOtpActivity extends AppCompatActivity {
             customButton.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
             llLoginTopHeader.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
             tvResend.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        } else {
-            customButton.setBackgroundColor(ContextCompat.getColor(this, R.color.colorGreen));
-            llLoginTopHeader.setBackgroundColor(ContextCompat.getColor(this, R.color.colorGreen));
-            tvResend.setTextColor(ContextCompat.getColor(this, R.color.colorGreen));
         }
     }
 
