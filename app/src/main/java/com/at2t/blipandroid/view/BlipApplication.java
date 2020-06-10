@@ -5,10 +5,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 
-import androidx.multidex.MultiDex;
-import androidx.multidex.MultiDexApplication;
-
-public class BlipApplication extends MultiDexApplication {
+public class BlipApplication extends Application {
 
     private static Context sApplicationContext;
     private static BlipApplication sLearnwiseApplication;
@@ -19,7 +16,6 @@ public class BlipApplication extends MultiDexApplication {
 
     @Override
     protected void attachBaseContext(Context base) {
-        MultiDex.install(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Configuration config = base.getResources().getConfiguration();
             base = base.createConfigurationContext(config);
