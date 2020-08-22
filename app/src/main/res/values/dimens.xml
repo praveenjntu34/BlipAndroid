@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="margin_100dp">100dp</dimen>
+    <dimen name="margin_64dp">64dp</dimen>
+    <dimen name="margin_50dp">50dp</dimen>
+    <dimen name="margin_56dp">56dp</dimen>
+    <dimen name="margin_40dp">40dp</dimen>
+    <dimen name="margin_30dp">30dp</dimen>
+    <dimen name="margin_20dp">20dp</dimen>
+    <dimen name="margin_10dp">10dp</dimen>
+    <dimen name="margin_8dp">8dp</dimen>
+    <dimen name="margin_2dp">2dp</dimen>
+
+    <dimen name="text_size_25sp">25sp</dimen>
+    <dimen name="text_size_16sp">16sp</dimen>
+    <dimen name="text_size_20sp">20sp</dimen>
+    <dimen name="text_size_14sp">14sp</dimen>
+
+    <dimen name="otp_edit_width_height">50dp</dimen>
+    <dimen name="otp_text_size">30sp</dimen>
+    <dimen name="otp_layout_width">230dp</dimen>
+    <dimen name="otp_login_btn_width">120dp</dimen>
+
+    <dimen name="stfin_logo_height">50dp</dimen>
+    <dimen name="styfin_logo_margin_start">40dp</dimen>
+    <dimen name="styfin_logo_margin_20dp">20dp</dimen>
+    <dimen name="styfin_logo_margin_bottom">40dp</dimen>
+
+    <dimen name="green_path_subscreen_height">150dp</dimen>
+    <dimen name="green_path_main_250">250dp</dimen>
+    <dimen name="btn_height">50dp</dimen>
+    <dimen name="btn_height_40dp">40dp</dimen>
+
+
+    <dimen name="signup_layout_width">165dp</dimen>
+    <dimen name="signup_layout_height">50dp</dimen>
+    <dimen name="signup_btn_width">80dp</dimen>
+    <dimen name="signup_btn_height">45dp</dimen>
+    <dimen name="line_height_1dp">1dp</dimen>
+
+    <dimen name="margin_5dp">5dp</dimen>
+    <dimen name="margin_24_dp">24dp</dimen>
+
+    <dimen name="banner_each_indicator_width">32dp</dimen>
+    <dimen name="banner_each_indicator_gap">6dp</dimen>
+</resources>

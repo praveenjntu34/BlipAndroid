@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1063348147869",
+    "firebase_url": "https://blipandroid-79f71.firebaseio.com",
+    "project_id": "blipandroid-79f71",
+    "storage_bucket": "blipandroid-79f71.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1063348147869:android:d800fecd9698b2af012674",
+        "android_client_info": {
+          "package_name": "com.at2t.blipandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1063348147869-5hjo52r4os6q0v223ogqoq2bbss401lj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.at2t.blipandroid",
+            "certificate_hash": "88d17d43109b03a395f6fae1ecb32c49f8dea380"
+          }
+        },
+        {
+          "client_id": "1063348147869-e1ik7hbj37iod906p0k4v2ov3mucsf9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBrsWOzLr2a8ErFBlNm27Xe_9vnmUIzpU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1063348147869-e1ik7hbj37iod906p0k4v2ov3mucsf9e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

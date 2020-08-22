@@ -2,7 +2,10 @@ package com.at2t.blipandroid.viewmodel;
 
 import android.app.Application;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.at2t.blipandroid.data.network.ApiInterface;
@@ -14,9 +17,9 @@ import com.at2t.blipandroid.utils.BlipUtility;
 
 import java.util.List;
 
-public class DashBoardViewModel extends ViewModel {
+public class DashBoardViewModel extends AndroidViewModel {
 
-    private LiveData<List<PostsData>> postsLiveData;
+    private LiveData<List<PostsData>> postsLiveData = new MediatorLiveData<>();
     public Integer sectionId;
     private Application application;
     private PostDataRepository postDataRepository;
@@ -24,18 +27,13 @@ public class DashBoardViewModel extends ViewModel {
     private RetrofitManager retrofitManager;
     private ApiInterface apiInterface;
 
-    public DashBoardViewModel() {
+    public DashBoardViewModel(@NonNull Application application) {
+        super(application);
         networkManager = NetworkManager.getInstance();
         apiInterface = RetrofitManager.getInstance().getApiInterface();
     }
 
-    public void init(Application application) {
-        postDataRepository = new PostDataRepository(application);
-        postsLiveData = postDataRepository.getLiveData();
-        getPostList(BlipUtility.getSectionId(application));
-    }
-
-    public void getPostList(Integer sectionId){
+    public void getPostList(int sectionId){
         postDataRepository.getListofPost(sectionId);
     }
 

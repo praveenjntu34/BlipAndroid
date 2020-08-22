@@ -19,5 +19,6 @@
     <color name="light_blue">#4682b4</color>
     <color name="blue">#48a0f8</color>
     <color name="disabledGreen">#A5D6A7</color>
+    <color name="otp_underline_color">#888383</color>
 
 </resources>

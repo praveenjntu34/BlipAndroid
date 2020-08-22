@@ -31,7 +31,7 @@ public class BlipApplication extends Application {
      *
      * @return sApplicationContext application context
      */
-    public static Context getLearnWiseApplicationContext() {
+    public static Context getBlipApplicationContext() {
         return sApplicationContext;
     }
 }

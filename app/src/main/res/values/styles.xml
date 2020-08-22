@@ -49,4 +49,20 @@
         <item name="colorAccent">@color/blue</item>
     </style>
 
+    <style name="TextLabel" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="OtpTheme" parent="Widget.AppCompat.EditText">
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/otp_underline_color</item>
+    </style>
+
+    <style name="blue_image_theme" parent="AppTheme">
+        <item name="circle_background_color">#2d26d6</item>
+    </style>
+
+    <style name="transparent_theme" parent="AppTheme">
+        <item name="circle_background_color">@color/transparent</item>
+    </style>
 </resources>

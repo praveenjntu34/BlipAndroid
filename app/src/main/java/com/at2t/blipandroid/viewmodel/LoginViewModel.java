@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import android.app.Application;
 import android.view.View;
 
+import com.at2t.blipandroid.R;
 import com.at2t.blipandroid.data.network.ApiInterface;
 import com.at2t.blipandroid.data.network.NetworkManager;
 import com.at2t.blipandroid.data.network.RetrofitManager;
@@ -32,12 +33,12 @@ public class LoginViewModel extends ViewModel {
         integerLiveDataResponse = userLoginRepository.getLiveData();
     }
 
-    public void onLoginClick(View view) {
-        loginUserUsingMobileNumber(phoneNumber);
-    }
-
     public void loginUserUsingMobileNumber(String phoneNumber) {
         userLoginRepository.loginUsingMobileNumber(phoneNumber);
+    }
+
+    public void loginParentUsingMobileNumber(String phoneNumber) {
+        userLoginRepository.parentLoginUsingPhone(phoneNumber);
     }
 
     public LiveData<Integer> getResponseLiveData() {

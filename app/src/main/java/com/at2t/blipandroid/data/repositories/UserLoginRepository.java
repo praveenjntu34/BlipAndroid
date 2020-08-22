@@ -12,8 +12,10 @@ import com.at2t.blipandroid.data.network.ApiInterface;
 import com.at2t.blipandroid.data.network.NetworkManager;
 import com.at2t.blipandroid.data.network.RetrofitManager;
 import com.at2t.blipandroid.model.InstructorLoginData;
+import com.at2t.blipandroid.model.ParentDataModel;
 import com.at2t.blipandroid.utils.BlipUtility;
 import com.at2t.blipandroid.utils.Constants;
+import com.at2t.blipandroid.utils.Enums;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,10 +24,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserLoginRepository {
-
-    public static final int LOGIN_SUCCESSFULL = 1;
-    public static final int LOGIN_FAILED = 2;
-    public static final int LOGIN_FAILED_DUE_TO_INVALID_CREDENTIALS = 3;
 
     private ApiInterface apiService;
     private MutableLiveData<Integer> responseLiveData;
@@ -71,22 +69,52 @@ public class UserLoginRepository {
             @Override
             public void onResponse(@NotNull Call<InstructorLoginData> call, @NotNull Response<InstructorLoginData> response) {
                 if (response.body() != null) {
-                    BlipUtility.storeUserBasicInfoInSharedPref(application, response.body());
-                    responseLiveData.postValue(UserLoginRepository.LOGIN_SUCCESSFULL);
-                    responseLiveData.setValue(UserLoginRepository.LOGIN_SUCCESSFULL);
+                    BlipUtility.storeInstructorBasicInfoInSharedPref(application, response.body());
+                    responseLiveData.setValue(Enums.LoginStatus.INSTRUCTOR_LOGIN_SUCCESSFULL);
                     editor.putString(Constants.ACCESS_TOKEN, "1234");
                     editor.putInt(Constants.SECTION_ID, response.body().getSectionId());
                     editor.putBoolean(Constants.IS_LOGGED_IN, true);
                     editor.putBoolean(Constants.INSTRUCTORLOGIN, true);
                 } else {
-                    responseLiveData.setValue(UserLoginRepository.LOGIN_FAILED_DUE_TO_INVALID_CREDENTIALS);
+                    responseLiveData.setValue(Enums.LoginStatus.INSTRUCTOR_DOES_NOT_EXIST);
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<InstructorLoginData> call, @NotNull Throwable t) {
-                responseLiveData.setValue(UserLoginRepository.LOGIN_FAILED);
-                responseLiveData.postValue(UserLoginRepository.LOGIN_FAILED);
+                if (networkManager.isNetworkAvailable(application)) {
+                    responseLiveData.setValue(Enums.LoginStatus.INSTRUCTOR_LOGIN_FAILED);
+                } else {
+                    responseLiveData.setValue(Enums.LoginStatus.NO_INTERNET_CONNECTION);
+                }
+            }
+        });
+    }
+
+    public void parentLoginUsingPhone(String phoneNumber) {
+        final Call<ParentDataModel> mobileNumber = apiService.userLoginUsingMobile(phoneNumber);
+        mobileNumber.enqueue(new Callback<ParentDataModel>() {
+            @Override
+            public void onResponse(@NotNull Call<ParentDataModel> call, @NotNull Response<ParentDataModel> response) {
+                if (response.body() != null) {
+//                    BlipUtility.storeUserBasicInfoInSharedPref(application, response.body().getParentLoginDataList().get(0));
+                    responseLiveData.setValue(Enums.LoginStatus.USER_LOGIN_SUCCESSFULL);
+                    editor.putString(Constants.ACCESS_TOKEN, "1234");
+                    editor.putInt(Constants.SECTION_ID, response.body().getParentLoginDataList().get(0).getSectionId());
+                    editor.putBoolean(Constants.IS_LOGGED_IN, true);
+                    editor.putBoolean(Constants.PARENTLOGIN, true);
+                } else {
+                    responseLiveData.setValue(Enums.LoginStatus.USER_DOES_NOT_EXIST);
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ParentDataModel> call, @NotNull Throwable t) {
+                if (networkManager.isNetworkAvailable(application)) {
+                    responseLiveData.setValue(Enums.LoginStatus.USER_LOGIN_FAILED);
+                } else {
+                    responseLiveData.setValue(Enums.LoginStatus.NO_INTERNET_CONNECTION);
+                }
             }
         });
     }

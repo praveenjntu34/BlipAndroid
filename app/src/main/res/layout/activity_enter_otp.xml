@@ -27,7 +27,8 @@
             android:src="@drawable/mobile" />
 
         <TextView
-            android:layout_width="200dp"
+            android:id="@+id/tvOtpSubtitle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/otp_msg"
             android:textAlignment="center"

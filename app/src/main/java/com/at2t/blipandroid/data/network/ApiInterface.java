@@ -2,7 +2,10 @@ package com.at2t.blipandroid.data.network;
 
 import com.at2t.blipandroid.model.AddPostData;
 import com.at2t.blipandroid.model.InstructorLoginData;
+import com.at2t.blipandroid.model.ParentDataModel;
 import com.at2t.blipandroid.model.PostsData;
+import com.at2t.blipandroid.model.UserProfileData;
+import com.at2t.blipandroid.model.UserProfileDetails;
 
 import java.util.List;
 
@@ -21,6 +24,15 @@ public interface ApiInterface {
 
     @GET("instructor/login/{phoneNumber}")
     Call<InstructorLoginData> loginWithPhoneNumber(@Path("phoneNumber") String phoneNumber);
+
+    @GET("parent/login/{phoneNumber}")
+    Call<ParentDataModel> userLoginUsingMobile(@Path("phoneNumber") String phoneNumber);
+
+    @GET("parent/profile/{parentId}")
+    Call<UserProfileData> getUserProfileDetails(@Path("parentId") Integer parentId);
+
+    @POST("parent/profile")
+    Call<ResponseBody> updateUserProfile(@Body UserProfileDetails userProfileDetails);
 
     @Multipart
     @POST("post-file")
