@@ -20,6 +20,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiInterface {
 
@@ -39,8 +40,8 @@ public interface ApiInterface {
     @POST("post-file")
     Call<AddPostData> uploadAttachmentFile(@Part MultipartBody.Part file);
 
-    @GET("all-post/{sectionId}")
-    Call<List<PostsData>> getListOfPost(@Path("sectionId") Integer sectionId);
+    @GET("all-post/{sectionId}?date=null")
+    Call<List<PostsData>> getListOfPost(@Path("sectionId") Integer sectionId, @Query("date") String date);
 
     @POST("post")
     Call<ResponseBody> addPostData(@Body AddPostData addPostData);

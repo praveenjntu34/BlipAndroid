@@ -135,7 +135,6 @@ View.OnClickListener{
         if (countDownTimer != null) {
             countDownTimer.cancel();
         }
-        SendOTP.getInstance().getTrigger().stop();
     }
 
     public void verifyOtp(String otp) {

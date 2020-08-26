@@ -1,21 +1,30 @@
 package com.at2t.blipandroid.view.ui.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.at2t.blipandroid.R;
 import com.at2t.blipandroid.utils.BaseFragment;
 import com.at2t.blipandroid.utils.BlipUtility;
 import com.at2t.blipandroid.utils.Constants;
+import com.at2t.blipandroid.view.BlipBaseActivity;
 import com.at2t.blipandroid.view.ui.UserRegistrationActivity;
+import com.at2t.blipandroid.viewmodel.LoginViewModel;
+
+import java.util.Objects;
 
 public class UserProfileFragment extends BaseFragment {
 
@@ -40,6 +49,15 @@ public class UserProfileFragment extends BaseFragment {
     private String phoneNumber;
     private String userType;
     private int institutionId;
+    private LoginViewModel viewModel;
+
+    private LinearLayout linearLayoutLogout;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+    }
 
     @Nullable
     @Override
@@ -65,6 +83,7 @@ public class UserProfileFragment extends BaseFragment {
         ivUserPhone = view.findViewById(R.id.iv_user_phone);
         ivUserState = view.findViewById(R.id.iv_user_state);
         editIcon = view.findViewById(R.id.edit_icon);
+        linearLayoutLogout = view.findViewById(R.id.ll_logout);
 
         firstName = BlipUtility.getFirstName(getContext());
         lastName = BlipUtility.getLastName(getContext());
@@ -91,6 +110,20 @@ public class UserProfileFragment extends BaseFragment {
         } else {
             editIcon.setVisibility(View.GONE);
         }
+
+        linearLayoutLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences("app-pref", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.clear();
+                editor.apply();
+                BlipUtility.setSharedPrefBoolean(getContext(), Constants.IS_LOGGED_IN, false);
+                Intent intent = new Intent(getActivity(), BlipBaseActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
 
 
 

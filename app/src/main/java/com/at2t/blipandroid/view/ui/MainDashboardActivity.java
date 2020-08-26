@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.at2t.blipandroid.R;
 import com.at2t.blipandroid.utils.BlipUtility;
+import com.at2t.blipandroid.utils.Constants;
 import com.at2t.blipandroid.utils.Enums;
 import com.at2t.blipandroid.view.ui.fragments.AllPostsFragment;
 import com.at2t.blipandroid.view.ui.fragments.ContactUsFragment;
@@ -25,6 +26,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainDashboardActivity extends AppCompatActivity {
     private static final String TAG = "MainDashboardActivity";
+    public static boolean IS_USER_LOGGED_IN = true;
     private FragmentManager fragmentManager;
     private BottomNavigationView bottomNavigationView;
     private LoginViewModel loginViewModel;
@@ -33,6 +35,8 @@ public class MainDashboardActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_dashboard);
+
+        BlipUtility.setSharedPrefBoolean(getApplicationContext(), Constants.IS_LOGGED_IN, true);
 
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         loginViewModel.init(getApplication());

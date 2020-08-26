@@ -21,6 +21,8 @@ public class Enums {
             LoginStatus.PROFILE_UPDATE_FAILED,
             LoginStatus.GET_USER_PROFILE_DETAILS_SUCCESSFULLY,
             LoginStatus.GET_USER_PROFILE_DETAILS_FAILED,
+            LoginStatus.GET_ALL_POSTS_SUCCESSFULLY,
+            LoginStatus.GET_ALL_POSTS_FAILED,
 
     })
     @Retention(RetentionPolicy.SOURCE)
@@ -40,5 +42,7 @@ public class Enums {
         int PROFILE_UPDATE_FAILED = 12;
         int GET_USER_PROFILE_DETAILS_SUCCESSFULLY = 13;
         int GET_USER_PROFILE_DETAILS_FAILED = 14;
+        int GET_ALL_POSTS_SUCCESSFULLY = 15;
+        int GET_ALL_POSTS_FAILED = 16;
     }
 }

@@ -4,9 +4,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import android.app.Application;
-import android.view.View;
-
-import com.at2t.blipandroid.R;
 import com.at2t.blipandroid.data.network.ApiInterface;
 import com.at2t.blipandroid.data.network.NetworkManager;
 import com.at2t.blipandroid.data.network.RetrofitManager;
@@ -57,6 +54,10 @@ public class LoginViewModel extends ViewModel {
 
     public void getParentProfileDetails(int parentId) {
         userLoginRepository.getUserProfileDetails(parentId);
+    }
+
+    public void getAllPostsForUsers(int sectionId, String date) {
+        userLoginRepository.getListofPost(sectionId, date);
     }
 
 

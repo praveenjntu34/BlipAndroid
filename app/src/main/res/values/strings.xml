@@ -53,4 +53,5 @@
         Open today: 9:00 am – 8:00 pm</string>
     <string name="name_contact"><b>Name:</b> Nizamuddin</string>
     <string name="email_id_contact"><b>Email Id:</b> nizamuddin2494@gmail.com</string>
+    <string name="no_posts_data">No Posts Data available</string>
 </resources>

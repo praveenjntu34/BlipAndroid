@@ -3,6 +3,7 @@ package com.at2t.blipandroid.data.repositories;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -14,6 +15,7 @@ import com.at2t.blipandroid.data.network.RetrofitManager;
 import com.at2t.blipandroid.model.FcmTokenModel;
 import com.at2t.blipandroid.model.InstructorLoginData;
 import com.at2t.blipandroid.model.ParentDataModel;
+import com.at2t.blipandroid.model.PostsData;
 import com.at2t.blipandroid.model.UserProfileData;
 import com.at2t.blipandroid.model.UserProfileDetails;
 import com.at2t.blipandroid.utils.BlipUtility;
@@ -22,6 +24,8 @@ import com.at2t.blipandroid.utils.Enums;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,6 +33,7 @@ import retrofit2.Response;
 
 public class UserLoginRepository {
 
+    public static final String TAG = "UserLoginRepository";
     private ApiInterface apiService;
     private MutableLiveData<Integer> responseLiveData;
     private NetworkManager networkManager;
@@ -44,27 +49,6 @@ public class UserLoginRepository {
         apiService = RetrofitManager.getInstance().getApiInterface();
         sharedPreferences = application.getApplicationContext().getSharedPreferences("app-pref", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-    }
-
-    public void logout() {
-        editor.putBoolean(Constants.IS_LOGGED_IN, false);
-        editor.putBoolean(Constants.PARENTLOGIN, false);
-        editor.putBoolean(Constants.INSTRUCTORLOGIN, false);
-        editor.putInt(Constants.SECTION_ID, 0);
-        editor.putString(Constants.ACCESS_TOKEN, null);
-        editor.apply();
-    }
-
-    public boolean isAlreadyLogged() {
-        return sharedPreferences.getBoolean(Constants.IS_LOGGED_IN, false);
-    }
-
-    public boolean isParentLoggedIn() {
-        return sharedPreferences.getBoolean(Constants.PARENTLOGIN, false);
-    }
-
-    public boolean isInstructorLogin() {
-        return sharedPreferences.getBoolean(Constants.INSTRUCTORLOGIN, false);
     }
 
     public void loginUsingMobileNumber(String phoneNumber) {
@@ -153,6 +137,34 @@ public class UserLoginRepository {
                 }
             }
         });
+    }
+
+    public void getListofPost(Integer sectionId, String date) {
+        Call<List<PostsData>> postsDataCall = apiService.getListOfPost(sectionId, date);
+        postsDataCall.enqueue(new Callback<List<PostsData>>() {
+            @Override
+            public void onResponse(@NotNull Call<List<PostsData>> call, @NotNull Response<List<PostsData>> response) {
+                if (response.body() != null) {
+                    if(response.body().size() > 0) {
+                        responseLiveData.setValue(Enums.LoginStatus.GET_ALL_POSTS_SUCCESSFULLY);
+                    } else {
+                        responseLiveData.setValue(Enums.LoginStatus.GET_ALL_POSTS_FAILED);
+                    }
+                } else {
+                    responseLiveData.setValue(Enums.LoginStatus.GET_ALL_POSTS_FAILED);
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<List<PostsData>> call, @NotNull Throwable t) {
+                if (networkManager.isNetworkAvailable(application)) {
+                    responseLiveData.setValue(Enums.LoginStatus.GET_ALL_POSTS_FAILED);
+                } else {
+                    responseLiveData.setValue(Enums.LoginStatus.NO_INTERNET_CONNECTION);
+                }
+            }
+        });
+
     }
 
     public void saveFcmTokenForParent(int parentId, String fcmToken) {

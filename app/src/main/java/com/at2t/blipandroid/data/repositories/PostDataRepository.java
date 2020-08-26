@@ -1,6 +1,5 @@
 package com.at2t.blipandroid.data.repositories;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -12,13 +11,10 @@ import androidx.lifecycle.MutableLiveData;
 import com.at2t.blipandroid.data.network.ApiInterface;
 import com.at2t.blipandroid.data.network.NetworkManager;
 import com.at2t.blipandroid.data.network.RetrofitManager;
-import com.at2t.blipandroid.model.ParentDataModel;
 import com.at2t.blipandroid.model.PostsData;
 import com.at2t.blipandroid.model.UserProfileData;
 import com.at2t.blipandroid.model.UserProfileDetails;
-import com.at2t.blipandroid.utils.BlipUtility;
 import com.at2t.blipandroid.utils.Constants;
-import com.at2t.blipandroid.utils.Enums;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -33,7 +29,7 @@ public class PostDataRepository {
 
     public static final String TAG = "PostDataRepository";
     public MutableLiveData<List<PostsData>> listMutableLiveData;
-    private Application application;
+    private Context application;
     public static PostDataRepository postDataRepository;
     private ApiInterface apiService;
     private MutableLiveData<UserProfileData> profileDetailsMutableLiveData;
@@ -41,7 +37,7 @@ public class PostDataRepository {
     public SharedPreferences sharedPreferences;
     public SharedPreferences.Editor editor;
 
-    public PostDataRepository(@NonNull Application application) {
+    public PostDataRepository(@NonNull Context application) {
         this.application = application;
         listMutableLiveData = new MutableLiveData<>();
 
@@ -51,8 +47,8 @@ public class PostDataRepository {
         editor = sharedPreferences.edit();
     }
 
-    public void getListofPost(Integer sectionId) {
-        Call<List<PostsData>> postsDataCall = apiService.getListOfPost(sectionId);
+    public void getListofPost(Integer sectionId, String date) {
+        Call<List<PostsData>> postsDataCall = apiService.getListOfPost(sectionId, date);
         postsDataCall.enqueue(new Callback<List<PostsData>>() {
             @Override
             public void onResponse(@NotNull Call<List<PostsData>> call, @NotNull Response<List<PostsData>> response) {

@@ -25,7 +25,7 @@
             android:name=".view.ui.LoginUsingOtpActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
-            android:name=".view.ui.LoginActivity"
+            android:name=".view.BlipBaseActivity"
             android:theme="@style/Theme.Design.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,6 +44,8 @@
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
 
         <activity android:name=".view.ui.HomeActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
+        <activity android:name=".view.ui.LoginActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
 
         <service android:name=".fcm.FCMMessagingService"

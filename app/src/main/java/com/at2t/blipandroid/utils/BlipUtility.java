@@ -209,4 +209,23 @@ public class BlipUtility {
         editor.putString(key, value);
         editor.apply();
     }
+
+    public static void setSharedPrefBoolean(Context context, String key, boolean value) {
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preference.edit();
+        editor.putBoolean(key, value);
+        editor.apply();
+    }
+
+    public static boolean getSharedPrefBoolean(Context context, String key) {
+
+        boolean prefValue = false;
+        if (context != null) {
+            SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
+            prefValue = preference.getBoolean(key, false);
+        }
+
+        return prefValue;
+    }
+
 }

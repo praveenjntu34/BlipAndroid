@@ -17,6 +17,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 
 import com.at2t.blipandroid.utils.BaseFragment;
+import com.at2t.blipandroid.utils.BlipUtility;
 import com.at2t.blipandroid.utils.Constants;
 import com.at2t.blipandroid.utils.DatePickerFragment;
 import com.at2t.blipandroid.view.ui.AddPostActivity;
@@ -65,28 +66,8 @@ public class AllPostsFragment extends BaseFragment implements
     LinearLayout calendarView;
     TextView tvDateSelected;
     private int sectionId;
-    private LiveData<List<PostsData>> liveData;
-
-    private Observer<List<PostsData>> observer = new Observer<List<PostsData>>() {
-        @Override
-        public void onChanged(List<PostsData> postsDataList) {
-            if (postsDataList != null && postsDataList.size() > 0) {
-                if (recyclerView != null) {
-                    postsRecyclerViewAdapter = (PostsAdapter) recyclerView.getAdapter();
-                    if (postsRecyclerViewAdapter == null) {
-                        postsRecyclerViewAdapter = new PostsAdapter(Objects.requireNonNull(getContext()), postsDataList);
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                        recyclerView.setLayoutManager(linearLayoutManager);
-                        recyclerView.setAdapter(postsRecyclerViewAdapter);
-                    } else {
-                        postsRecyclerViewAdapter.setdata(postsDataList);
-                    }
-                }
-            } else {
-                Log.d("Post failed: ", "Try again");
-            }
-        }
-    };
+    private TextView noDataTV;
+    String currentDateString;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -105,15 +86,19 @@ public class AllPostsFragment extends BaseFragment implements
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(getArguments() != null) {
-            sectionId = getArguments().getInt(Constants.SECTION_ID);
-        }
-        intializeNavigationView(view);
+
+        sectionId = BlipUtility.getSectionId(getContext());
+
         initializeUIView(view);
         recyclerView = view.findViewById(R.id.rv_posts);
+        noDataTV = view.findViewById(R.id.noDataTV);
+        noDataTV.setVisibility(View.GONE);
+
         viewModel = ViewModelProviders.of(this).get(DashBoardViewModel.class);
-        viewModel.getPostList(sectionId);
-        viewModel.getPostLiveDataObservables().observe(this, new
+        viewModel.init(getContext());
+        viewModel.getPostList(sectionId, null);
+
+        viewModel.getResponseLiveData().observe(this, new
                 Observer<List<PostsData>>() {
                     @Override
                     public void onChanged(List<PostsData> postsDataList) {
@@ -129,38 +114,18 @@ public class AllPostsFragment extends BaseFragment implements
                                 } else {
                                     postsRecyclerViewAdapter.setdata(postsDataList);
                                 }
+                                noDataTV.setVisibility(View.GONE);
+                            } else {
+                                noDataTV.setVisibility(View.VISIBLE);
                             }
                         } else {
+                            recyclerView.setVisibility(View.GONE);
+                            noDataTV.setVisibility(View.VISIBLE);
                             Log.d("Post failed: ", "Try again");
                         }
                     }
                 });
 
-    }
-
-    public void observerViewModel(DashBoardViewModel dashBoardViewModel){
-        dashBoardViewModel.getPostLiveDataObservables().observe(this, new
-                Observer<List<PostsData>>() {
-                    @Override
-                    public void onChanged(List<PostsData> postsDataList) {
-                        if (postsDataList != null && postsDataList.size() > 0) {
-
-                            if (recyclerView != null) {
-                                postsRecyclerViewAdapter = (PostsAdapter) recyclerView.getAdapter();
-                                if (postsRecyclerViewAdapter == null) {
-                                    postsRecyclerViewAdapter = new PostsAdapter(Objects.requireNonNull(getContext()), postsDataList);
-                                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                                    recyclerView.setLayoutManager(linearLayoutManager);
-                                    recyclerView.setAdapter(postsRecyclerViewAdapter);
-                                } else {
-                                    postsRecyclerViewAdapter.setdata(postsDataList);
-                                }
-                            }
-                        } else {
-                            Log.d("Post failed: ", "Try again");
-                        }
-                    }
-                });
     }
 
     private void initializeUIView(View view) {
@@ -168,22 +133,28 @@ public class AllPostsFragment extends BaseFragment implements
         calendarView = view.findViewById(R.id.llDateSelector);
         tvDateSelected = view.findViewById(R.id.tvDate);
 
-        calendarView.setOnClickListener(new View.OnClickListener() {
+        tvDateSelected.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 DialogFragment datePicker = new DatePickerFragment();
-                if (getFragmentManager() != null) {
-                    datePicker.show(getFragmentManager(), "date picker");
-                }
+                datePicker.setTargetFragment(AllPostsFragment.this, 0);
+                datePicker.show(getFragmentManager(), "date picker");
             }
         });
 
-        btnNewPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToAddPostActivity();
-            }
-        });
+        int parentId = BlipUtility.getParentId(getContext());
+        if (parentId != 0) {
+            btnNewPost.setVisibility(View.GONE);
+            btnNewPost.setEnabled(false);
+        } else {
+            btnNewPost.setEnabled(true);
+            btnNewPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToAddPostActivity();
+                }
+            });
+        }
     }
 
     @Override
@@ -192,51 +163,15 @@ public class AllPostsFragment extends BaseFragment implements
         c.set(Calendar.YEAR, year);
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        String currentDateString = DateFormat.getDateInstance(DateFormat.DEFAULT).format(c.getTime());
 
+        currentDateString = (String) android.text.format.DateFormat.format("yyyy-MM-dd", new java.util.Date());
+
+        Log.e(TAG, "onDateSet: " + currentDateString);
         tvDateSelected.setText(currentDateString);
+        viewModel.getPostList(sectionId, currentDateString);
     }
 
     private void goToAddPostActivity() {
         startActivity(new Intent(getActivity(), AddPostActivity.class));
-    }
-
-    public void intializeNavigationView(View view) {
-        dl = (DrawerLayout) view.findViewById(R.id.drawer_layout);
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
-        t = new ActionBarDrawerToggle(getActivity(), dl, toolbar, R.string.app_name, R.string.Close);
-        t.syncState();
-        dl.addDrawerListener(t);
-
-        nv = (NavigationView) view.findViewById(R.id.nv);
-        nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                switch (id) {
-                    case R.id.account:
-                        Toast.makeText(getContext(), "My Account", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.settings:
-                        Toast.makeText(getContext(), "Settings", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.mycart:
-                        Toast.makeText(getContext(), "My Cart", Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                        return true;
-                }
-                return true;
-            }
-        });
-        context = this;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home)
-            dl.openDrawer(Gravity.LEFT);
-
-        return super.onOptionsItemSelected(item);
     }
 }

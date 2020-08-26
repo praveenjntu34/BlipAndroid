@@ -168,6 +168,32 @@
                 android:text="Karnataka"
                 android:textStyle="bold" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ll_logout"
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal"
+            android:paddingLeft="25dp">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:id="@+id/iv_logout"
+                android:src="@drawable/logout" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/tv_logout"
+                android:paddingLeft="20dp"
+                android:textColor="@color/red"
+                android:text="LOGOUT" />
+        </LinearLayout>
+
+
     </LinearLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

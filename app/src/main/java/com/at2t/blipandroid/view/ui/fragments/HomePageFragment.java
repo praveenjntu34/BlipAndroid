@@ -16,7 +16,6 @@ import androidx.cardview.widget.CardView;
 import com.at2t.blipandroid.R;
 import com.at2t.blipandroid.utils.BaseFragment;
 import com.at2t.blipandroid.utils.BlipUtility;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomePageFragment extends BaseFragment {
     private static final String TAG = "HomePageFragment";
