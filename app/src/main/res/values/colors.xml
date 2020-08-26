@@ -20,5 +20,6 @@
     <color name="blue">#48a0f8</color>
     <color name="disabledGreen">#A5D6A7</color>
     <color name="otp_underline_color">#888383</color>
+    <color name="resend_color">#ea7639</color>
 
 </resources>

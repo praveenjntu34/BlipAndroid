@@ -3,10 +3,17 @@ package com.at2t.blipandroid.view.ui;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,18 +23,33 @@ import com.at2t.blipandroid.utils.BlipUtility;
 import com.at2t.blipandroid.utils.Constants;
 import com.at2t.blipandroid.utils.CustomButton;
 import com.msg91.sendotpandroid.library.internal.SendOTP;
+import com.msg91.sendotpandroid.library.listners.VerificationListener;
+import com.msg91.sendotpandroid.library.roots.RetryType;
+import com.msg91.sendotpandroid.library.roots.SendOTPConfigBuilder;
+import com.msg91.sendotpandroid.library.roots.SendOTPResponseCode;
 
-import in.aabhasjindal.otptextview.OtpTextView;
 
-public class LoginUsingOtpActivity extends AppCompatActivity {
+public class LoginUsingOtpActivity extends AppCompatActivity implements VerificationListener,
+View.OnClickListener{
 
-    private OtpTextView otpTextView;
+    public static final String TAG = "LoginUsingOtp";
+    private boolean isFirstParentLogin;
     private CustomButton customButton;
     private LinearLayout llLoginTopHeader;
-    private TextView tvResend;
     private TextView tvOtpMessage;
     private String mobileNumber;
     private int sectionId;
+    private TextView tvResendOtpTextView;
+    private TextView timerTextView;
+    private String resendText;
+    private CountDownTimer countDownTimer;
+
+    private EditText otp1EditText;
+    private EditText otp2EditText;
+    private EditText otp3EditText;
+    private EditText otp4EditText;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +58,47 @@ public class LoginUsingOtpActivity extends AppCompatActivity {
 
         mobileNumber = getIntent().getStringExtra(Constants.MOBILE_NUMBER);
         sectionId = getIntent().getIntExtra(Constants.SECTION_ID, 0);
+        isFirstParentLogin = BlipUtility.getIsParentFirstLoginId(this);
+
+//        SendOTP.initializeApp(getApplication());
         initializeViews();
-        onLogin();
         changeOtpScreenColor();
+
+        otp1EditText = findViewById(R.id.pin1);
+        otp2EditText = findViewById(R.id.pin2);
+        otp3EditText = findViewById(R.id.pin3);
+        otp4EditText = findViewById(R.id.pin4);
+
+
+        addTextChangedListenerForTextWatcher(otp1EditText);
+        addTextChangedListenerForTextWatcher(otp2EditText);
+        addTextChangedListenerForTextWatcher(otp3EditText);
+        addTextChangedListenerForTextWatcher(otp4EditText);
+
+        otp1EditText.requestFocus();
+
+        customButton.setOnClickListener(this);
+        tvResendOtpTextView.setOnClickListener(this);
+
+        setData();
+//        createVerification();
+    }
+
+    private void setData() {
+        resendText = getApplicationContext().getResources().getString(R.string.didn_t_get_code);
+        setText();
+    }
+
+    private void setText() {
+        SpannableString spannableString = new SpannableString(resendText);
+        int index = resendText.indexOf("Resend");
+        spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.resend_color)), index, index + 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvResendOtpTextView.setText(spannableString);
+    }
+
+    private void addTextChangedListenerForTextWatcher(EditText editTextView) {
+        editTextView.addTextChangedListener(new PinTextWatcher(editTextView));
+        editTextView.setSelection(0);
     }
 
     @Override
@@ -52,46 +112,270 @@ public class LoginUsingOtpActivity extends AppCompatActivity {
         if(role != null && role.equals("Instructor")) {
             customButton.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
             llLoginTopHeader.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
-            tvResend.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            tvResendOtpTextView.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         } else {
             customButton.setBackgroundColor(ContextCompat.getColor(this, R.color.colorGreen));
             llLoginTopHeader.setBackgroundColor(ContextCompat.getColor(this, R.color.colorGreen));
-            tvResend.setTextColor(ContextCompat.getColor(this, R.color.colorGreen));
+            tvResendOtpTextView.setTextColor(ContextCompat.getColor(this, R.color.colorGreen));
         }
     }
 
     private void initializeViews() {
-        otpTextView = findViewById(R.id.et_otp);
         customButton = findViewById(R.id.btnLogin);
         llLoginTopHeader = findViewById(R.id.llLogin);
-        tvResend = findViewById(R.id.tvResend);
         tvOtpMessage = findViewById(R.id.tvOtpSubtitle);
+        tvResendOtpTextView = findViewById(R.id.resend_otp);
+        timerTextView = findViewById(R.id.timer);
         tvOtpMessage.setText(this.getString(R.string.otp_text, mobileNumber.substring(mobileNumber.length() - 3)));
     }
 
-    public void onLogin(){
-        customButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                validateOtp(otpTextView.getOTP());
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+        SendOTP.getInstance().getTrigger().stop();
+    }
+
+    public void verifyOtp(String otp) {
+        SendOTP.getInstance().getTrigger().verify(otp);
+    }
+
+    private void createVerification() {
+        //<#> ##OTP## TODO put this back on place, once MSG91 is up and running
+        String OTP = "1234";
+//        new SendOTPConfigBuilder()
+//                .setCountryCode(91)
+//                .setMobileNumber(mobileNumber)
+//                .setAutoVerification(this)
+//                .setOtpExpireInMinute(5)
+//                .setOtpHits(10)
+//                .setOtpHitsTimeOut(0L)
+//                .setSenderId("BLIP")
+//                .setMessage("<#> ##OTP## is Your verification code.")
+//                .setOtpLength(4)
+//                .setVerifyWithoutOtp(true)
+//                .setVerificationCallBack(this).build();
+//
+//        SendOTP.getInstance().getTrigger().initiate();
+
+        new SendOTPConfigBuilder()
+                .setCountryCode(91)
+                .setMobileNumber(mobileNumber)
+                .setAutoVerification(this)
+                .setOtpExpireInMinute(5)
+                .setOtpHits(10)
+                .setOtpHitsTimeOut(0L)
+                .setSenderId("BLIP")
+                .setMessage("##OTP## is Your verification code.")
+                .setOtpLength(4)
+                .setVerifyWithoutOtp(true)
+                .setVerificationCallBack(this).build();
+
+        SendOTP.getInstance().getTrigger().initiate();
+    }
+
+    public void resendCode() {
+        startTimer();
+        SendOTP.getInstance().getTrigger().resend(RetryType.TEXT);
+        otp4EditText.setText("");
+        otp3EditText.setText("");
+        otp2EditText.setText("");
+        otp1EditText.setText("");
+    }
+
+    private void startTimer() {
+        tvResendOtpTextView.setClickable(false);
+        new CountDownTimer(30000, 1000) {
+            int secondsLeft = 0;
+
+            public void onTick(long ms) {
+                if (Math.round((float) ms / 1000.0f) != secondsLeft) {
+                    secondsLeft = Math.round((float) ms / 1000.0f);
+                    String text = "Please wait! Resend in " + secondsLeft + " sec";
+                    tvResendOtpTextView.setText(text);
+                }
             }
+
+            public void onFinish() {
+                tvResendOtpTextView.setClickable(true);
+                setText();
+            }
+        }.start();
+    }
+
+//    private void setData() {
+//        resendText = getApplication().getResources().getString(R.string.didn_t_get_code);
+//        timerTextView.setText(resendText);
+//        tvResendOtpTextView.setVisibility(View.GONE);
+//    }
+
+    @Override
+    public void onSendOtpResponse(final SendOTPResponseCode responseCode, final String message) {
+        Log.e(TAG, "onSendOtpResponse: " + responseCode.getCode() + " " + responseCode + " " + message);
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                if (responseCode == SendOTPResponseCode.DIRECT_VERIFICATION_SUCCESSFUL_FOR_NUMBER || responseCode == SendOTPResponseCode.OTP_VERIFIED) {
+                    if(isFirstParentLogin) {
+                        launchParentRegistrationScreen();
+                    } else {
+                        otpVerified();
+                    }
+                } else if (responseCode == SendOTPResponseCode.READ_OTP_SUCCESS) {
+                    setOTP(message);
+                } else if (responseCode == SendOTPResponseCode.SMS_SUCCESSFUL_SEND_TO_NUMBER || responseCode == SendOTPResponseCode.DIRECT_VERIFICATION_FAILED_SMS_SUCCESSFUL_SEND_TO_NUMBER) {
+                } else if (responseCode == SendOTPResponseCode.NO_INTERNET_CONNECTED) {
+                    Toast.makeText(getApplicationContext(), "Please check internet connection", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Otp verification failed,Please try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+
+//                if (message != null) {
+//                    if (responseCode == SendOTPResponseCode.DIRECT_VERIFICATION_SUCCESSFUL_FOR_NUMBER || responseCode == SendOTPResponseCode.OTP_VERIFIED) {
+//                        if (BlipUtility.getIsParentFirstLoginId(getApplicationContext())) {
+//                            launchParentRegistrationScreen();
+//                        } else {
+//                            otpVerified();
+//                        }
+//                    } else if (responseCode == SendOTPResponseCode.READ_OTP_SUCCESS) {
+//                        if (otpTextView.getOTP() != null) {
+//                            otpTextView.setOTP(message);
+//                        }
+//                    } else if (responseCode == SendOTPResponseCode.SMS_SUCCESSFUL_SEND_TO_NUMBER || responseCode == SendOTPResponseCode.DIRECT_VERIFICATION_FAILED_SMS_SUCCESSFUL_SEND_TO_NUMBER) {
+//                        Log.e(TAG, "run: send message");
+////                    if(responseCode == SendOTPResponseCode.OTP_VERIFIED) {
+////                        otpVerified();
+////                    }
+//                    } else if (responseCode == SendOTPResponseCode.NO_INTERNET_CONNECTED) {
+//                        Toast.makeText(getApplicationContext(), "Please check internet connection", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        //TODO need to change later
+////                    otpVerified();
+//                        Log.e(TAG, "run: send message error : " + responseCode.getCode());
+////                    Toast.makeText(getApplicationContext(), "Invalid OTP, Please try again", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+
         });
     }
 
-    public void validateOtp(String otp){
+    private void launchParentRegistrationScreen() {
+        Intent intent = new Intent(this, UserRegistrationActivity.class);
+        startActivity(intent);
+    }
 
-        otpTextView.showSuccess();
-        Toast.makeText(getApplicationContext(),"OTP verified",Toast.LENGTH_SHORT).show();
-        if(otp != null && otp.length() == 4){
+    private void otpVerified() {
             Intent intent = new Intent(this, MainDashboardActivity.class);
             intent.putExtra(Constants.SECTION_ID, sectionId);
             startActivity(intent);
+    }
+
+    public String getOTPtext() {
+        return otp1EditText.getText().toString() + "" +
+                otp2EditText.getText().toString() + "" +
+                otp3EditText.getText().toString() + "" +
+                otp4EditText.getText().toString();
+    }
+
+    private void setOTP(String s) {
+        if (s.length() == 4) {
+            otp1EditText.setText(s.charAt(0) + "");
+            otp2EditText.setText(s.charAt(1) + "");
+            otp3EditText.setText(s.charAt(2) + "");
+            otp4EditText.setText(s.charAt(3) + "");
         }
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        SendOTP.getInstance().getTrigger().stop();
+    public void onClick(View view) {
+        if (view.getId() == R.id.btnLogin) {
+            if (getOTPtext().length() == 4) {
+                if(isFirstParentLogin ) {
+                    launchParentRegistrationScreen();
+                } else {
+                    otpVerified();
+                }
+            } else {
+                Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show();
+            }
+        } else if (view.getId() == R.id.resend_otp) {
+            Log.e(TAG, "onClick: resend otp");
+            resendCode();
+        }
     }
+
+    public class PinTextWatcher implements TextWatcher {
+        private EditText editTextView;
+
+
+        PinTextWatcher(EditText editTextView) {
+            this.editTextView = editTextView;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (s != null && s.length() >= 0) {
+                int len = s.length();
+                otp1EditText.setFocusableInTouchMode(false);
+                otp2EditText.setFocusableInTouchMode(false);
+                otp3EditText.setFocusableInTouchMode(false);
+                otp4EditText.setFocusableInTouchMode(false);
+                switch (editTextView.getId()) {
+                    case R.id.pin1:
+                        otp1EditText.setFocusableInTouchMode(true);
+                        if (len == 1) {
+                            otp2EditText.setFocusableInTouchMode(true);
+                            otp2EditText.requestFocus();
+                        }
+                        break;
+                    case R.id.pin2:
+                        otp2EditText.setFocusableInTouchMode(true);
+                        if (len == 0) {
+                            otp1EditText.setFocusableInTouchMode(true);
+                            otp1EditText.requestFocus();
+                        } else {
+                            otp3EditText.setFocusableInTouchMode(true);
+                            otp3EditText.requestFocus();
+                        }
+                        break;
+                    case R.id.pin3:
+                        otp3EditText.setFocusableInTouchMode(true);
+                        if (len == 1) {
+                            otp4EditText.setFocusableInTouchMode(true);
+                            otp4EditText.requestFocus();
+                        } else {
+                            otp2EditText.setFocusableInTouchMode(true);
+                            otp2EditText.requestFocus();
+                        }
+                        break;
+                    case R.id.pin4:
+                        otp4EditText.setFocusableInTouchMode(true);
+                        if (len == 0) {
+                            otp3EditText.setFocusableInTouchMode(true);
+                            otp3EditText.requestFocus();
+                        }
+                        break;
+                }
+
+            }
+
+        }
+
+    }
+
 }

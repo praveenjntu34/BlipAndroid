@@ -63,6 +63,7 @@
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="sans-serif"
+                    android:textColor="@color/white"
                     android:text="@string/parent"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -108,6 +109,7 @@
                     android:layout_marginTop="8dp"
                     android:fontFamily="sans-serif"
                     android:text="@string/instructor"
+                    android:textColor="@color/white"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -129,6 +131,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/text_input_phone_number"
+            app:errorEnabled="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -179,7 +182,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_16sp"
-                app:layout_constraintTop_toBottomOf="@id/et_message_box" />
+                />
 
         </LinearLayout>
 
@@ -193,6 +196,7 @@
             android:layout_marginBottom="24dp"
             android:background="@color/colorGreen"
             android:gravity="center"
+            android:focusableInTouchMode="true"
             android:stateListAnimator="@null"
             android:text="@string/login_with_otp"
             android:textAllCaps="false"

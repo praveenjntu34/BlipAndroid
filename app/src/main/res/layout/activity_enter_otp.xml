@@ -36,23 +36,79 @@
 
     </LinearLayout>
 
-    <in.aabhasjindal.otptextview.OtpTextView
-        android:id="@+id/et_otp"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/otp_layout"
+        android:layout_width="@dimen/otp_layout_width"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:textColor="@color/black"
-        app:bar_active_color="@color/grey"
-        app:bar_enabled="true"
-        app:bar_height="2dp"
-        app:bar_inactive_color="@color/black"
-        app:height="40dp"
+        android:layout_marginTop="@dimen/margin_100dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/llLogin"
-        app:length="4"
-        app:otp_text_size="24dp"
-        app:width="50dp" />
+        app:layout_constraintTop_toBottomOf="@id/llLogin">
+
+
+        <EditText
+            android:id="@+id/pin1"
+            android:layout_width="@dimen/otp_edit_width_height"
+            android:layout_height="match_parent"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusableInTouchMode="true"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/otp_text_size"
+            android:theme="@style/OtpTheme" />
+
+        <EditText
+            android:id="@+id/pin2"
+            android:layout_width="@dimen/otp_edit_width_height"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusableInTouchMode="false"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/otp_text_size"
+            android:theme="@style/OtpTheme" />
+
+
+        <EditText
+            android:id="@+id/pin3"
+            android:layout_width="@dimen/otp_edit_width_height"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusableInTouchMode="false"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/otp_text_size"
+            android:theme="@style/OtpTheme" />
+
+
+        <EditText
+            android:id="@+id/pin4"
+            android:layout_width="@dimen/otp_edit_width_height"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusableInTouchMode="false"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/otp_text_size"
+            android:theme="@style/OtpTheme" />
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/ll_resend"
@@ -63,30 +119,29 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_otp">
+        app:layout_constraintTop_toBottomOf="@+id/otp_layout">
 
         <TextView
-            android:id="@+id/tvPhoneNumberText"
+            android:id="@+id/resend_otp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:fontFamily="sans-serif"
-            android:layout_marginStart="10dp"
-            android:gravity="center"
-            android:text="@string/didn_t_get_code"
+            android:clickable="false"
+            android:text="Resend code in "
+            android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/text_size_16sp" />
 
         <TextView
-            android:id="@+id/tvResend"
+            android:id="@+id/timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="6dp"
-            android:fontFamily="sans-serif"
-            android:gravity="center"
+            android:clickable="true"
+            android:visibility="gone"
             android:text="@string/resend"
-            android:textColor="@color/colorGreen"
-            android:textSize="16sp" />
+            android:textAlignment="center"
+            android:textColor="@color/resend_color"
+            android:textSize="@dimen/text_size_16sp"
+            android:focusable="true" />
     </LinearLayout>
 
     <com.at2t.blipandroid.utils.CustomButton

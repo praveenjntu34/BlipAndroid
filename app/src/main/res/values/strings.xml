@@ -10,7 +10,7 @@
     <string name="user_validation_error">Entered mobile number doesn\'t exists contact your
         institution administrators.</string>
     <string name="no_internet_msg">Please check your internet connection</string>
-    <string name="didn_t_get_code">Didn\'t get code ?</string>
+    <string name="didn_t_get_code">Didn\'t get code? Resend</string>
     <string name="resend">Resend</string>
     <string name="post_desc">A question from Nuclear Physics?</string>
     <string name="Close">close</string>
@@ -45,4 +45,12 @@
     <string name="contact_us">Contact us through </string>
     <string name="mobile_number">Mobile number</string>
     <string name="otp_text">One time password (OTP) has\nbeen sent to your mobile number\nxxxxxxx%1$s.</string>
+    <string name="contact_address"><b>Address:</b> Ground Floor of idea office, \n
+        Near Nagarjunana, \n
+        Circle Banjara Hills,\n
+        Road no 1 Hyderabad,\n
+        Telangana 500034\n
+        Open today: 9:00 am – 8:00 pm</string>
+    <string name="name_contact"><b>Name:</b> Nizamuddin</string>
+    <string name="email_id_contact"><b>Email Id:</b> nizamuddin2494@gmail.com</string>
 </resources>

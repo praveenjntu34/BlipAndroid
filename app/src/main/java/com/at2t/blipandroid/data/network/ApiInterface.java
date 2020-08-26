@@ -1,6 +1,7 @@
 package com.at2t.blipandroid.data.network;
 
 import com.at2t.blipandroid.model.AddPostData;
+import com.at2t.blipandroid.model.FcmTokenModel;
 import com.at2t.blipandroid.model.InstructorLoginData;
 import com.at2t.blipandroid.model.ParentDataModel;
 import com.at2t.blipandroid.model.PostsData;
@@ -43,5 +44,11 @@ public interface ApiInterface {
 
     @POST("post")
     Call<ResponseBody> addPostData(@Body AddPostData addPostData);
+
+    @POST("fcm/instructor")
+    Call<ResponseBody> postFcmTokenForInstructor(@Body FcmTokenModel fcmTokenModel);
+
+    @POST("fcm/parent")
+    Call<ResponseBody> postFcmTokenForParent(@Body FcmTokenModel fcmTokenModel);
 
 }

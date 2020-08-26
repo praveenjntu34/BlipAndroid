@@ -45,7 +45,21 @@ public class UserProfileDetails {
     /**
      * No args constructor for use in serialization
      */
-    public UserProfileDetails() {
+
+    public UserProfileDetails(String admissionId, Integer childId, String childrenName, String email, String firstName, String lastName, Integer parentId, Integer personId, String phoneNumber, Integer relTenantInstitutionId, String secondaryParentName, String secondaryPhoneNumber, Integer sectionId) {
+        this.admissionId = admissionId;
+        this.childId = childId;
+        this.childrenName = childrenName;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.parentId = parentId;
+        this.personId = personId;
+        this.phoneNumber = phoneNumber;
+        this.relTenantInstitutionId = relTenantInstitutionId;
+        this.secondaryParentName = secondaryParentName;
+        this.secondaryPhoneNumber = secondaryPhoneNumber;
+        this.sectionId = sectionId;
     }
 
     public String getAdmissionId() {

@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -93,28 +94,31 @@ public class PostDataRepository {
         });
     }
 
-    public void updateUserProfileDetails() {
+    public void updateUserProfileDetails(String admissionId, Integer childId, String childrenName, String email, String firstName, String lastName, Integer parentId, Integer personId, String phoneNumber, Integer relTenantInstitutionId, String secondaryParentName, String secondaryPhoneNumber, Integer sectionId) {
+        UserProfileDetails userProfileDetails = new UserProfileDetails(admissionId, childId, childrenName,
+                email, firstName, lastName, parentId, personId, phoneNumber, relTenantInstitutionId,
+                secondaryParentName, secondaryPhoneNumber, sectionId);
 
-//        Call<UserProfileData> userProfileDetailsCall = apiService.updateUserProfile(parentId);
-//        userProfileDetailsCall.enqueue(new Callback<UserProfileData>() {
-//            @Override
-//            public void onResponse(@NotNull Call<UserProfileData> call, @NotNull Response<UserProfileData> response) {
-//                if (response.body() != null) {
-//                    profileDetailsMutableLiveData.setValue(response.body());
-//                    editor.putString(Constants.ACCESS_TOKEN, "1234");
-//                    editor.putBoolean(Constants.IS_LOGGED_IN, true);
-//                    editor.putBoolean(Constants.PARENTLOGIN, true);
-//                } else {
-//                    profileDetailsMutableLiveData.setValue(null);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(@NotNull Call<UserProfileData> call, @NotNull Throwable t) {
-//                profileDetailsMutableLiveData.setValue(null);
-//                profileDetailsMutableLiveData.postValue(null);
-//            }
-//        });
+        Call<ResponseBody> userProfileDetailsCall = apiService.updateUserProfile(userProfileDetails);
+        userProfileDetailsCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
+                if (response.body() != null) {
+//                    profileDetailsMutableLiveData.setValue(r);
+                    editor.putString(Constants.ACCESS_TOKEN, "1234");
+                    editor.putBoolean(Constants.IS_LOGGED_IN, true);
+                    editor.putBoolean(Constants.PARENTLOGIN, true);
+                } else {
+                    profileDetailsMutableLiveData.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
+                profileDetailsMutableLiveData.setValue(null);
+                profileDetailsMutableLiveData.postValue(null);
+            }
+        });
     }
 
     public LiveData<UserProfileData> getUserProfileData() {

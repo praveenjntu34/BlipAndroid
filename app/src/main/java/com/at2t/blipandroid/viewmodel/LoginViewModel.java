@@ -41,6 +41,25 @@ public class LoginViewModel extends ViewModel {
         userLoginRepository.parentLoginUsingPhone(phoneNumber);
     }
 
+    public void updateUserProfileDetails(String admissionId, Integer childId, String childrenName, String email, String firstName, String lastName, Integer parentId, Integer personId, String phoneNumber, Integer relTenantInstitutionId, String secondaryParentName, String secondaryPhoneNumber, Integer sectionId) {
+        userLoginRepository.updateUserProfileDetails(admissionId, childId, childrenName,
+                email, firstName, lastName, parentId, personId, phoneNumber, relTenantInstitutionId,
+                secondaryParentName, secondaryPhoneNumber, sectionId);
+    }
+
+    public void saveFcmTokenInstructor(int instructorId, String fcmToken) {
+        userLoginRepository.saveFcmTokenForInstructor(instructorId, fcmToken);
+    }
+
+    public void saveFcmTokenParent(int parentId, String fcmToken) {
+        userLoginRepository.saveFcmTokenForParent(parentId, fcmToken);
+    }
+
+    public void getParentProfileDetails(int parentId) {
+        userLoginRepository.getUserProfileDetails(parentId);
+    }
+
+
     public LiveData<Integer> getResponseLiveData() {
         return integerLiveDataResponse;
     }

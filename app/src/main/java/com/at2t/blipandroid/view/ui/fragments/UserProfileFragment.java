@@ -1,5 +1,6 @@
 package com.at2t.blipandroid.view.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,9 @@ import androidx.annotation.Nullable;
 
 import com.at2t.blipandroid.R;
 import com.at2t.blipandroid.utils.BaseFragment;
+import com.at2t.blipandroid.utils.BlipUtility;
+import com.at2t.blipandroid.utils.Constants;
+import com.at2t.blipandroid.view.ui.UserRegistrationActivity;
 
 public class UserProfileFragment extends BaseFragment {
 
@@ -27,6 +31,15 @@ public class UserProfileFragment extends BaseFragment {
     private ImageView ivUserEmail;
     private ImageView ivUserState;
     private ImageView ivUserPhone;
+    private ImageView editIcon;
+
+    private String firstName;
+    private String lastName;
+    private String fullName;
+    private String emailId;
+    private String phoneNumber;
+    private String userType;
+    private int institutionId;
 
     @Nullable
     @Override
@@ -51,6 +64,36 @@ public class UserProfileFragment extends BaseFragment {
         ivUserImg = view.findViewById(R.id.iv_user_img);
         ivUserPhone = view.findViewById(R.id.iv_user_phone);
         ivUserState = view.findViewById(R.id.iv_user_state);
+        editIcon = view.findViewById(R.id.edit_icon);
+
+        firstName = BlipUtility.getFirstName(getContext());
+        lastName = BlipUtility.getLastName(getContext());
+        fullName = firstName + " " + lastName;
+        tvUserName.setText(fullName);
+
+        emailId = BlipUtility.getEmailId(getContext());
+        tvUserEmail.setText(emailId);
+
+        phoneNumber = BlipUtility.getPhoneNumber(getContext());
+        tvUserPhone.setText(phoneNumber);
+
+        userType = BlipUtility.getRole(getContext());
+
+        if(userType.equals("Parent")) {
+            editIcon.setVisibility(View.VISIBLE);
+            editIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), UserRegistrationActivity.class);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            editIcon.setVisibility(View.GONE);
+        }
+
+
+
 
     }
 }
