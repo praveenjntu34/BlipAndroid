@@ -17,7 +17,8 @@ public class Constants {
     public static final String MOBILE_NUMBER = "mobile_number";
     public static final String IS_LOGGED_IN = "is_logged_in";
     public static final String ACCESS_TOKEN = "access_token";
-    public static final String SECTION_ID = "sectionId";
+    public static final String INSTRUCTOR_SECTION_ID = "instructorSectionId";
+    public static final String PARENT_SECTION_ID = "parentSectionId";
     public static final String INSTRUCTOR_ID = "instructorId";
     public static final String PARENT_ID = "parentId";
     public static final String PERSON_ID = "personId";

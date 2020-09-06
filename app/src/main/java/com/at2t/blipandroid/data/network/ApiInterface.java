@@ -40,7 +40,7 @@ public interface ApiInterface {
     @POST("post-file")
     Call<AddPostData> uploadAttachmentFile(@Part MultipartBody.Part file);
 
-    @GET("all-post/{sectionId}?date=null")
+    @GET("all-post/{sectionId}")
     Call<List<PostsData>> getListOfPost(@Path("sectionId") Integer sectionId, @Query("date") String date);
 
     @POST("post")

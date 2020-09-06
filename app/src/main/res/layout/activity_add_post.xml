@@ -9,18 +9,18 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:scrollbars="vertical"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        android:fillViewport="true"
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_marginTop="16dp"
+            android:orientation="vertical"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="parent">
 
@@ -37,19 +37,31 @@
                 android:textStyle="bold"
                 android:typeface="sans" />
 
-            <EditText
-                android:id="@+id/etTitle"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="#f7f7f7"
-                android:gravity="top|left"
-                android:hint="Welcome to Holi Celebration"
-                android:inputType="textMultiLine"
-                android:lines="3"
-                android:maxLines="6"
-                android:minLines="3"
-                android:scrollbars="vertical" />
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="Write the title of your post here..."
+                android:textColorHint="#deababab"
+                android:textSize="14sp"
+                android:theme="@style/TextInputLayoutCustomStyleBatch"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle">
+
+                <com.at2t.blipandroid.utils.CustomEdittext
+                    android:id="@+id/etTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="top|left"
+                    android:textColor="@color/black"
+                    android:inputType="textMultiLine"
+                    android:maxLines="6"
+                    android:scrollbars="vertical" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/tvMessage"
@@ -61,22 +73,35 @@
                 android:text="@string/message"
                 android:textAlignment="center"
                 android:textColor="@color/black"
+                android:textStyle="bold"
                 android:textSize="18sp"
                 android:typeface="sans" />
 
-            <EditText
-                android:id="@+id/etMessage"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="#f7f7f7"
-                android:gravity="top|left"
-                android:hint="@string/post_desc"
-                android:inputType="textMultiLine"
-                android:lines="6"
-                android:maxLines="8"
-                android:minLines="6"
-                android:scrollbars="vertical" />
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="Write the message of your post here..."
+                android:textColorHint="#deababab"
+                android:textSize="14sp"
+                android:theme="@style/TextInputLayoutCustomStyleBatch"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvMessage">
+
+                <com.at2t.blipandroid.utils.CustomEdittext
+                    android:id="@+id/etMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="top|left"
+                    android:textColor="@color/black"
+                    android:inputType="textMultiLine"
+                    android:maxLines="8"
+                    android:scrollbars="vertical" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/tvAttachment"
@@ -85,7 +110,9 @@
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center_vertical"
                 android:text="@string/attachment"
+                android:layout_marginTop="12dp"
                 android:textAlignment="center"
+                android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:typeface="sans" />

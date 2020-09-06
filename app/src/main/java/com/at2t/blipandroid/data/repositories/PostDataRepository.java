@@ -2,6 +2,7 @@ package com.at2t.blipandroid.data.repositories;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -43,7 +44,7 @@ public class PostDataRepository {
 
         networkManager = NetworkManager.getInstance();
         apiService = RetrofitManager.getInstance().getApiInterface();
-        sharedPreferences = application.getApplicationContext().getSharedPreferences("app-pref", Context.MODE_PRIVATE);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application.getApplicationContext());
         editor = sharedPreferences.edit();
     }
 

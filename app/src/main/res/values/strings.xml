@@ -26,7 +26,7 @@
     <string name="cse_1">cse-1</string>
     <string name="attachment">Attachment</string>
     <string name="add_post">Add Post</string>
-    <string name="new_post">New Post</string>
+    <string name="new_post">Add New Post</string>
     <string name="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.Proin nunc mi, rhoncus sit amet lacus sed, eleifend faucibus ligula. Ut ullamcorper vehicular quam, sed ultrices mauris ultricies a.Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
     <string name="welcome_back_to_your_account">Welcome back to your account</string>
     <string name="welcome_to_seventhharmony">Welcome to \n Seventhharmony</string>
@@ -54,4 +54,5 @@
     <string name="name_contact"><b>Name:</b> Nizamuddin</string>
     <string name="email_id_contact"><b>Email Id:</b> nizamuddin2494@gmail.com</string>
     <string name="no_posts_data">No Posts Data available</string>
+    <string name="see_all_posts">See all posts</string>
 </resources>

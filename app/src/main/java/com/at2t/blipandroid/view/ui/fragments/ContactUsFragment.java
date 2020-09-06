@@ -44,7 +44,7 @@ public class ContactUsFragment extends BaseFragment implements View.OnClickListe
     public void connectWithWhatsApp() {
         boolean installed = checkWhatsAppInstalledOrNot("com.whatsapp");
         if (installed) {
-            String phone = "+91 8249339005";
+            String phone = "+91 8125125895";
             String message = "Hi there, how may I help you?";
             Intent sendIntent = new Intent("android.intent.action.MAIN");
             sendIntent.setAction(Intent.ACTION_VIEW);

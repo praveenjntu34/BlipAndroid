@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,25 +109,45 @@ public class UserProfileFragment extends BaseFragment {
                 }
             });
         } else {
+            tvUserEmail.setVisibility(View.INVISIBLE);
+            tvUserPhone.setVisibility(View.INVISIBLE);
+            ivUserEmail.setVisibility(View.INVISIBLE);
+            ivUserPhone.setVisibility(View.INVISIBLE);
             editIcon.setVisibility(View.GONE);
         }
 
         linearLayoutLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences("app-pref", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.clear();
-                editor.apply();
+                clearUserLocalInfo(getContext());
                 BlipUtility.setSharedPrefBoolean(getContext(), Constants.IS_LOGGED_IN, false);
                 Intent intent = new Intent(getActivity(), BlipBaseActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
+    }
 
+    public static void clearUserLocalInfo(Context context) {
+        BlipUtility.clearSharedPref(context, Constants.FCM_TOKEN);
+        BlipUtility.clearSharedPref(context, Constants.USER_FIRST_NAME);
+        BlipUtility.clearSharedPref(context, Constants.USER_LAST_NAME);
+        BlipUtility.clearSharedPref(context, Constants.PARENT_ID);
 
-
-
+        BlipUtility.clearSharedPref(context, Constants.PARENT_SECTION_ID);
+        BlipUtility.clearSharedPref(context, Constants.FCM_PARENT_ID);
+        BlipUtility.clearSharedPref(context, Constants.IS_PARENT_FIRST_LOGIN);
+        BlipUtility.clearSharedPref(context, Constants.SECONDARY_PARENT_NAME);
+        BlipUtility.clearSharedPref(context, Constants.SECONDARY_PHONE_NUMBER);
+        BlipUtility.clearSharedPref(context, Constants.PHONE_NUMBER);
+        BlipUtility.clearSharedPref(context, Constants.INSTITUTE_ID);
+        BlipUtility.clearSharedPref(context, Constants.INSTRUCTOR_ID);
+        BlipUtility.clearSharedPref(context, Constants.INSTRUCTOR_SECTION_ID);
+        BlipUtility.clearSharedPref(context, Constants.FCM_INSTRUCTOR_ID);
+        BlipUtility.clearSharedPref(context, Constants.EMAIL_ID);
+        BlipUtility.clearSharedPref(context, Constants.ADMISSION_ID);
+        BlipUtility.clearSharedPref(context, Constants.CHILD_ID);
+        BlipUtility.clearSharedPref(context, Constants.CHILDREN_NAME);
+        BlipUtility.clearSharedPref(context, Constants.ROLE);
     }
 }

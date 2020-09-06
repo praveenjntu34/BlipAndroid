@@ -13,6 +13,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
@@ -47,7 +48,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import static com.at2t.blipandroid.utils.Constants.MOBILE_NUMBER;
 import static com.at2t.blipandroid.utils.Constants.MOBILE_NUMBER_LENGTH;
-import static com.at2t.blipandroid.utils.Constants.SECTION_ID;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -134,6 +134,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onDestroy() {
         super.onDestroy();
+        SharedPreferences preferences = getSharedPreferences("loginPrefs",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
     }
 
     private void initializeViews() {
@@ -146,13 +150,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         instructorPanel = findViewById(R.id.instructorPanel);
         textInputLayoutPhone = findViewById(R.id.text_input_phone_number);
         etPhoneNumber = findViewById(R.id.EtPhoneNumber);
-        btnWhatsApp = findViewById(R.id.whatsapp);
 
         parentView.setCardBackgroundColor(ContextCompat.getColor(this, R.color.white));
         instructorView.setCardBackgroundColor(ContextCompat.getColor(this, R.color.white));
 
         etPhoneNumber.addTextChangedListener(new MyTextWatcher(textInputLayoutPhone));
-        btnWhatsApp.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
         rlParent.setOnClickListener(this);
         rlInstructor.setOnClickListener(this);
@@ -237,7 +239,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             Intent intent = new Intent(LoginActivity.this, LoginUsingOtpActivity.class);
             intent.putExtra(MOBILE_NUMBER, etPhoneNumber.getText().toString());
-            intent.putExtra(SECTION_ID, BlipUtility.getSectionId(this));
             startActivity(intent);
 
         }
@@ -267,7 +268,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void connectWithWhatsApp() {
         boolean installed = checkWhatsAppInstalledOrNot("com.whatsapp");
         if(installed) {
-            String phone = "+91 8249339005";
+            String phone = "+91 8125125895";
             String message = "Hi there, how may I help you?";
             Intent sendIntent = new Intent("android.intent.action.MAIN");
             sendIntent.setAction(Intent.ACTION_VIEW);
@@ -322,8 +323,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             view.startAnimation(buttonClick);
             mobileNumber = etPhoneNumber.getText().toString();
             goToOtpScreen();
-        } else if (view.getId() == R.id.whatsapp) {
-            connectWithWhatsApp();
         } else if (view.getId() == R.id.rl_parent) {
             changeUIColorParent(view);
         } else if (view.getId() == R.id.rl_instructor) {

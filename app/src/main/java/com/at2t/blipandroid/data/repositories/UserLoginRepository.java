@@ -3,6 +3,7 @@ package com.at2t.blipandroid.data.repositories;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -47,7 +48,7 @@ public class UserLoginRepository {
 
         networkManager = NetworkManager.getInstance();
         apiService = RetrofitManager.getInstance().getApiInterface();
-        sharedPreferences = application.getApplicationContext().getSharedPreferences("app-pref", Context.MODE_PRIVATE);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application.getApplicationContext());
         editor = sharedPreferences.edit();
     }
 
@@ -60,10 +61,19 @@ public class UserLoginRepository {
                     if(response.body().getInstructorUserId() != 0) {
                         BlipUtility.storeInstructorBasicInfoInSharedPref(application, response.body());
                         responseLiveData.setValue(Enums.LoginStatus.INSTRUCTOR_LOGIN_SUCCESSFULL);
+                        BlipUtility.setSharedPrefInteger(application.getApplicationContext(), Constants.INSTRUCTOR_SECTION_ID, response.body().getSectionId());
+                        BlipUtility.setSharedPrefInteger(application.getApplicationContext(), Constants.INSTRUCTOR_ID, response.body().getInstructorUserId());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.ROLE, response.body().getRole());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.EMAIL_ID, response.body().getEmail());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.USER_FIRST_NAME, response.body().getFirstName());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.USER_LAST_NAME, response.body().getLastName());
+                        BlipUtility.setSharedPrefInteger(application.getApplicationContext(), Constants.INSTITUTE_ID, response.body().getRelTenantInstitutionId());
                         editor.putString(Constants.ACCESS_TOKEN, "1234");
-                        editor.putInt(Constants.SECTION_ID, response.body().getSectionId());
+                        editor.putInt(Constants.INSTRUCTOR_SECTION_ID, response.body().getSectionId());
+
                         editor.putBoolean(Constants.IS_LOGGED_IN, true);
                         editor.putBoolean(Constants.INSTRUCTORLOGIN, true);
+                        editor.apply();
                     } else {
                         responseLiveData.setValue(Enums.LoginStatus.INSTRUCTOR_DOES_NOT_EXIST);
                     }
@@ -93,7 +103,7 @@ public class UserLoginRepository {
                         BlipUtility.storeUserBasicInfoInSharedPref(application, response.body().getParentLoginDataList().get(0));
                         responseLiveData.setValue(Enums.LoginStatus.USER_LOGIN_SUCCESSFULL);
                         editor.putString(Constants.ACCESS_TOKEN, "1234");
-                        editor.putInt(Constants.SECTION_ID, response.body().getParentLoginDataList().get(0).getSectionId());
+                        editor.putInt(Constants.PARENT_SECTION_ID, response.body().getParentLoginDataList().get(0).getSectionId());
                         editor.putBoolean(Constants.IS_LOGGED_IN, true);
                         editor.putBoolean(Constants.PARENTLOGIN, true);
                     } else {
@@ -229,9 +239,8 @@ public class UserLoginRepository {
                 if (response.body() != null) {
                     BlipUtility.storeParentProfileDetailsSharedPref(application, response.body().getUserProfileDetails());
                     responseLiveData.setValue(Enums.LoginStatus.GET_USER_PROFILE_DETAILS_SUCCESSFULLY);
-                    editor.putString(Constants.ACCESS_TOKEN, "1234");
-                    editor.putBoolean(Constants.IS_LOGGED_IN, true);
-                    editor.putBoolean(Constants.PARENTLOGIN, true);
+                    BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.EMAIL_ID, response.body().getUserProfileDetails().getEmail());
+                    BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.PHONE_NUMBER, response.body().getUserProfileDetails().getPhoneNumber());
                 } else {
                     responseLiveData.setValue(Enums.LoginStatus.GET_USER_PROFILE_DETAILS_FAILED);
                 }

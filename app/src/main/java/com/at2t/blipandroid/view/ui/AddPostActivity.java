@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.at2t.blipandroid.R;
 
@@ -32,8 +35,10 @@ import com.at2t.blipandroid.data.network.ApiInterface;
 import com.at2t.blipandroid.data.network.NetworkManager;
 import com.at2t.blipandroid.data.network.RetrofitManager;
 import com.at2t.blipandroid.model.AddPostData;
-import com.at2t.blipandroid.view.ui.fragments.AllPostsFragment;
+import com.at2t.blipandroid.utils.BlipUtility;
+import com.at2t.blipandroid.utils.CustomEdittext;
 import com.at2t.blipandroid.viewmodel.AddPostViewModel;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -44,10 +49,11 @@ import java.util.Calendar;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.at2t.blipandroid.utils.Constants.MOBILE_NUMBER;
 
 
 public class AddPostActivity extends AppCompatActivity implements
@@ -55,8 +61,8 @@ public class AddPostActivity extends AppCompatActivity implements
 
     public static final String TAG = "AddPostActivity";
     public static final int GALLERY_REQUEST_CODE = 1;
-    private EditText postTitle;
-    private EditText postMessage;
+    private CustomEdittext postTitle;
+    private CustomEdittext postMessage;
     private ImageView ivAttachment;
     private String attachmentFilePath;
     private Button btnAddPost;
@@ -67,48 +73,60 @@ public class AddPostActivity extends AppCompatActivity implements
     String encodeString = null;
     private ApiInterface apiInterface;
     private Context application;
-    private NetworkManager networkManager;
-    String title;
     String postDescription;
+    String title;
     int postId;
     int sectionId;
     int relTenantInstitutionId;
+    private AddPostViewModel addPostViewModel;
+    private int instructorId;
+    private int userId;
+    private NetworkManager networkManager;
+    private TextInputLayout textInputLayoutTitle;
+    private TextInputLayout textInputLayoutMessage;
+
+    private Observer<Integer> observer = new Observer<Integer>() {
+        @Override
+        public void onChanged(Integer integer) {
+            if (integer != null) {
+                switch (integer) {
+                    case AddPostViewModel.ADDED_DATA_SUCCESSFULLY:
+                        Toast.makeText(getApplicationContext()
+                                , "Added data successfully", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(AddPostActivity.this, MainDashboardActivity.class);
+                        startActivity(intent);
+                        break;
+                    case AddPostViewModel.ADDING_DATA_FAILED:
+                        Toast.makeText(getApplicationContext(), "Failed adding the data", Toast.LENGTH_SHORT).show();
+                        break;
+                    case AddPostViewModel.MULTIPART_FILE_UPLOAD_SUCCESS:
+                        Toast.makeText(getApplicationContext(), "Attachment uploaded successfully", Toast.LENGTH_SHORT).show();
+                        break;
+                    case AddPostViewModel.MULTIPART_FILE_UPLOAD_FAILED:
+                        Toast.makeText(getApplicationContext(), "Failed uploading the attachment", Toast.LENGTH_SHORT).show();
+                        break;
+                    case AddPostViewModel.NO_INTERNET_CONNECTION:
+                        Toast.makeText(getApplicationContext(), "No internet! please try again", Toast.LENGTH_SHORT).show();
+                        break;
+                    case AddPostViewModel.FAILED_UNKNOWN_REASON:
+                        Toast.makeText(getApplicationContext(), "Some error occurred! please try again", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        }
+    };
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_add_post);
+        addPostViewModel = ViewModelProviders.of(this).get(AddPostViewModel.class);
+        liveData = addPostViewModel.getLiveData();
+        liveData.observe(this, observer);
+
         initializeView();
-    }
-
-    public void addPostApiCall(String message, int postId, String title, int relTenantInstitutionId, int sectionId) {
-        final AddPostData addPostData = new AddPostData(message, postId, title, relTenantInstitutionId, sectionId);
-        Call<ResponseBody> responseBodyCall = apiInterface.addPostData(addPostData);
-        responseBodyCall.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
-                if (!response.isSuccessful()) {
-
-                    return;
-                }
-
-                if (response.code() == 200) {
-                    Log.d(TAG, "onResponse id1 : " + response.toString());
-                    if(response.body() != null)
-                    Log.d(TAG, "onResponse id2 : " + response.body().toString());
-                }
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-                if (NetworkManager.getInstance().isNetworkAvailable(application)) {
-
-                    Log.d(TAG, "No internet connection");
-                }
-            }
-        });
-
     }
 
     private void uploadToServer(String filePath) {
@@ -130,6 +148,7 @@ public class AddPostActivity extends AppCompatActivity implements
                 if (response.body() != null) {
                     Log.d(TAG, "onResponse id : " + response.body().getPostId());
                     getPostId(response.body().getPostId());
+                    addingPost(postId);
                 }
             }
 
@@ -149,23 +168,56 @@ public class AddPostActivity extends AppCompatActivity implements
         postMessage = findViewById(R.id.etMessage);
         ivAttachment = findViewById(R.id.ivAttachment);
         btnAddPost = findViewById(R.id.btnAddPost);
-
+        textInputLayoutTitle = findViewById(R.id.text_input_title);
+        textInputLayoutMessage = findViewById(R.id.text_input_message);
         onClickListener();
-        addingPost();
+        addingPost(postId);
     }
 
-    public void addingPost() {
+    private void validatingFields() {
+        if (postTitle.getText() != null)
+            title = postTitle.getText().toString();
+
+        if (postMessage.getText() != null)
+            postDescription = postMessage.getText().toString();
+
+        if (TextUtils.isEmpty(title)) {
+            textInputLayoutTitle.setError("Please enter your title for the post.");
+            textInputLayoutTitle.requestFocus();
+        } else if (TextUtils.isEmpty(postDescription)) {
+            textInputLayoutMessage.setError("Please enter your message for the post.");
+            textInputLayoutMessage.requestFocus();
+        } else {
+            title = postTitle.getText().toString();
+            postDescription = postMessage.getText().toString();
+            relTenantInstitutionId = BlipUtility.getInstituteId(getApplicationContext());
+            instructorId = BlipUtility.getInstructorId(getApplicationContext());
+            userId = BlipUtility.getParentId(getApplicationContext());
+            int instructorSectionId = BlipUtility.getInstructorSectionId(getApplicationContext());
+            int parentSectionId = BlipUtility.getParentSectionId(getApplicationContext());
+
+            if(instructorId != 0) {
+                if(postId != 0) {
+                    addPostViewModel.addPostApiCall(postDescription, postId, title, relTenantInstitutionId, instructorSectionId);
+                } else {
+                    addPostViewModel.addPostApiCall(postDescription, 0, title, relTenantInstitutionId, instructorSectionId);
+                }
+            } else if(userId != 0) {
+                if(postId != 0) {
+                    addPostViewModel.addPostApiCall(postDescription, postId, title, relTenantInstitutionId, parentSectionId);
+                } else {
+                    addPostViewModel.addPostApiCall(postDescription, 0, title, relTenantInstitutionId, parentSectionId);
+                }
+            }
+
+        }
+    }
+
+    public void addingPost(final int postId) {
         btnAddPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                title = postTitle.getText().toString();
-                postDescription = postMessage.getText().toString();
-                addPostApiCall(postDescription, postId, title, relTenantInstitutionId, sectionId);
-                Log.d("Post details: ", "postDescription : " +postDescription + " " +
-                        "postId: "+postId + " title : "+ title + " relTenantInstitutionId : "
-                        +relTenantInstitutionId + "sectionId: " + sectionId);
-                Intent i = new Intent(AddPostActivity.this, AllPostsFragment.class);
-                startActivity(i);
+                validatingFields();
             }
         });
     }

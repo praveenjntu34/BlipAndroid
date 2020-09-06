@@ -17,9 +17,14 @@ import android.widget.Toast;
 
 import com.at2t.blipandroid.R;
 import com.at2t.blipandroid.model.PostsData;
+import com.at2t.blipandroid.utils.BlipUtility;
 import com.bumptech.glide.Glide;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHolder> {
 
@@ -45,8 +50,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
     public void onBindViewHolder(@NonNull PostsViewHolder postsViewHolder, int i) {
         PostsData postsData = postsDataList.get(i);
 
+        long epochDate = postsData.getPostCreatedDate();
+        String dateOfPost = convertEpochtoDateFormat(epochDate);
+
         postsViewHolder.txtView_title.setText(postsData.getTitle());
         postsViewHolder.txtView_description.setText(postsData.getMessage());
+        postsViewHolder.imgView_icon.setImageResource(R.drawable.active_dot);
+        postsViewHolder.txtView_name.setText(BlipUtility.getFirstName(mContext));
+        postsViewHolder.tvDate.setText(dateOfPost);
         try {
             if (postsData.getPostAttachmentId() != null) {
                 final String encodedString = postsData.getPostAttachmentId();
@@ -59,6 +70,16 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
         } catch (ArrayIndexOutOfBoundsException e){
             Log.e(TAG, "onBindViewHolder: ", e.getCause());
         }
+    }
+
+    private String convertEpochtoDateFormat(long epochDate) {
+        Date date = new Date(epochDate);
+        DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        format.setTimeZone(TimeZone.getTimeZone("IST/UTC"));
+        String formatted = format.format(date);
+        System.out.println(formatted);
+
+        return formatted;
     }
 
     @Override
@@ -76,6 +97,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
         ImageView imgView_icon;
         TextView txtView_name;
         TextView txtView_title;
+        TextView tvDate;
         ImageView ivTime;
         TextView txtView_description;
         ImageView postImg;
@@ -87,6 +109,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
             txtView_name = itemView.findViewById(R.id.tv_full_name);
             txtView_title = itemView.findViewById(R.id.tv_post_information);
             ivTime = itemView.findViewById(R.id.iv_time);
+            tvDate = itemView.findViewById(R.id.tv_date);
             txtView_description = itemView.findViewById(R.id.tv_post_description);
 
             itemView.setOnClickListener(new View.OnClickListener() {

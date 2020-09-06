@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -20,7 +21,9 @@ import com.at2t.blipandroid.utils.BaseFragment;
 import com.at2t.blipandroid.utils.BlipUtility;
 import com.at2t.blipandroid.utils.Constants;
 import com.at2t.blipandroid.utils.DatePickerFragment;
+import com.at2t.blipandroid.utils.Enums;
 import com.at2t.blipandroid.view.ui.AddPostActivity;
+import com.at2t.blipandroid.viewmodel.LoginViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -48,6 +51,7 @@ import com.at2t.blipandroid.viewmodel.DashBoardViewModel;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,15 +67,62 @@ public class AllPostsFragment extends BaseFragment implements
     private ActionBarDrawerToggle t;
     private NavigationView nv;
     private Button btnNewPost;
+    private Button btnSeeAllPost;
     LinearLayout calendarView;
-    TextView tvDateSelected;
-    private int sectionId;
+    private static TextView tvDateSelected;
+    private int instructorSectionId;
+    private int parentSectionId;
     private TextView noDataTV;
     String currentDateString;
+    private int instructorId;
+    private int userId;
+    String todaysDateString;
+
+    private LiveData<List<PostsData>> liveData;
+    private Observer<List<PostsData>> observer = new Observer<List<PostsData>>() {
+        @Override
+        public void onChanged(List<PostsData> postsDataList) {
+                        if (postsDataList != null && postsDataList.size() > 0) {
+                            if(recyclerView.getVisibility() == View.GONE) {
+                                recyclerView.setVisibility(View.VISIBLE);
+                            }
+                            if (recyclerView != null) {
+                                postsRecyclerViewAdapter = (PostsAdapter) recyclerView.getAdapter();
+                                if (postsRecyclerViewAdapter == null) {
+                                    postsRecyclerViewAdapter = new PostsAdapter(getContext(), postsDataList);
+                                    Collections.reverse(postsDataList);
+                                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                                    recyclerView.setLayoutManager(linearLayoutManager);
+                                    recyclerView.setAdapter(postsRecyclerViewAdapter);
+                                } else {
+                                    Collections.reverse(postsDataList);
+                                    postsRecyclerViewAdapter.setdata(postsDataList);
+                                }
+                                noDataTV.setVisibility(View.GONE);
+                            } else {
+                                noDataTV.setVisibility(View.VISIBLE);
+                            }
+                        } else {
+                            recyclerView.setVisibility(View.GONE);
+                            noDataTV.setVisibility(View.VISIBLE);
+                            Log.d("Post failed: ", "Try again");
+                        }
+                    }
+                };
+
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel = ViewModelProviders.of(this).get(DashBoardViewModel.class);
+        liveData = viewModel.getLiveData();
+        liveData.observe(this, observer);
 
     }
 
@@ -87,58 +138,69 @@ public class AllPostsFragment extends BaseFragment implements
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        sectionId = BlipUtility.getSectionId(getContext());
+
 
         initializeUIView(view);
         recyclerView = view.findViewById(R.id.rv_posts);
         noDataTV = view.findViewById(R.id.noDataTV);
         noDataTV.setVisibility(View.GONE);
+        instructorId = BlipUtility.getInstructorId(getContext());
+        userId = BlipUtility.getParentId(getContext());
 
-        viewModel = ViewModelProviders.of(this).get(DashBoardViewModel.class);
-        viewModel.init(getContext());
-        viewModel.getPostList(sectionId, null);
+        if(instructorId != 0) {
+            instructorSectionId = BlipUtility.getInstructorSectionId(getContext());
+            viewModel.getPostData(instructorSectionId, "ALL");
+        } else if(userId != 0) {
+            parentSectionId = BlipUtility.getParentSectionId(getContext());
+            viewModel.getPostData(parentSectionId, "ALL");
+        }
 
-        viewModel.getResponseLiveData().observe(this, new
-                Observer<List<PostsData>>() {
-                    @Override
-                    public void onChanged(List<PostsData> postsDataList) {
-                        if (postsDataList != null && postsDataList.size() > 0) {
 
-                            if (recyclerView != null) {
-                                postsRecyclerViewAdapter = (PostsAdapter) recyclerView.getAdapter();
-                                if (postsRecyclerViewAdapter == null) {
-                                    postsRecyclerViewAdapter = new PostsAdapter(Objects.requireNonNull(getContext()), postsDataList);
-                                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                                    recyclerView.setLayoutManager(linearLayoutManager);
-                                    recyclerView.setAdapter(postsRecyclerViewAdapter);
-                                } else {
-                                    postsRecyclerViewAdapter.setdata(postsDataList);
-                                }
-                                noDataTV.setVisibility(View.GONE);
-                            } else {
-                                noDataTV.setVisibility(View.VISIBLE);
-                            }
-                        } else {
-                            recyclerView.setVisibility(View.GONE);
-                            noDataTV.setVisibility(View.VISIBLE);
-                            Log.d("Post failed: ", "Try again");
-                        }
-                    }
-                });
+    }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     private void initializeUIView(View view) {
         btnNewPost = view.findViewById(R.id.btnNewPost);
+        btnSeeAllPost = view.findViewById(R.id.btnAllPost);
         calendarView = view.findViewById(R.id.llDateSelector);
         tvDateSelected = view.findViewById(R.id.tvDate);
 
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        todaysDateString = (year + "-" + (month  +1) + "-" + day  );
+        tvDateSelected.setText(todaysDateString);
         tvDateSelected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment datePicker = new DatePickerFragment();
                 datePicker.setTargetFragment(AllPostsFragment.this, 0);
-                datePicker.show(getFragmentManager(), "date picker");
+                if (getFragmentManager() != null) {
+                    datePicker.show(getFragmentManager(), "date picker");
+                }
+
+            }
+        });
+
+        btnSeeAllPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                instructorId = BlipUtility.getInstructorId(getContext());
+                userId = BlipUtility.getParentId(getContext());
+
+                if(instructorId != 0) {
+                    instructorSectionId = BlipUtility.getInstructorSectionId(getContext());
+                    viewModel.getPostData(instructorSectionId, "ALL");
+                } else if(userId != 0) {
+                    parentSectionId = BlipUtility.getParentSectionId(getContext());
+                    viewModel.getPostData(parentSectionId, "ALL");
+                }
             }
         });
 
@@ -164,12 +226,23 @@ public class AllPostsFragment extends BaseFragment implements
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-        currentDateString = (String) android.text.format.DateFormat.format("yyyy-MM-dd", new java.util.Date());
+        currentDateString = (year + "-" + (month  +1) + "-" + dayOfMonth  );
 
         Log.e(TAG, "onDateSet: " + currentDateString);
         tvDateSelected.setText(currentDateString);
-        viewModel.getPostList(sectionId, currentDateString);
+        instructorId = BlipUtility.getInstructorId(getContext());
+        userId = BlipUtility.getParentId(getContext());
+
+        if(instructorId != 0) {
+            instructorSectionId = BlipUtility.getInstructorSectionId(getContext());
+            viewModel.getPostData(instructorSectionId, currentDateString);
+        } else if(userId != 0) {
+            parentSectionId = BlipUtility.getParentSectionId(getContext());
+            viewModel.getPostData(parentSectionId, currentDateString);
+        }
+
     }
+
 
     private void goToAddPostActivity() {
         startActivity(new Intent(getActivity(), AddPostActivity.class));

@@ -15,6 +15,17 @@ public class PostsData {
     @SerializedName("attachmentStreamId")
     private String postAttachmentId;
 
+    @SerializedName("auditCreatedDate")
+    private long postCreatedDate;
+
+    public long getPostCreatedDate() {
+        return postCreatedDate;
+    }
+
+    public void setPostCreatedDate(long postCreatedDate) {
+        this.postCreatedDate = postCreatedDate;
+    }
+
     public String getMessage() {
         return message;
     }

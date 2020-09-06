@@ -57,7 +57,6 @@ View.OnClickListener{
         setContentView(R.layout.activity_enter_otp);
 
         mobileNumber = getIntent().getStringExtra(Constants.MOBILE_NUMBER);
-        sectionId = getIntent().getIntExtra(Constants.SECTION_ID, 0);
         isFirstParentLogin = BlipUtility.getIsParentFirstLoginId(this);
 
 //        SendOTP.initializeApp(getApplication());
@@ -104,7 +103,7 @@ View.OnClickListener{
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        SendOTP.getInstance().getTrigger().stop();
+//        SendOTP.getInstance().getTrigger().stop();
     }
 
     private void changeOtpScreenColor() {
@@ -270,7 +269,6 @@ View.OnClickListener{
 
     private void otpVerified() {
             Intent intent = new Intent(this, MainDashboardActivity.class);
-            intent.putExtra(Constants.SECTION_ID, sectionId);
             startActivity(intent);
     }
 

@@ -3,6 +3,7 @@ package com.at2t.blipandroid.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.at2t.blipandroid.model.InstructorLoginData;
 import com.at2t.blipandroid.model.ParentLoginData;
@@ -10,12 +11,20 @@ import com.at2t.blipandroid.model.UserProfileDetails;
 
 public class BlipUtility {
 
+    public static int instructorId;
+    public static int userId;
+
+    public static int instructorSectionId;
+    public static int userSectionId;
+
+    public static  SharedPreferences sharedPreferences;
+
     public static void storeInstructorBasicInfoInSharedPref(Context context, InstructorLoginData user) {
         if (user != null) {
-            SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.SECTION_ID, user.getSectionId());
+            instructorSectionId = SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.INSTRUCTOR_SECTION_ID, user.getSectionId());
             SharedPreferencesActivtiy.setSharedPrefString(context, Constants.USER_FIRST_NAME, user.getFirstName());
             SharedPreferencesActivtiy.setSharedPrefString(context, Constants.USER_LAST_NAME, user.getLastName());
-            SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.INSTRUCTOR_ID, user.getInstructorUserId());
+            instructorId =  SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.INSTRUCTOR_ID, user.getInstructorUserId());
             SharedPreferencesActivtiy.setSharedPrefString(context, Constants.ROLE, user.getRole());
             SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.INSTITUTE_ID, user.getRelTenantInstitutionId());
         }
@@ -23,10 +32,10 @@ public class BlipUtility {
 
     public static void storeUserBasicInfoInSharedPref(Context context, ParentLoginData user) {
         if (user != null) {
-            SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.SECTION_ID, user.getSectionId());
+            userSectionId = SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.PARENT_SECTION_ID, user.getSectionId());
             SharedPreferencesActivtiy.setSharedPrefString(context, Constants.USER_FIRST_NAME, user.getFirstName());
             SharedPreferencesActivtiy.setSharedPrefString(context, Constants.USER_LAST_NAME, user.getLastName());
-            SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.PARENT_ID, user.getParentId());
+            userId = SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.PARENT_ID, user.getParentId());
             SharedPreferencesActivtiy.setSharedPrefString(context, Constants.ROLE, user.getRole());
             SharedPreferencesActivtiy.setSharedPref(context, Constants.IS_PARENT_FIRST_LOGIN, user.isFirstLogin());
             SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.INSTITUTE_ID, user.getRelTenantInstitutionId());
@@ -47,7 +56,6 @@ public class BlipUtility {
             SharedPreferencesActivtiy.setSharedPrefString(context, Constants.SECONDARY_PARENT_NAME, user.getSecondaryParentName());
             SharedPreferencesActivtiy.setSharedPrefString(context, Constants.SECONDARY_PHONE_NUMBER, user.getSecondaryPhoneNumber());
             SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.PERSON_ID, user.getPersonId());
-            SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.SECTION_ID, user.getSectionId());
         }
     }
 
@@ -158,13 +166,26 @@ public class BlipUtility {
         return instituteId;
     }
 
-    public static int getSectionId(Context context) {
-        int sectionId = 0;
-        if (SharedPreferencesActivtiy.getSharedPrefInteger(context, Constants.SECTION_ID) != 0) {
-            sectionId = SharedPreferencesActivtiy.getSharedPrefInteger(context, Constants.SECTION_ID);
+    public static int getInstructorSectionId(Context context) {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+//        if(instructorId != 0) {
+//            if (sharedPreferences.getInt(Constants.INSTRUCTOR_SECTION_ID, 0)!= 0) {
+                instructorSectionId = sharedPreferences.getInt(Constants.INSTRUCTOR_SECTION_ID, 0);
+                Log.e("Blip util", "getInstructorSectionId: "+ instructorSectionId);
+//            }
+//        }
+
+        return instructorSectionId;
+    }
+
+    public static int getParentSectionId(Context context) {
+        if(userId != 0) {
+            if (SharedPreferencesActivtiy.getSharedPrefInteger(context, Constants.INSTRUCTOR_SECTION_ID) != 0) {
+                userSectionId = SharedPreferencesActivtiy.getSharedPrefInteger(context, Constants.INSTRUCTOR_SECTION_ID);
+            }
         }
 
-        return sectionId;
+        return userSectionId;
     }
 
     public static boolean getIsParentFirstLoginId(Context context) {
@@ -217,6 +238,13 @@ public class BlipUtility {
         editor.apply();
     }
 
+    public static void setSharedPrefInteger(Context context, String key, int value) {
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preference.edit();
+        editor.putInt(key, value);
+        editor.apply();
+    }
+
     public static boolean getSharedPrefBoolean(Context context, String key) {
 
         boolean prefValue = false;
@@ -226,6 +254,14 @@ public class BlipUtility {
         }
 
         return prefValue;
+    }
+
+    public static void clearSharedPref(Context context, String key) {
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preference.edit();
+        editor.remove(key);
+        editor.clear();
+        editor.commit();
     }
 
 }

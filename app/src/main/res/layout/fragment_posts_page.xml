@@ -69,7 +69,6 @@
                     android:layout_marginStart="24dp"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_vertical"
-                    android:text="25 May, 2020"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="18sp"
@@ -94,6 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="27dp"
             android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
             android:background="@drawable/custom_new_post"
             android:gravity="center_vertical"
             android:stateListAnimator="@null"
@@ -110,6 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:padding="@dimen/margin_40dp"
             android:text="@string/no_posts_data"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -129,9 +130,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="32dp" />
 
         </ScrollView>
+
+        <Button
+            android:id="@+id/btnAllPost"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/custom_new_post"
+            android:gravity="center_vertical"
+            android:stateListAnimator="@null"
+            android:text="@string/see_all_posts"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@color/blue"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+              />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -139,6 +159,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:visibility="gone"
         app:headerLayout="@layout/item_drawer_header"
         app:menu="@menu/menu">
 

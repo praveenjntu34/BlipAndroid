@@ -104,7 +104,7 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
         relTenantInstitutionId = BlipUtility.getInstituteId(getApplicationContext());
         secondaryParentName = BlipUtility.getSecondaryParentName(getApplicationContext());
         secondaryPhoneNumber = BlipUtility.getSecondaryParentPhone(getApplicationContext());
-        sectionId = BlipUtility.getSectionId(getApplicationContext());
+        sectionId = BlipUtility.getParentSectionId(getApplicationContext());
 
         if (firstNameStr != null) {
             firstName.setText(firstNameStr);
