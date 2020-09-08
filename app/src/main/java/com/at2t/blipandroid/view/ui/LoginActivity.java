@@ -34,6 +34,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.at2t.blipandroid.R;
+import com.at2t.blipandroid.data.repositories.UserLoginRepository;
+import com.at2t.blipandroid.model.BranchSectionData;
 import com.at2t.blipandroid.utils.BlipUtility;
 import com.at2t.blipandroid.utils.Constants;
 import com.at2t.blipandroid.utils.Enums;
@@ -45,6 +47,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.List;
 
 import static com.at2t.blipandroid.utils.Constants.MOBILE_NUMBER;
 import static com.at2t.blipandroid.utils.Constants.MOBILE_NUMBER_LENGTH;
@@ -71,7 +75,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText etPhoneNumber;
     private String mobileNumber;
     private LiveData<Integer> liveData;
+    private List<BranchSectionData> branchSectionDataList;
     private int type = PARENT;
+    private UserLoginRepository userLoginRepository;
     String fcmToken = "";
     private AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
 
@@ -105,7 +111,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Log.d("Login PhoneNumber : ", "Failed login");
                         validatePhoneNumber();
                     } else if (integer == Enums.LoginStatus.USER_DOES_NOT_EXIST) {
-                       checkMobileNumber();
+                        checkMobileNumber();
 
                     } else if (integer == Enums.LoginStatus.USER_LOGIN_FAILED) {
                         Log.d("Login PhoneNumber : ", "Failed login");
@@ -116,12 +122,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     } else if (integer == Enums.LoginStatus.FCM_TOKEN_SAVED_FOR_INSTRUCTOR) {
                         Log.d(TAG, "Fcm token saved successfully for instructor");
 
-                    }
-                    else if (integer == Enums.LoginStatus.FCM_TOKEN_SAVING_FAILED) {
+                    } else if (integer == Enums.LoginStatus.FCM_TOKEN_SAVING_FAILED) {
                         Log.d(TAG, "Fcm token saving failed");
-
-                    }
-                    else if (integer == Enums.LoginStatus.NO_INTERNET_CONNECTION) {
+                    } else if (integer == Enums.LoginStatus.NO_INTERNET_CONNECTION) {
                         Toast.makeText(getApplicationContext(), "Please check internet connection", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -134,7 +137,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onDestroy() {
         super.onDestroy();
-        SharedPreferences preferences = getSharedPreferences("loginPrefs",Context.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
         editor.apply();
@@ -240,7 +243,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Intent intent = new Intent(LoginActivity.this, LoginUsingOtpActivity.class);
             intent.putExtra(MOBILE_NUMBER, etPhoneNumber.getText().toString());
             startActivity(intent);
-
+            finish();
         }
     }
 
@@ -253,21 +256,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (type == INSTRUCTOR) {
             loginViewModel.loginUserUsingMobileNumber(mobileNumber);
             int instructorId = BlipUtility.getInstructorId(getApplicationContext());
-            if(instructorId != 0) {
+            if (instructorId != 0) {
                 loginViewModel.saveFcmTokenInstructor(instructorId, fcmToken);
             }
         } else if (type == PARENT) {
             loginViewModel.loginParentUsingMobileNumber(mobileNumber);
             int parentId = BlipUtility.getParentId(getApplicationContext());
-            if(parentId != 0) {
+            if (parentId != 0) {
                 loginViewModel.saveFcmTokenParent(parentId, fcmToken);
+                loginViewModel.getBranchDetails(BlipUtility.getInstituteId(getApplicationContext()));
             }
         }
     }
 
     public void connectWithWhatsApp() {
         boolean installed = checkWhatsAppInstalledOrNot("com.whatsapp");
-        if(installed) {
+        if (installed) {
             String phone = "+91 8125125895";
             String message = "Hi there, how may I help you?";
             Intent sendIntent = new Intent("android.intent.action.MAIN");
@@ -283,10 +287,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private boolean checkWhatsAppInstalledOrNot(String url){
+    private boolean checkWhatsAppInstalledOrNot(String url) {
         PackageManager packageManager = getPackageManager();
         boolean appInstalled;
-        try{
+        try {
             packageManager.getPackageInfo(url, PackageManager.GET_ACTIVITIES);
             appInstalled = true;
         } catch (PackageManager.NameNotFoundException e) {

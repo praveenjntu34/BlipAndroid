@@ -40,6 +40,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,7 +67,7 @@ public class AllPostsFragment extends BaseFragment implements
     private DrawerLayout dl;
     private ActionBarDrawerToggle t;
     private NavigationView nv;
-    private Button btnNewPost;
+    private ImageButton btnNewPost;
     private Button btnSeeAllPost;
     LinearLayout calendarView;
     private static TextView tvDateSelected;

@@ -44,5 +44,9 @@ public class Enums {
         int GET_USER_PROFILE_DETAILS_FAILED = 14;
         int GET_ALL_POSTS_SUCCESSFULLY = 15;
         int GET_ALL_POSTS_FAILED = 16;
+        int GET_BANNER_DETAILS_SUCCESSFULLY = 17;
+        int GET_BANNER_DETAILS_FAILED = 18;
+        int GET_BRANCH_DETAILS_SUCCESSFULLY = 19;
+        int GET_BRANCH_DETAILS_FAILED = 20;
     }
 }

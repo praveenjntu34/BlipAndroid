@@ -1,6 +1,8 @@
 package com.at2t.blipandroid.data.network;
 
 import com.at2t.blipandroid.model.AddPostData;
+import com.at2t.blipandroid.model.BannerDetailsDataModel;
+import com.at2t.blipandroid.model.BranchSectionData;
 import com.at2t.blipandroid.model.FcmTokenModel;
 import com.at2t.blipandroid.model.InstructorLoginData;
 import com.at2t.blipandroid.model.ParentDataModel;
@@ -51,5 +53,11 @@ public interface ApiInterface {
 
     @POST("fcm/parent")
     Call<ResponseBody> postFcmTokenForParent(@Body FcmTokenModel fcmTokenModel);
+
+    @GET("/banner/{relTenantInstitutionId}")
+    Call<List<BannerDetailsDataModel>> getBannerDetails(@Path("relTenantInstitutionId") Integer relTenantInstitutionId);
+
+    @GET("/institution/branch/{relTenantInstitutionId}")
+    Call<List<BranchSectionData>> getBranchSectionDetails(@Path("relTenantInstitutionId") Integer relTenantInstitutionId);
 
 }

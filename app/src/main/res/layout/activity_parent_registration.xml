@@ -1,162 +1,389 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_50dp"
+        android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
+            android:id="@+id/llHeader"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="150dp"
+            android:background="@color/blue"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints">
 
-            <LinearLayout
-                android:id="@+id/llLogin"
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:background="@color/colorGreen"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="MissingConstraints">
-
-                <TextView
-                    android:id="@+id/welcomeText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_20dp"
-                    android:gravity="start"
-                    android:text="@string/user_details"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_25sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </LinearLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/first_name_l"
+            <TextView
+                android:id="@+id/welcomeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_20dp"
-                android:layout_marginTop="@dimen/margin_40dp"
-                android:layout_marginEnd="@dimen/margin_20dp"
-                android:hint="@string/first_name"
-                android:textColorHint="@color/colorPrimary"
-                android:textStyle="bold"
-                app:hintTextAppearance="@style/TextLabel"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/llLogin">
-
-                <EditText
-                    android:id="@+id/first_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:focusableInTouchMode="true"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/last_name_l"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_20dp"
-                android:layout_marginTop="@dimen/margin_10dp"
-                android:layout_marginEnd="@dimen/margin_20dp"
-                android:hint="@string/last_name"
-                android:textColorHint="@color/colorPrimary"
-                app:hintTextAppearance="@style/TextLabel"
-                app:layout_constraintTop_toBottomOf="@id/first_name_l">
-
-                <EditText
-                    android:id="@+id/last_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:focusableInTouchMode="true"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/email_l"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_20dp"
-                android:layout_marginTop="@dimen/margin_10dp"
-                android:layout_marginEnd="@dimen/margin_20dp"
-                android:hint="@string/email"
-                android:textColorHint="@color/colorPrimary"
-                android:textStyle="bold"
-                app:hintTextAppearance="@style/TextLabel"
-                app:layout_constraintTop_toBottomOf="@id/last_name_l">
-
-                <EditText
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:focusableInTouchMode="true"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/mobile_number_l"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_20dp"
-                android:layout_marginTop="@dimen/margin_10dp"
-                android:layout_marginEnd="@dimen/margin_20dp"
-                android:hint="@string/mobile_number"
-                android:textColorHint="@color/colorPrimary"
-                app:hintTextAppearance="@style/TextLabel"
-                app:layout_constraintTop_toBottomOf="@id/email_l">
-
-                <EditText
-                    android:id="@+id/mobile_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:focusableInTouchMode="true"
-                    android:inputType="number"
-                    android:maxLength="10"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_14sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/saveBtn"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginStart="@dimen/margin_20dp"
-                android:layout_marginTop="@dimen/margin_30dp"
-                android:layout_marginEnd="@dimen/margin_20dp"
-                android:layout_marginBottom="@dimen/margin_50dp"
-                android:background="@drawable/green_btn_background"
-                android:text="Save"
-                android:textAllCaps="false"
+                android:gravity="start"
+                android:text="@string/user_details"
                 android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/mobile_number_l" />
+                android:textSize="@dimen/text_size_20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <ProgressBar
-                android:id="@+id/progressBar"
+            <TextView
+                android:id="@+id/tvUserAlertMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_20dp"
+                android:layout_marginTop="@dimen/margin_10dp"
+                android:gravity="start"
+                android:paddingEnd="@dimen/text_size_16sp"
+                android:text="@string/user_details_info"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_user_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_40dp"
+            android:layout_marginTop="@dimen/margin_20dp"
+            android:layout_marginEnd="@dimen/margin_40dp"
+            android:hint="@string/mobile_number"
+            android:textColorHint="@color/blue"
+            android:textStyle="bold"
+            app:hintTextAppearance="@style/TextLabel">
+
+            <EditText
+                android:id="@+id/etUser_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusableInTouchMode="true"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_user_admission_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_40dp"
+            android:layout_marginTop="@dimen/margin_20dp"
+            android:layout_marginEnd="@dimen/margin_40dp"
+            android:hint="@string/admission_id"
+            android:textColorHint="@color/blue"
+            app:hintTextAppearance="@style/TextLabel">
+
+            <EditText
+                android:id="@+id/etUser_admission_no"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusableInTouchMode="true"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_user_full_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_40dp"
+            android:layout_marginTop="@dimen/margin_20dp"
+            android:layout_marginEnd="@dimen/margin_40dp"
+            android:hint="@string/full_name"
+            android:textColorHint="@color/blue"
+            android:textStyle="bold"
+            app:hintTextAppearance="@style/TextLabel">
+
+            <EditText
+                android:id="@+id/etUser_full_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusableInTouchMode="true"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_user_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_40dp"
+            android:layout_marginTop="@dimen/margin_20dp"
+            android:layout_marginEnd="@dimen/margin_40dp"
+            android:hint="@string/email"
+            android:textColorHint="@color/blue"
+            app:hintTextAppearance="@style/TextLabel">
+
+            <EditText
+                android:id="@+id/etUser_email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusableInTouchMode="true"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_user_dob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_40dp"
+            android:layout_marginTop="@dimen/margin_20dp"
+            android:layout_marginEnd="@dimen/margin_40dp"
+            android:hint="@string/date_of_birth"
+            android:textColorHint="@color/blue"
+            app:hintTextAppearance="@style/TextLabel">
+
+            <EditText
+                android:id="@+id/etUser_dob"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="false"
+                android:inputType="date"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_40dp"
+            android:layout_marginTop="@dimen/margin_20dp"
+            android:layout_marginEnd="@dimen/margin_40dp"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/sp_gender_selector"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:backgroundTint="#cacaca"
+                android:gravity="center"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                android:id="@+id/tv_user_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:foregroundGravity="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/email_l" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:backgroundTint="#cacaca"
+                android:gravity="center"
+                android:text="@string/select_gender"
+                android:textColor="@color/blue"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_user_father_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_40dp"
+            android:layout_marginTop="@dimen/margin_20dp"
+            android:layout_marginEnd="@dimen/margin_40dp"
+            android:hint="@string/father_name"
+            android:textColorHint="@color/blue"
+            app:hintTextAppearance="@style/TextLabel">
+
+            <EditText
+                android:id="@+id/etUser_father_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusableInTouchMode="true"
+                android:inputType="textCapWords"
+                android:maxLength="20"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_user_mother_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_40dp"
+            android:layout_marginTop="@dimen/margin_20dp"
+            android:layout_marginEnd="@dimen/margin_40dp"
+            android:hint="@string/mother_name"
+            android:textColorHint="@color/blue"
+            app:hintTextAppearance="@style/TextLabel">
+
+            <EditText
+                android:id="@+id/etUser_mother_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusableInTouchMode="true"
+                android:inputType="textCapWords"
+                android:maxLength="20"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_parent_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_40dp"
+            android:layout_marginTop="@dimen/margin_20dp"
+            android:layout_marginEnd="@dimen/margin_40dp"
+            android:hint="@string/parent_mobile_number"
+            android:textColorHint="@color/blue"
+            app:hintTextAppearance="@style/TextLabel">
+
+            <EditText
+                android:id="@+id/et_parent_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusableInTouchMode="true"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_40dp"
+            android:layout_marginTop="@dimen/margin_20dp"
+            android:layout_marginEnd="@dimen/margin_40dp"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/sp_year_selector"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:backgroundTint="#cacaca"
+                android:gravity="center"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                android:id="@+id/tv_user_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:backgroundTint="#cacaca"
+                android:gravity="center"
+                android:text="@string/select_year"
+                android:textColor="@color/blue"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_40dp"
+            android:layout_marginTop="@dimen/margin_20dp"
+            android:layout_marginEnd="@dimen/margin_40dp"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/sp_branch_selector"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:backgroundTint="#cacaca"
+                android:gravity="center"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                android:id="@+id/tv_user_branch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:backgroundTint="#cacaca"
+                android:gravity="center"
+                android:text="@string/select_branch"
+                android:textColor="@color/blue"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_40dp"
+            android:layout_marginTop="@dimen/margin_20dp"
+            android:layout_marginEnd="@dimen/margin_40dp"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/check_terms_and_conditions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/checkbox_selector"
+                android:checked="false"
+                android:paddingLeft="8dp"
+                android:text=""
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/txt_privacy_policy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:padding="@dimen/margin_8dp"
+                android:maxLines="3"
+                android:text="@string/checked_message"
+                android:textColor="@color/sky_blue"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/saveBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="@dimen/margin_40dp"
+            android:background="@color/grey"
+            android:text="@string/save"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="center"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </LinearLayout>
+
+</ScrollView>

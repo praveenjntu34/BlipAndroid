@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,6 +37,7 @@ import com.at2t.blipandroid.model.AddPostData;
 import com.at2t.blipandroid.utils.BlipUtility;
 import com.at2t.blipandroid.utils.CustomEdittext;
 import com.at2t.blipandroid.viewmodel.AddPostViewModel;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.jetbrains.annotations.NotNull;
@@ -53,8 +53,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.at2t.blipandroid.utils.Constants.MOBILE_NUMBER;
-
 
 public class AddPostActivity extends AppCompatActivity implements
         DatePickerDialog.OnDateSetListener {
@@ -62,7 +60,7 @@ public class AddPostActivity extends AppCompatActivity implements
     public static final String TAG = "AddPostActivity";
     public static final int GALLERY_REQUEST_CODE = 1;
     private CustomEdittext postTitle;
-    private CustomEdittext postMessage;
+    private TextInputEditText postMessage;
     private ImageView ivAttachment;
     private String attachmentFilePath;
     private Button btnAddPost;

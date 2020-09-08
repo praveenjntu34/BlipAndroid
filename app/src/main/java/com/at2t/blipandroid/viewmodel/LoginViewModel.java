@@ -8,17 +8,22 @@ import com.at2t.blipandroid.data.network.ApiInterface;
 import com.at2t.blipandroid.data.network.NetworkManager;
 import com.at2t.blipandroid.data.network.RetrofitManager;
 import com.at2t.blipandroid.data.repositories.UserLoginRepository;
+import com.at2t.blipandroid.model.BannerDetailsDataModel;
+import com.at2t.blipandroid.model.BranchSectionData;
+
+import java.util.List;
 
 public class LoginViewModel extends ViewModel {
 
     public String phoneNumber;
     private UserLoginRepository userLoginRepository;
     private LiveData<Integer> integerLiveDataResponse;
+    private List<BranchSectionData> branchSectionDataList;
+    private List<BannerDetailsDataModel> bannerDetailsDataModelList;
     private Application application;
     private NetworkManager networkManager;
     private RetrofitManager retrofitManager;
     private ApiInterface loginApiService;
-
 
     public LoginViewModel() {
         networkManager = NetworkManager.getInstance();
@@ -38,10 +43,12 @@ public class LoginViewModel extends ViewModel {
         userLoginRepository.parentLoginUsingPhone(phoneNumber);
     }
 
-    public void updateUserProfileDetails(String admissionId, Integer childId, String childrenName, String email, String firstName, String lastName, Integer parentId, Integer personId, String phoneNumber, Integer relTenantInstitutionId, String secondaryParentName, String secondaryPhoneNumber, Integer sectionId) {
+    public void updateUserProfileDetails(String admissionId, Integer childId, String childrenName, String email, String firstName, String lastName, Integer parentId, Integer personId, String phoneNumber, Integer relTenantInstitutionId, String secondaryParentName, String secondaryPhoneNumber, Integer sectionId,
+                                         String instituteName, String gender, String dob) {
+
         userLoginRepository.updateUserProfileDetails(admissionId, childId, childrenName,
                 email, firstName, lastName, parentId, personId, phoneNumber, relTenantInstitutionId,
-                secondaryParentName, secondaryPhoneNumber, sectionId);
+                secondaryParentName, secondaryPhoneNumber, sectionId, instituteName, gender, dob);
     }
 
     public void saveFcmTokenInstructor(int instructorId, String fcmToken) {
@@ -56,8 +63,22 @@ public class LoginViewModel extends ViewModel {
         userLoginRepository.getUserProfileDetails(parentId);
     }
 
-    public void getAllPostsForUsers(int sectionId, String date) {
-        userLoginRepository.getListofPost(sectionId, date);
+    public void getBranchDetails(int relTenantInstitutionId) {
+        userLoginRepository.getBranchSectionDetails(relTenantInstitutionId);
+    }
+
+    public void getBannerDetails(int relTenantInstitutionId) {
+        userLoginRepository.getBannerDetails(relTenantInstitutionId);
+    }
+
+    public List<BranchSectionData> getBranchData() {
+       branchSectionDataList =  userLoginRepository.getBranchesLiveData();
+        return branchSectionDataList;
+    }
+
+    public List<BannerDetailsDataModel> getBannerDetails() {
+        bannerDetailsDataModelList =  userLoginRepository.getBannerDetailsDataModelList();
+        return bannerDetailsDataModelList;
     }
 
 

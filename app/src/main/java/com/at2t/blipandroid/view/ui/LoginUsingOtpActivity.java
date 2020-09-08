@@ -30,7 +30,7 @@ import com.msg91.sendotpandroid.library.roots.SendOTPResponseCode;
 
 
 public class LoginUsingOtpActivity extends AppCompatActivity implements VerificationListener,
-View.OnClickListener{
+        View.OnClickListener {
 
     public static final String TAG = "LoginUsingOtp";
     private boolean isFirstParentLogin;
@@ -48,8 +48,7 @@ View.OnClickListener{
     private EditText otp2EditText;
     private EditText otp3EditText;
     private EditText otp4EditText;
-
-
+    private String userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +82,11 @@ View.OnClickListener{
 //        createVerification();
     }
 
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
     private void setData() {
         resendText = getApplicationContext().getResources().getString(R.string.didn_t_get_code);
         setText();
@@ -108,7 +112,7 @@ View.OnClickListener{
 
     private void changeOtpScreenColor() {
         String role = BlipUtility.getRole(this);
-        if(role != null && role.equals("Instructor")) {
+        if (role != null && role.equals("Instructor")) {
             customButton.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
             llLoginTopHeader.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
             tvResendOtpTextView.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
@@ -217,7 +221,7 @@ View.OnClickListener{
             public void run() {
 
                 if (responseCode == SendOTPResponseCode.DIRECT_VERIFICATION_SUCCESSFUL_FOR_NUMBER || responseCode == SendOTPResponseCode.OTP_VERIFIED) {
-                    if(isFirstParentLogin) {
+                    if (!isFirstParentLogin) {
                         launchParentRegistrationScreen();
                     } else {
                         otpVerified();
@@ -265,11 +269,13 @@ View.OnClickListener{
     private void launchParentRegistrationScreen() {
         Intent intent = new Intent(this, UserRegistrationActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void otpVerified() {
-            Intent intent = new Intent(this, MainDashboardActivity.class);
-            startActivity(intent);
+        Intent intent = new Intent(this, MainDashboardActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public String getOTPtext() {
@@ -292,7 +298,8 @@ View.OnClickListener{
     public void onClick(View view) {
         if (view.getId() == R.id.btnLogin) {
             if (getOTPtext().length() == 4) {
-                if(isFirstParentLogin ) {
+                userType = BlipUtility.getRole(this);
+                if (userType.equals("Parent") && isFirstParentLogin) {
                     launchParentRegistrationScreen();
                 } else {
                     otpVerified();

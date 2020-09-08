@@ -73,14 +73,7 @@ public class HomePageFragment extends BaseFragment {
         cvProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchToFragment(new UserProfileFragment(), R.id.container, TAG);
-            }
-        });
-
-        btnKnowMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switchToFragment(new AboutUsPrivacyPolicyFragment(), R.id.container, TAG);
+                switchToFragment(new UserProfileDetailsFragment(), R.id.container, TAG);
             }
         });
 

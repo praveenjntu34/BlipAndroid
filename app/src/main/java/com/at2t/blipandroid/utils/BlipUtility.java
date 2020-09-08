@@ -5,9 +5,12 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.at2t.blipandroid.model.BranchSectionData;
 import com.at2t.blipandroid.model.InstructorLoginData;
 import com.at2t.blipandroid.model.ParentLoginData;
 import com.at2t.blipandroid.model.UserProfileDetails;
+
+import java.util.List;
 
 public class BlipUtility {
 
@@ -94,6 +97,7 @@ public class BlipUtility {
 
         return childrenName;
     }
+
     public static String getSecondaryParentName(Context context) {
         String secondaryParentName = null;
         if (SharedPreferencesActivtiy.getSharedPrefString(context, Constants.SECONDARY_PARENT_NAME) != null && !SharedPreferencesActivtiy.getSharedPrefString(context, Constants.SECONDARY_PARENT_NAME).isEmpty()) {
@@ -168,24 +172,39 @@ public class BlipUtility {
 
     public static int getInstructorSectionId(Context context) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-//        if(instructorId != 0) {
-//            if (sharedPreferences.getInt(Constants.INSTRUCTOR_SECTION_ID, 0)!= 0) {
                 instructorSectionId = sharedPreferences.getInt(Constants.INSTRUCTOR_SECTION_ID, 0);
-                Log.e("Blip util", "getInstructorSectionId: "+ instructorSectionId);
-//            }
-//        }
-
         return instructorSectionId;
     }
 
+    public static String getUserInstituteName(Context context) {
+        String instituteName;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        instituteName = sharedPreferences.getString(Constants.INSTITUTE_NAME, "");
+
+        return instituteName;
+    }
+
     public static int getParentSectionId(Context context) {
-        if(userId != 0) {
-            if (SharedPreferencesActivtiy.getSharedPrefInteger(context, Constants.INSTRUCTOR_SECTION_ID) != 0) {
-                userSectionId = SharedPreferencesActivtiy.getSharedPrefInteger(context, Constants.INSTRUCTOR_SECTION_ID);
-            }
-        }
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        userSectionId = sharedPreferences.getInt(Constants.PARENT_SECTION_ID, 0);
 
         return userSectionId;
+    }
+
+    public static String getUserGender(Context context) {
+        String gender;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        gender = sharedPreferences.getString(Constants.GENDER, "");
+
+        return gender;
+    }
+
+    public static String getUserDob(Context context) {
+        String userDob;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        userDob = sharedPreferences.getString(Constants.DATE_OF_BIRTH, "");
+
+        return userDob;
     }
 
     public static boolean getIsParentFirstLoginId(Context context) {

@@ -2,9 +2,7 @@ package com.at2t.blipandroid.view.ui.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +12,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.at2t.blipandroid.R;
@@ -25,31 +22,24 @@ import com.at2t.blipandroid.view.BlipBaseActivity;
 import com.at2t.blipandroid.view.ui.UserRegistrationActivity;
 import com.at2t.blipandroid.viewmodel.LoginViewModel;
 
-import java.util.Objects;
-
 public class UserProfileFragment extends BaseFragment {
 
     public static final String TAG = "UserProfileFragment";
 
+    private TextView tvAboutUs;
+    private TextView tvPrivacyPolicy;
     private TextView tvUserName;
-    private TextView tvInstituteName;
-    private TextView tvUserEmail;
-    private TextView tvUserState;
-    private TextView tvUserPhone;
+
+    private ImageView ivAboutUs;
+    private ImageView ivPrivacyPolicy;
     private ImageView ivUserImg;
-    private ImageView ivInstituteImg;
-    private ImageView ivUserEmail;
-    private ImageView ivUserState;
-    private ImageView ivUserPhone;
     private ImageView editIcon;
 
     private String firstName;
     private String lastName;
     private String fullName;
-    private String emailId;
-    private String phoneNumber;
     private String userType;
-    private int institutionId;
+
     private LoginViewModel viewModel;
 
     private LinearLayout linearLayoutLogout;
@@ -63,7 +53,7 @@ public class UserProfileFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_user_profile, container, false);
+        return inflater.inflate(R.layout.fragment_user_settings, container, false);
     }
 
     @Override
@@ -73,16 +63,14 @@ public class UserProfileFragment extends BaseFragment {
     }
 
     private void initializeViews(View view) {
-        tvInstituteName = view.findViewById(R.id.tv_user_institute);
         tvUserName = view.findViewById(R.id.tv_user_name);
-        tvUserEmail = view.findViewById(R.id.tv_email);
-        tvUserPhone = view.findViewById(R.id.tv_user_mobile);
-        tvUserState = view.findViewById(R.id.tv_user_state);
-        ivInstituteImg = view.findViewById(R.id.iv_user_institute);
-        ivUserEmail = view.findViewById(R.id.iv_user_email);
+        tvAboutUs = view.findViewById(R.id.tv_user_about_us);
+        tvPrivacyPolicy = view.findViewById(R.id.tv_user_privacy_policy);
+
         ivUserImg = view.findViewById(R.id.iv_user_img);
-        ivUserPhone = view.findViewById(R.id.iv_user_phone);
-        ivUserState = view.findViewById(R.id.iv_user_state);
+        ivAboutUs = view.findViewById(R.id.iv_user_about_us);
+        ivPrivacyPolicy = view.findViewById(R.id.iv_user_privacy_policy);
+
         editIcon = view.findViewById(R.id.edit_icon);
         linearLayoutLogout = view.findViewById(R.id.ll_logout);
 
@@ -90,12 +78,6 @@ public class UserProfileFragment extends BaseFragment {
         lastName = BlipUtility.getLastName(getContext());
         fullName = firstName + " " + lastName;
         tvUserName.setText(fullName);
-
-        emailId = BlipUtility.getEmailId(getContext());
-        tvUserEmail.setText(emailId);
-
-        phoneNumber = BlipUtility.getPhoneNumber(getContext());
-        tvUserPhone.setText(phoneNumber);
 
         userType = BlipUtility.getRole(getContext());
 
@@ -109,12 +91,22 @@ public class UserProfileFragment extends BaseFragment {
                 }
             });
         } else {
-            tvUserEmail.setVisibility(View.INVISIBLE);
-            tvUserPhone.setVisibility(View.INVISIBLE);
-            ivUserEmail.setVisibility(View.INVISIBLE);
-            ivUserPhone.setVisibility(View.INVISIBLE);
             editIcon.setVisibility(View.GONE);
         }
+
+        tvAboutUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchToFragment(new AboutUsFragment(), R.id.container, TAG);
+            }
+        });
+
+        tvPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchToFragment(new PrivacyPolicyFragment(), R.id.container, TAG);
+            }
+        });
 
         linearLayoutLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +125,6 @@ public class UserProfileFragment extends BaseFragment {
         BlipUtility.clearSharedPref(context, Constants.USER_FIRST_NAME);
         BlipUtility.clearSharedPref(context, Constants.USER_LAST_NAME);
         BlipUtility.clearSharedPref(context, Constants.PARENT_ID);
-
         BlipUtility.clearSharedPref(context, Constants.PARENT_SECTION_ID);
         BlipUtility.clearSharedPref(context, Constants.FCM_PARENT_ID);
         BlipUtility.clearSharedPref(context, Constants.IS_PARENT_FIRST_LOGIN);

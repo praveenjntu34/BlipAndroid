@@ -42,11 +42,21 @@ public class UserProfileDetails {
     @SerializedName("sectionId")
     private Integer sectionId;
 
+    @SerializedName("institutionName")
+    private String institutionName;
+
+    @SerializedName("gender")
+    private String gender;
+
+    @SerializedName("dateOfBirth")
+    private String dateOfBirth;
+
     /**
      * No args constructor for use in serialization
      */
 
-    public UserProfileDetails(String admissionId, Integer childId, String childrenName, String email, String firstName, String lastName, Integer parentId, Integer personId, String phoneNumber, Integer relTenantInstitutionId, String secondaryParentName, String secondaryPhoneNumber, Integer sectionId) {
+    public UserProfileDetails(String admissionId, Integer childId, String childrenName, String email, String firstName, String lastName, Integer parentId, Integer personId, String phoneNumber, Integer relTenantInstitutionId, String secondaryParentName, String secondaryPhoneNumber, Integer sectionId,
+                              String institutionName, String gender, String dateOfBirth) {
         this.admissionId = admissionId;
         this.childId = childId;
         this.childrenName = childrenName;
@@ -60,6 +70,33 @@ public class UserProfileDetails {
         this.secondaryParentName = secondaryParentName;
         this.secondaryPhoneNumber = secondaryPhoneNumber;
         this.sectionId = sectionId;
+        this.institutionName = institutionName;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getInstitutionName() {
+        return institutionName;
+    }
+
+    public void setInstitutionName(String institutionName) {
+        this.institutionName = institutionName;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getAdmissionId() {

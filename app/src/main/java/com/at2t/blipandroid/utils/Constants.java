@@ -30,6 +30,7 @@ public class Constants {
     public static final String USER_ID_TAG = "user_id_tag";
     public static final String USER_FIRST_NAME = "firstName";
     public static final String USER_LAST_NAME = "lastName";
+    public static final String BRANCH_DETAILS = "branch_details";
 
     public static final String FCM_INSTRUCTOR_ID = "instructorId";
     public static final String FCM_PARENT_ID = "parentId";
@@ -45,6 +46,10 @@ public class Constants {
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String SECONDARY_PARENT_NAME = "secondaryParentName";
     public static final String SECONDARY_PHONE_NUMBER = "secondaryPhoneNumber";
+
+    public static final String INSTITUTE_NAME = "institute_name";
+    public static final String DATE_OF_BIRTH = "user_dob";
+    public static final String GENDER = "user_gender";
 
 
 
