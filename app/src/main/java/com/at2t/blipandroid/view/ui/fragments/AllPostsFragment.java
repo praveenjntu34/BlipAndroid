@@ -5,11 +5,9 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -19,23 +17,17 @@ import androidx.annotation.NonNull;
 
 import com.at2t.blipandroid.utils.BaseFragment;
 import com.at2t.blipandroid.utils.BlipUtility;
-import com.at2t.blipandroid.utils.Constants;
 import com.at2t.blipandroid.utils.DatePickerFragment;
-import com.at2t.blipandroid.utils.Enums;
 import com.at2t.blipandroid.view.ui.AddPostActivity;
-import com.at2t.blipandroid.viewmodel.LoginViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -43,18 +35,15 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.at2t.blipandroid.R;
 import com.at2t.blipandroid.model.PostsData;
 import com.at2t.blipandroid.view.adapters.PostsAdapter;
 import com.at2t.blipandroid.viewmodel.DashBoardViewModel;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 public class AllPostsFragment extends BaseFragment implements
         DatePickerDialog.OnDateSetListener {
@@ -79,6 +68,7 @@ public class AllPostsFragment extends BaseFragment implements
     private int userId;
     String todaysDateString;
 
+    private List<PostsData> postsDataModelList;
     private LiveData<List<PostsData>> liveData;
     private Observer<List<PostsData>> observer = new Observer<List<PostsData>>() {
         @Override
@@ -88,18 +78,8 @@ public class AllPostsFragment extends BaseFragment implements
                                 recyclerView.setVisibility(View.VISIBLE);
                             }
                             if (recyclerView != null) {
-                                postsRecyclerViewAdapter = (PostsAdapter) recyclerView.getAdapter();
-                                if (postsRecyclerViewAdapter == null) {
-                                    postsRecyclerViewAdapter = new PostsAdapter(getContext(), postsDataList);
-                                    Collections.reverse(postsDataList);
-                                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-                                    recyclerView.setLayoutManager(linearLayoutManager);
-                                    recyclerView.setAdapter(postsRecyclerViewAdapter);
-                                } else {
-                                    Collections.reverse(postsDataList);
-                                    postsRecyclerViewAdapter.setdata(postsDataList);
-                                }
-                                noDataTV.setVisibility(View.GONE);
+                                postsDataModelList = postsDataList;
+                                setRecyclerView(postsDataList);
                             } else {
                                 noDataTV.setVisibility(View.VISIBLE);
                             }
@@ -109,13 +89,27 @@ public class AllPostsFragment extends BaseFragment implements
                             Log.d("Post failed: ", "Try again");
                         }
                     }
-                };
 
+    };
+
+    private void setRecyclerView(List<PostsData> postsDataList) {
+        postsRecyclerViewAdapter = (PostsAdapter) recyclerView.getAdapter();
+        if (postsRecyclerViewAdapter == null) {
+            postsRecyclerViewAdapter = new PostsAdapter(getContext(), postsDataList);
+            Collections.reverse(postsDataList);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setAdapter(postsRecyclerViewAdapter);
+        } else {
+            Collections.reverse(postsDataList);
+            postsRecyclerViewAdapter.setdata(postsDataList);
+        }
+        noDataTV.setVisibility(View.GONE);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
     }
 
     @Override
@@ -139,8 +133,6 @@ public class AllPostsFragment extends BaseFragment implements
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
         initializeUIView(view);
         recyclerView = view.findViewById(R.id.rv_posts);
         noDataTV = view.findViewById(R.id.noDataTV);
@@ -155,13 +147,6 @@ public class AllPostsFragment extends BaseFragment implements
             parentSectionId = BlipUtility.getParentSectionId(getContext());
             viewModel.getPostData(parentSectionId, "ALL");
         }
-
-
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
     }
 
     private void initializeUIView(View view) {
@@ -244,8 +229,31 @@ public class AllPostsFragment extends BaseFragment implements
 
     }
 
-
     private void goToAddPostActivity() {
         startActivity(new Intent(getActivity(), AddPostActivity.class));
     }
+
+//    @Override
+//    public void onItemClicked(int position) {
+//        PostsData postsData = postsDataModelList.get(position);
+//        PostItemDetailFragment postItemDetailFragment = new PostItemDetailFragment();
+//        String firstName = postsData.getFirstname();
+//        String lastName = postsData.getLastName();
+//        String fullName = firstName + " " + lastName;
+//
+//        Bundle bundle = new Bundle();
+//        bundle.putInt(Constants.POSITION, position);
+//        bundle.putString(Constants.POSTS_USER_NAME, fullName);
+//        bundle.putString(Constants.POSTS_TITLE, postsData.getTitle());
+//        bundle.putString(Constants.POSTS_DESCRIPTION, postsData.getMessage());
+//        bundle.putString(Constants.POSTS_ATTACHMENT, postsData.getPostAttachmentId());
+//        bundle.putString(Constants.POSTS_INSTITUTE, postsData.getInstitutionName());
+//
+//        postItemDetailFragment.setArguments(bundle);
+//        FragmentManager fragmentManager = getFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.add(R.id.container, postItemDetailFragment, PostItemDetailFragment.TAG);
+//        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.commit();
+//    }
 }

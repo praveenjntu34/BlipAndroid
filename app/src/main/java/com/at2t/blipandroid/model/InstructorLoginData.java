@@ -8,7 +8,6 @@ import static com.at2t.blipandroid.utils.Constants.MOBILE_NUMBER_LENGTH;
 
 public class InstructorLoginData {
 
-    private String phoneNumber;
     @SerializedName("instructorId")
     private int instructorUserId;
 
@@ -29,6 +28,20 @@ public class InstructorLoginData {
 
     @SerializedName("role")
     private String role;
+
+    @SerializedName("phoneNumber")
+    private String phoneNumber;
+
+    @SerializedName("institutionName")
+    private String institutionName;
+
+    public String getInstitutionName() {
+        return institutionName;
+    }
+
+    public void setInstitutionName(String institutionName) {
+        this.institutionName = institutionName;
+    }
 
     public int getInstructorUserId() {
         return instructorUserId;

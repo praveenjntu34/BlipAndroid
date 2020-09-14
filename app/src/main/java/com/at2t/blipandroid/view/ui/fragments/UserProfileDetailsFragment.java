@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
     private TextView tvUserYear;
     private TextView tvUserBranch;
     private TextView tvUserParentMobile;
+    private TextView tvInstituteName;
 
     private ImageView ivUserFullName;
     private ImageView ivAdmissionId;
@@ -40,6 +42,16 @@ public class UserProfileDetailsFragment extends BaseFragment {
     private ImageView ivUserYear;
     private ImageView ivUserBranch;
     private ImageView ivUserParentMobile;
+    private ImageView ivInstitute;
+
+    private LinearLayout llUserDateOfBirth;
+    private LinearLayout llUserFatherName;
+    private LinearLayout llUserMotherName;
+    private LinearLayout llUserYear;
+    private LinearLayout llUserBranch;
+    private LinearLayout llUserParentMobile;
+    private LinearLayout llAdmissionId;
+    private LinearLayout llGender;
 
     private String firstName;
     private String lastName;
@@ -52,10 +64,9 @@ public class UserProfileDetailsFragment extends BaseFragment {
     private String userFatherName;
     private String userMotherName;
     private String userParentMobileNumber;
-    private int userYear;
-    private String userBranch;
-    private String userGender;
-    private String userDateOfBirth;
+    private String instituteName;
+    private String gender;
+    private String dateOfBirth;
 
     @Nullable
     @Override
@@ -82,6 +93,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
         tvUserParentMobile = view.findViewById(R.id.tv_parent_mobile_number);
         tvUserPhone = view.findViewById(R.id.tv_user_phone);
         tvUserYear = view.findViewById(R.id.tv_user_year);
+        tvInstituteName = view.findViewById(R.id.tv_user_institute);
 
         ivAdmissionId = view.findViewById(R.id.iv_user_admission_id);
         ivUserBranch = view.findViewById(R.id.iv_user_branch);
@@ -94,18 +106,51 @@ public class UserProfileDetailsFragment extends BaseFragment {
         ivUserMotherName = view.findViewById(R.id.iv_user_mother_name);
         ivUserYear = view.findViewById(R.id.iv_user_year);
         ivUserPhone = view.findViewById(R.id.iv_user_phone);
+        ivInstitute = view.findViewById(R.id.iv_user_institute);
+
+        llAdmissionId = view.findViewById(R.id.llAdmissionId);
+        llGender = view.findViewById(R.id.ll_gender);
+        llUserBranch = view.findViewById(R.id.ll_user_branch);
+        llUserDateOfBirth = view.findViewById(R.id.ll_dateOfBirth);
+        llUserFatherName = view.findViewById(R.id.ll_user_father);
+        llUserMotherName = view.findViewById(R.id.ll_user_mother);
+        llUserParentMobile = view.findViewById(R.id.ll_parent_mobile);
 
         retrieveData();
-        setData();
+        String role = BlipUtility.getRole(getContext());
+        if (role.equals("Instructor")) {
+            setDataForInstructor();
+        } else {
+            setDataForParent();
+        }
     }
 
-    private void setData() {
+    private void setDataForParent() {
         tvUserFullName.setText(fullName);
         tvUserPhone.setText(phoneNumber);
         tvUserEmail.setText(emailId);
         tvUserParentMobile.setText(userParentMobileNumber);
         tvUserFatherName.setText(userFatherName);
         tvAdmissionId.setText(userAdmissionId);
+        tvUserGender.setText(gender);
+        tvUserDateOfBirth.setText(dateOfBirth);
+
+        llUserParentMobile.setVisibility(View.VISIBLE);
+        llUserMotherName.setVisibility(View.VISIBLE);
+        llUserFatherName.setVisibility(View.VISIBLE);
+        llUserDateOfBirth.setVisibility(View.VISIBLE);
+        llUserBranch.setVisibility(View.VISIBLE);
+        llGender.setVisibility(View.VISIBLE);
+        llAdmissionId.setVisibility(View.VISIBLE);
+//        llUserYear.setVisibility(View.VISIBLE);
+
+    }
+
+    private void setDataForInstructor() {
+        tvUserFullName.setText(fullName);
+        tvUserPhone.setText(phoneNumber);
+        tvUserEmail.setText(emailId);
+        tvInstituteName.setText(instituteName);
     }
 
     private void retrieveData() {
@@ -116,20 +161,16 @@ public class UserProfileDetailsFragment extends BaseFragment {
 
         phoneNumber = BlipUtility.getPhoneNumber(getContext());
         emailId = BlipUtility.getEmailId(getContext());
+        instituteName = BlipUtility.getUserInstituteName(getContext());
+
         userParentMobileNumber = BlipUtility.getSecondaryParentPhone(getContext());
         userAdmissionId = BlipUtility.getAdmissionId(getContext());
 
+        dateOfBirth = BlipUtility.getUserDob(getContext());
+        gender = BlipUtility.getUserGender(getContext());
         //TODO Branch, father name, mother name, date of birth, gender and year data
 
         userFatherName = BlipUtility.getSecondaryParentName(getContext());
-    }
-
-    public void showAllViews() {
-
-    }
-
-    public void hideViews() {
-
     }
 
 }

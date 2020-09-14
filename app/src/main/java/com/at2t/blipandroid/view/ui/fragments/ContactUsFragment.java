@@ -20,9 +20,9 @@ import com.at2t.blipandroid.utils.BaseFragment;
 public class ContactUsFragment extends BaseFragment implements View.OnClickListener {
     public static final String TAG = "ContactUsFragment";
     private Button whatsAppBtn;
-    private TextView contactName;
     private TextView contactEmail;
     private TextView contactAddress;
+    private TextView tvSendEmail;
 
     @Nullable
     @Override
@@ -35,9 +35,8 @@ public class ContactUsFragment extends BaseFragment implements View.OnClickListe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         whatsAppBtn = view.findViewById(R.id.whatsapp);
-        contactName = view.findViewById(R.id.tv_name);
         contactEmail = view.findViewById(R.id.tv_email);
-        contactAddress = view.findViewById(R.id.tv_address_box);
+        tvSendEmail = view.findViewById(R.id.tv_send_email);
         whatsAppBtn.setOnClickListener(this);
     }
 

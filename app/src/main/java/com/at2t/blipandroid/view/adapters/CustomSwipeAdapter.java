@@ -4,24 +4,30 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.PagerAdapter;
+
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.at2t.blipandroid.R;
-import com.at2t.blipandroid.model.EventSlides;
+import com.at2t.blipandroid.model.BannerDetailsDataModel;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 public class CustomSwipeAdapter extends PagerAdapter {
 
-    private List<EventSlides> eventSlides;
+    public static final String TAG = "CustomSwipeAdapter";
+
+    private List<BannerDetailsDataModel> eventSlides;
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private int custom_position = 0;
 
-    public CustomSwipeAdapter(List<EventSlides> slidesList,Context mContext) {
+    public CustomSwipeAdapter(List<BannerDetailsDataModel> slidesList,Context mContext) {
         this.eventSlides = slidesList;
         this.mContext = mContext;
     }
@@ -41,13 +47,24 @@ public class CustomSwipeAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         if(custom_position > 3)
             custom_position = 0;
-        EventSlides slides = eventSlides.get(custom_position);
+//        BannerDetailsDataModel slides = eventSlides.get(custom_position);
         custom_position++;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = mLayoutInflater.inflate(R.layout.event_swipe_layout, container, false);
 
         ImageView imageView = itemView.findViewById(R.id.iv_swipe_images);
-        imageView.setImageResource(slides.getEventImages());
+
+//        try {
+//            if (slides.getBannerStream() != null) {
+//                imageView.setVisibility(View.VISIBLE);
+//                final String encodedString = slides.getBannerStream();
+//                final String pureBase64Encoded = encodedString.substring(encodedString.indexOf(",") + 1);
+//                final byte[] decodedBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
+//                Glide.with(mContext).load(decodedBytes).into(imageView);
+//            }
+//        } catch (ArrayIndexOutOfBoundsException e) {
+//            Log.e(TAG, "onBindViewHolder: ", e.getCause());
+//        }
         container.addView(itemView);
         return itemView;
     }

@@ -80,9 +80,6 @@ public class MainDashboardActivity extends AppCompatActivity {
                             case R.id.home:
                                 fragment = new HomePageFragment();
                                 break;
-                            case R.id.posts:
-                                fragment = new AllPostsFragment();
-                                break;
                             case R.id.profile:
                                 fragment = new UserProfileFragment();
                                 break;
@@ -101,8 +98,6 @@ public class MainDashboardActivity extends AppCompatActivity {
         if(parentId != 0) {
             loginViewModel.getParentProfileDetails(parentId);
         }
-
-
     }
 
     private void clearBackStack() {
@@ -113,11 +108,7 @@ public class MainDashboardActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        if (bottomNavigationView.getSelectedItemId() != R.id.home) {
-            bottomNavigationView.setSelectedItemId(R.id.home);
-        } else {
-            super.onBackPressed();
-        }
+    public void onBackPressed(){
+        finish();
     }
 }

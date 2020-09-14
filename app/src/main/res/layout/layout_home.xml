@@ -63,7 +63,7 @@
             android:foregroundGravity="center"
             android:scaleType="centerCrop"
             android:src="@drawable/tick_mark"
-            android:text="Welcome abroad!" />
+            android:text="@string/welcome_aboard" />
     </LinearLayout>
 
     <RelativeLayout
@@ -119,6 +119,28 @@
             android:src="@drawable/welcome2" />
     </RelativeLayout>
 
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_height="140dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_dateView"
+        android:layout_width="match_parent">
+
+    </androidx.viewpager.widget.ViewPager>
+
+    <LinearLayout
+        android:id="@+id/dots_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/view_pager" />
+
     <LinearLayout
         android:id="@+id/llPost"
         android:layout_width="match_parent"
@@ -128,7 +150,7 @@
         android:layout_marginEnd="8dp"
         android:orientation="horizontal"
         android:weightSum="2"
-        app:layout_constraintTop_toBottomOf="@+id/rl_topWelcomeHeader">
+        app:layout_constraintTop_toBottomOf="@+id/dots_container">
 
         <RelativeLayout
             android:id="@+id/rlPosts"

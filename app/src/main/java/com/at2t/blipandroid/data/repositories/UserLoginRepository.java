@@ -1,7 +1,6 @@
 package com.at2t.blipandroid.data.repositories;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -18,18 +17,14 @@ import com.at2t.blipandroid.model.BranchSectionData;
 import com.at2t.blipandroid.model.FcmTokenModel;
 import com.at2t.blipandroid.model.InstructorLoginData;
 import com.at2t.blipandroid.model.ParentDataModel;
-import com.at2t.blipandroid.model.PostsData;
 import com.at2t.blipandroid.model.UserProfileData;
 import com.at2t.blipandroid.model.UserProfileDetails;
 import com.at2t.blipandroid.utils.BlipUtility;
 import com.at2t.blipandroid.utils.Constants;
 import com.at2t.blipandroid.utils.Enums;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +71,10 @@ public class UserLoginRepository {
                         BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.USER_FIRST_NAME, response.body().getFirstName());
                         BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.USER_LAST_NAME, response.body().getLastName());
                         BlipUtility.setSharedPrefInteger(application.getApplicationContext(), Constants.INSTITUTE_ID, response.body().getRelTenantInstitutionId());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.INSTITUTE_NAME, response.body().getInstitutionName());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.PHONE_NUMBER, response.body().getPhoneNumber());
+
+
                         editor.putString(Constants.ACCESS_TOKEN, "1234");
                         editor.putInt(Constants.INSTRUCTOR_SECTION_ID, response.body().getSectionId());
 
@@ -284,6 +283,7 @@ public class UserLoginRepository {
             public void onResponse(@NotNull Call<List<BannerDetailsDataModel>> call, @NotNull Response<List<BannerDetailsDataModel>> response) {
                 if (response.body() != null) {
                     bannerDetailsDataModelList = response.body();
+                    Log.d(TAG, "onResponse: " + response.body().get(0));
                     if (bannerDetailsDataModelList == null) {
                         bannerDetailsDataModelList = new ArrayList<>();
                     }

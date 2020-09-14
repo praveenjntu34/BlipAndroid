@@ -27,15 +27,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="16dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
                     android:padding="@dimen/margin_8dp"
                     android:text="Your Profile Details"
                     android:textColor="#fff"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </RelativeLayout>
@@ -45,67 +45,21 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/margin_20dp"
-        android:paddingBottom="@dimen/margin_8dp"
-        android:layout_marginBottom="@dimen/margin_40dp">
+        android:layout_marginBottom="@dimen/margin_40dp"
+        android:paddingBottom="@dimen/margin_8dp">
 
         <LinearLayout
             android:layout_width="360dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingTop="@dimen/margin_10dp"
             android:layout_marginTop="@dimen/margin_64dp"
             android:layout_marginBottom="@dimen/margin_40dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="@dimen/margin_10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="25dp">
-
-                <ImageView
-                    android:id="@+id/iv_user_phone"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/ic_smartphone_black_24dp" />
-
-                <TextView
-                    android:id="@+id/tv_user_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:paddingLeft="20dp"
-                    android:text="+91 9512349867"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:orientation="horizontal"
-                android:paddingLeft="25dp">
-
-                <ImageView
-                    android:id="@+id/iv_user_admission_id"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/admission_id" />
-
-                <TextView
-                    android:id="@+id/tv_user_admission_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:paddingLeft="20dp"
-                    android:text="73888BITS"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
                 android:orientation="horizontal"
                 android:paddingLeft="25dp">
 
@@ -133,6 +87,30 @@
                 android:paddingLeft="25dp">
 
                 <ImageView
+                    android:id="@+id/iv_user_phone"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_smartphone_black_24dp" />
+
+                <TextView
+                    android:id="@+id/tv_user_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:text="+91 9512349867"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal"
+                android:paddingLeft="25dp">
+
+                <ImageView
                     android:id="@+id/iv_user_email"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
@@ -146,12 +124,63 @@
                     android:paddingLeft="20dp"
                     android:text="shaily1234@gmail.com"
                     android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:orientation="horizontal"
+                android:paddingLeft="25dp">
+
+                <ImageView
+                    android:id="@+id/iv_user_institute"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/universitys" />
+
+                <TextView
+                    android:id="@+id/tv_user_institute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:text="Oxford"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/llAdmissionId"
+                android:layout_marginTop="25dp"
+                android:visibility="gone"
+                android:orientation="horizontal"
+                android:paddingLeft="25dp">
+
+                <ImageView
+                    android:id="@+id/iv_user_admission_id"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/admission_id" />
+
+                <TextView
+                    android:id="@+id/tv_user_admission_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:text="73888BITS"
+                    android:textStyle="bold" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_dateOfBirth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginTop="25dp"
                 android:orientation="horizontal"
                 android:paddingLeft="25dp">
@@ -168,15 +197,16 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:paddingLeft="20dp"
-                    android:textStyle="bold"
                     android:text="05-08-2000"
-                     />
+                    android:textStyle="bold" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_gender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
+                android:visibility="gone"
                 android:orientation="horizontal"
                 android:paddingLeft="25dp">
 
@@ -192,9 +222,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:paddingLeft="20dp"
-                    android:textStyle="bold"
                     android:text="Female"
-                    />
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -202,6 +231,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
+                android:visibility="gone"
                 android:orientation="horizontal"
                 android:paddingLeft="25dp">
 
@@ -217,15 +247,15 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:paddingLeft="20dp"
-                    android:textStyle="bold"
                     android:text="K S Sriram"
-                    />
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_user_mother"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginTop="25dp"
                 android:orientation="horizontal"
                 android:paddingLeft="25dp">
@@ -242,15 +272,15 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:paddingLeft="20dp"
-                    android:textStyle="bold"
                     android:text="Susmitha Devi"
-                    />
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_parent_mobile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginTop="25dp"
                 android:orientation="horizontal"
                 android:paddingLeft="25dp">
@@ -267,15 +297,15 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:paddingLeft="20dp"
-                    android:textStyle="bold"
                     android:text="+91 8896675433"
-                    />
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_user_year"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginTop="25dp"
                 android:orientation="horizontal"
                 android:paddingLeft="25dp">
@@ -292,15 +322,15 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:paddingLeft="20dp"
-                    android:textStyle="bold"
                     android:text="2020"
-                    />
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_user_branch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginTop="25dp"
                 android:orientation="horizontal"
                 android:paddingLeft="25dp">
@@ -317,9 +347,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:paddingLeft="20dp"
-                    android:textStyle="bold"
                     android:text="CSE"
-                    />
+                    android:textStyle="bold" />
             </LinearLayout>
 
         </LinearLayout>

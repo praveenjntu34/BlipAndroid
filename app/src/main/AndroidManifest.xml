@@ -14,9 +14,9 @@
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_app_logo"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/blip_logo"
+        android:roundIcon="@drawable/ic_app_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
@@ -25,7 +25,7 @@
             android:name=".view.ui.LoginUsingOtpActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
-            android:name=".view.BlipBaseActivity"
+            android:name=".view.ui.SplashScreenActivity"
             android:theme="@style/Theme.Design.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,6 +47,9 @@
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
         <activity android:name=".view.ui.LoginActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
+
+        <activity android:name=".view.BlipBaseActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
 
         <service android:name=".fcm.FCMMessagingService"
             android:exported="false">

@@ -51,8 +51,11 @@ public class Constants {
     public static final String DATE_OF_BIRTH = "user_dob";
     public static final String GENDER = "user_gender";
 
-
-
-
-
+    //Posts item details
+    public static final String POSITION = "position";
+    public static final String POSTS_USER_NAME = "posts_user_name";
+    public static final String POSTS_TITLE = "posts_title";
+    public static final String POSTS_DESCRIPTION = "post_description";
+    public static final String POSTS_ATTACHMENT = "posts_attachment";
+    public static final String POSTS_INSTITUTE = "posts_institute";
 }

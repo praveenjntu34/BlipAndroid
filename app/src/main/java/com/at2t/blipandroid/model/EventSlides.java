@@ -2,17 +2,17 @@ package com.at2t.blipandroid.model;
 
 public class EventSlides {
 
-    public int eventImages;
+    public String eventImages;
 
-    public EventSlides(int eventImages) {
+    public EventSlides(String eventImages) {
         this.eventImages = eventImages;
     }
 
-    public int getEventImages() {
+    public String getEventImages() {
         return eventImages;
     }
 
-    public void setEventImages(int eventImages) {
+    public void setEventImages(String eventImages) {
         this.eventImages = eventImages;
     }
 }

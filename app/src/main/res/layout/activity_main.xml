@@ -184,6 +184,26 @@
             tools:layout_conversion_wrapHeight="105"
             tools:layout_conversion_wrapWidth="818" />
 
+        <TextView
+            android:id="@+id/tv_email"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_40dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="24dp"
+            android:autoLink="email"
+            android:background="@color/white"
+            android:gravity="center_horizontal"
+            android:paddingStart="@dimen/margin_5dp"
+            android:text="@string/email_id_contact_at_login"
+            android:textColor="@color/black"
+            android:textColorHint="#9E9E9E"
+            android:textSize="@dimen/text_size_16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnLogin" />
+
         <ProgressBar
             android:id="@+id/progress_circular"
             android:layout_width="wrap_content"

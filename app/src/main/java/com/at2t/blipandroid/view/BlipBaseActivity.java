@@ -22,11 +22,11 @@ public class BlipBaseActivity extends AppCompatActivity {
         IS_USER_LOGGED_IN = BlipUtility.getSharedPrefBoolean(getApplicationContext(), Constants.IS_LOGGED_IN);
         if (IS_USER_LOGGED_IN) {
             Intent intent = new Intent(this, MainDashboardActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         } else {
             Intent intent = new Intent(this, LoginActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
 

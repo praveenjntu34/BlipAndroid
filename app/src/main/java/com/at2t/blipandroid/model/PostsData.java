@@ -18,6 +18,61 @@ public class PostsData {
     @SerializedName("auditCreatedDate")
     private long postCreatedDate;
 
+    @SerializedName("auditCreatedBy")
+    private int auditCreatedBy;
+
+    @SerializedName("institutionName")
+    private String institutionName;
+
+    @SerializedName("relTenantInstitutionId")
+    private int relTenantInstitutionId;
+
+    @SerializedName("firstname")
+    private String firstname;
+
+    @SerializedName("lastName")
+    private String lastName;
+
+    public int getAuditCreatedBy() {
+        return auditCreatedBy;
+    }
+
+    public void setAuditCreatedBy(int auditCreatedBy) {
+        this.auditCreatedBy = auditCreatedBy;
+    }
+
+    public String getInstitutionName() {
+        return institutionName;
+    }
+
+    public void setInstitutionName(String institutionName) {
+        this.institutionName = institutionName;
+    }
+
+    public int getRelTenantInstitutionId() {
+        return relTenantInstitutionId;
+    }
+
+    public void setRelTenantInstitutionId(int relTenantInstitutionId) {
+        this.relTenantInstitutionId = relTenantInstitutionId;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public long getPostCreatedDate() {
         return postCreatedDate;
     }

@@ -28,10 +28,12 @@ public class UserProfileFragment extends BaseFragment {
 
     private TextView tvAboutUs;
     private TextView tvPrivacyPolicy;
+    private TextView tvTermsConditions;
     private TextView tvUserName;
 
     private ImageView ivAboutUs;
     private ImageView ivPrivacyPolicy;
+    private ImageView ivTermsConditions;
     private ImageView ivUserImg;
     private ImageView editIcon;
 
@@ -66,10 +68,12 @@ public class UserProfileFragment extends BaseFragment {
         tvUserName = view.findViewById(R.id.tv_user_name);
         tvAboutUs = view.findViewById(R.id.tv_user_about_us);
         tvPrivacyPolicy = view.findViewById(R.id.tv_user_privacy_policy);
+        tvTermsConditions = view.findViewById(R.id.tv_user_terms_conditions);
 
         ivUserImg = view.findViewById(R.id.iv_user_img);
         ivAboutUs = view.findViewById(R.id.iv_user_about_us);
         ivPrivacyPolicy = view.findViewById(R.id.iv_user_privacy_policy);
+        ivTermsConditions = view.findViewById(R.id.iv_user_terms_conditions);
 
         editIcon = view.findViewById(R.id.edit_icon);
         linearLayoutLogout = view.findViewById(R.id.ll_logout);
@@ -81,7 +85,7 @@ public class UserProfileFragment extends BaseFragment {
 
         userType = BlipUtility.getRole(getContext());
 
-        if(userType.equals("Parent")) {
+        if (userType.equals("Parent")) {
             editIcon.setVisibility(View.VISIBLE);
             editIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -105,6 +109,13 @@ public class UserProfileFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 switchToFragment(new PrivacyPolicyFragment(), R.id.container, TAG);
+            }
+        });
+
+        tvTermsConditions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchToFragment(new TermsAndConditionsFragment(), R.id.container, TAG);
             }
         });
 

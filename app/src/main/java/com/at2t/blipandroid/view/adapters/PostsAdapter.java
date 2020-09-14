@@ -1,11 +1,14 @@
 package com.at2t.blipandroid.view.adapters;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +21,9 @@ import android.widget.Toast;
 import com.at2t.blipandroid.R;
 import com.at2t.blipandroid.model.PostsData;
 import com.at2t.blipandroid.utils.BlipUtility;
+import com.at2t.blipandroid.utils.Constants;
+import com.at2t.blipandroid.utils.ItemSelectedListener;
+import com.at2t.blipandroid.view.ui.fragments.PostItemDetailFragment;
 import com.bumptech.glide.Glide;
 
 import java.text.DateFormat;
@@ -32,6 +38,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
     private Context mContext;
     private List<? extends PostsData> postsDataList;
     private LayoutInflater layoutInflater;
+    private int auditCreatedid;
+    private String firstName;
+    private String lasttName;
+    private PostsData postsData;
 
     public PostsAdapter(Context context, List<PostsData> postsDataList) {
         this.mContext = context;
@@ -41,34 +51,88 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
 
     @NonNull
     @Override
-    public PostsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View rootView = LayoutInflater.from(mContext).inflate(R.layout.post_card_item, viewGroup,false);
+    public PostsAdapter.PostsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View rootView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.post_card_item, viewGroup, false);
         return new PostsViewHolder(rootView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PostsViewHolder postsViewHolder, int i) {
-        PostsData postsData = postsDataList.get(i);
+         postsData = postsDataList.get(i);
 
         long epochDate = postsData.getPostCreatedDate();
         String dateOfPost = convertEpochtoDateFormat(epochDate);
 
         postsViewHolder.txtView_title.setText(postsData.getTitle());
         postsViewHolder.txtView_description.setText(postsData.getMessage());
-        postsViewHolder.imgView_icon.setImageResource(R.drawable.active_dot);
-        postsViewHolder.txtView_name.setText(BlipUtility.getFirstName(mContext));
         postsViewHolder.tvDate.setText(dateOfPost);
+
+        setPostsCreatorName(postsData, postsViewHolder, i);
+
+        if (i % 3 == 2) {
+            postsViewHolder.imgView_icon.setImageResource(R.drawable.man);
+            postsViewHolder.cardTopHeader.setBackgroundResource(R.drawable.blue_card_header_gradient);
+        } else if (i % 3 == 1) {
+            postsViewHolder.imgView_icon.setImageResource(R.drawable.user_avatar);
+            postsViewHolder.cardTopHeader.setBackgroundResource(R.drawable.orange_card_header_gradient);
+        } else {
+            postsViewHolder.imgView_icon.setImageResource(R.drawable.nutritionist);
+            postsViewHolder.cardTopHeader.setBackgroundResource(R.drawable.card_header_gradient);
+        }
+
         try {
             if (postsData.getPostAttachmentId() != null) {
+                postsViewHolder.postImg.setVisibility(View.VISIBLE);
                 final String encodedString = postsData.getPostAttachmentId();
-                final String pureBase64Encoded = encodedString.substring(encodedString.indexOf(",")  + 1);
+                final String pureBase64Encoded = encodedString.substring(encodedString.indexOf(",") + 1);
                 final byte[] decodedBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
                 Glide.with(mContext).load(decodedBytes).into(postsViewHolder.postImg);
-
-
+            } else {
+                postsViewHolder.postImg.setVisibility(View.GONE);
             }
-        } catch (ArrayIndexOutOfBoundsException e){
+        } catch (ArrayIndexOutOfBoundsException e) {
             Log.e(TAG, "onBindViewHolder: ", e.getCause());
+        }
+
+        postsViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragmentJump(postsData, view);
+            }
+        });
+    }
+
+    private void fragmentJump(PostsData postsData, View view) {
+        PostItemDetailFragment postItemDetailFragment = new PostItemDetailFragment();
+        String firstName = postsData.getFirstname();
+        String lastName = postsData.getLastName();
+        String fullName;
+        if(firstName == null && lastName == null) {
+            fullName = postsData.getInstitutionName();
+        } else {
+            fullName = firstName + " " + lastName;
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.POSTS_USER_NAME, fullName);
+        bundle.putString(Constants.POSTS_TITLE, postsData.getTitle());
+        bundle.putString(Constants.POSTS_DESCRIPTION, postsData.getMessage());
+        bundle.putString(Constants.POSTS_ATTACHMENT, postsData.getPostAttachmentId());
+
+        AppCompatActivity activity = (AppCompatActivity) view.getContext();
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, postItemDetailFragment, PostItemDetailFragment.TAG).addToBackStack(null).commit();
+
+    }
+
+    private void setPostsCreatorName(PostsData postsData, PostsViewHolder postsViewHolder, int i) {
+        auditCreatedid = postsData.getAuditCreatedBy();
+        if (auditCreatedid != 0) {
+            firstName = postsData.getFirstname();
+            lasttName = postsData.getLastName();
+            String fullName = firstName + " " + lasttName;
+            postsViewHolder.txtView_name.setText(fullName);
+        } else {
+            postsViewHolder.txtView_name.setText(postsData.getInstitutionName());
         }
     }
 
@@ -101,6 +165,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
         ImageView ivTime;
         TextView txtView_description;
         ImageView postImg;
+        ConstraintLayout cardTopHeader;
+        CardView cardView;
 
         public PostsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -111,23 +177,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
             ivTime = itemView.findViewById(R.id.iv_time);
             tvDate = itemView.findViewById(R.id.tv_date);
             txtView_description = itemView.findViewById(R.id.tv_post_description);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "Position of the selected post is " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            //Long Press
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    Toast.makeText(v.getContext(), "Position of the selected post is " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-            });
+            cardTopHeader = itemView.findViewById(R.id.rl_top_header);
+            cardView = itemView.findViewById(R.id.posts_cardView);
         }
+
     }
 }
 
