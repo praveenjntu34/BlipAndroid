@@ -71,6 +71,10 @@ public class LoginViewModel extends ViewModel {
         userLoginRepository.getBannerDetails(relTenantInstitutionId);
     }
 
+    public void loginParentUsingAdmissionId(String admissionId) {
+        userLoginRepository.loginParentUsingAdmissionId(admissionId);
+    }
+
     public List<BranchSectionData> getBranchData() {
        branchSectionDataList =  userLoginRepository.getBranchesLiveData();
         return branchSectionDataList;

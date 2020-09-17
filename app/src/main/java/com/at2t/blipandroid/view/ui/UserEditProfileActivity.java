@@ -40,7 +40,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class UserRegistrationActivity extends AppCompatActivity implements View.OnClickListener {
+public class UserEditProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static String TAG = "UserEditProfileActivity";
     private LoginViewModel loginViewModel;
@@ -184,7 +184,13 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
 
         spinnerYear = (Spinner) findViewById(R.id.sp_year_selector);
         tvUserYear = (TextView) findViewById(R.id.tv_user_year);
+        spinnerYear.setEnabled(false);
+        spinnerYear.setClickable(false);
+        spinnerYear.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.grey));
+        tvUserYear.setText(BlipUtility.getUserSectionName(getApplicationContext()));
+        tvUserYear.setTextColor(Color.BLACK);
 
+        getValueOfBranch(branchSectionDataList);
         if (branchSectionDataList != null && branchSectionDataList.size() > 1) {
             spinnerYear.setOnTouchListener(spinnerOnTouch);
         }
@@ -210,7 +216,7 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
                 spinnerYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                        getValueOfBranch(position, branchSectionDataList);
+
 
                     }
 
@@ -224,55 +230,16 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
         }
     };
 
-    private void getValueOfBranch(int position, List<BranchSectionData> branchSectionDataList) {
+    private void getValueOfBranch(List<BranchSectionData> branchSectionDataList) {
         List<String> branchSectionNameList = new ArrayList<>();
-        for (int j = 0; j < branchSectionDataList.get(position).getSections().size(); j++) {
-            branchSectionName = branchSectionDataList.get(position).getSections().get(j).getSectionName();
-            branchSectionNameList.add(branchSectionName);
-        }
-        branchSectionNameList.add(0, "Select branch");
 
         spinnerBranch = (Spinner) findViewById(R.id.sp_branch_selector);
         tvUserBranch = (TextView) findViewById(R.id.tv_user_branch);
-
-        if (branchSectionNameList != null) {
-            tvUserBranch.setVisibility(View.GONE);
-        }
-
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout
-                .item_branch_spinner, branchSectionNameList) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                view.setPadding(view.getPaddingLeft(), 0, view.getPaddingRight(), 0);
-                return view;
-            }
-        };
-
-        spinnerArrayAdapter.setDropDownViewResource(R.layout.item_spinner);
-
-        spinnerBranch.setAdapter(spinnerArrayAdapter);
-        spinnerBranch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-
-                TextView selectedTextView = (TextView) selectedItemView;
-                if (selectedItemView != null && selectedItemView instanceof TextView) {
-                    ((TextView) selectedItemView).setTextColor(ContextCompat.getColor(getApplication(), R.color.black));
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-
-            }
-        });
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        moveTaskToBack(true);
+        spinnerBranch.setEnabled(false);
+        spinnerBranch.setClickable(false);
+        spinnerBranch.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.grey));
+        tvUserBranch.setText(BlipUtility.getUserYear(getApplicationContext()));
+        tvUserBranch.setTextColor(Color.BLACK);
     }
 
     private void updateUserDetails(String userMobileNumber, String admissionId, String userFullName, String emailIdUpdatedStr, String userDateOfBirthStr, String userGenderStr, String userFatherName, String userMotherNameStr, String userParentMobileNumber, String userYear, String userBranchStr) {
@@ -387,6 +354,17 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
         etUserEmailId.addTextChangedListener(new MyTextWatcher(userEmailIdInputLayout));
         etUserFullName.addTextChangedListener(new MyTextWatcher(userFullNameInputLayout));
         etUserMobileNumber.addTextChangedListener(new MyTextWatcher(userMobileNumberInputLayout));
+
+        etUserDob.setEnabled(false);
+        etUserDob.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.grey));
+        etUserMobileNumber.setEnabled(false);
+        etUserMobileNumber.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.grey));
+        etUserEmailId.setEnabled(false);
+        etUserEmailId.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.grey));
+        etUserFullName.setEnabled(false);
+        etUserFullName.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.grey));
+        etUserAdmissionId.setEnabled(false);
+        etUserAdmissionId.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.grey));
 
         setGenderDropDown();
 
@@ -509,7 +487,7 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
 
             };
 
-            new DatePickerDialog(UserRegistrationActivity.this, date, myCalendar
+            new DatePickerDialog(UserEditProfileActivity.this, date, myCalendar
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                     myCalendar.get(Calendar.DAY_OF_MONTH)).show();
         }
@@ -538,6 +516,7 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
         emailIdStr = BlipUtility.getEmailId(getApplicationContext());
         etUserEmailId.setText(emailIdStr);
 
+        //TODO dob, gender, mother name
         etUserDob.setText(currentDateString);
 
         childId = BlipUtility.getChildId(getApplicationContext());

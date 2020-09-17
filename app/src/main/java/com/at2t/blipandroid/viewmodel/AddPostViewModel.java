@@ -64,8 +64,10 @@ public class AddPostViewModel extends AndroidViewModel {
         return mutableLiveData;
     }
 
-    public void addPostApiCall(String message, int postId, String title, int relTenantInstitutionId, int sectionId) {
-        final AddPostData addPostData = new AddPostData(message, postId, title, relTenantInstitutionId, sectionId);
+    public void addPostApiCall(String message, int postId, String title, int relTenantInstitutionId,
+                               int sectionId, int personId) {
+        final AddPostData addPostData = new AddPostData(message, postId, title, relTenantInstitutionId,
+                sectionId, personId);
         Call<ResponseBody> responseBodyCall = apiInterface.addPostData(addPostData);
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
             @Override

@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.at2t.blipandroid.data.network.ApiInterface;
 import com.at2t.blipandroid.data.network.NetworkManager;
 import com.at2t.blipandroid.data.network.RetrofitManager;
+import com.at2t.blipandroid.model.AdmissionIdModel;
 import com.at2t.blipandroid.model.BannerDetailsDataModel;
 import com.at2t.blipandroid.model.BranchSectionData;
 import com.at2t.blipandroid.model.FcmTokenModel;
@@ -73,7 +74,7 @@ public class UserLoginRepository {
                         BlipUtility.setSharedPrefInteger(application.getApplicationContext(), Constants.INSTITUTE_ID, response.body().getRelTenantInstitutionId());
                         BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.INSTITUTE_NAME, response.body().getInstitutionName());
                         BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.PHONE_NUMBER, response.body().getPhoneNumber());
-
+                        BlipUtility.setSharedPrefInteger(application.getApplicationContext(), Constants.PERSON_ID, response.body().getPersonId());
 
                         editor.putString(Constants.ACCESS_TOKEN, "1234");
                         editor.putInt(Constants.INSTRUCTOR_SECTION_ID, response.body().getSectionId());
@@ -129,6 +130,37 @@ public class UserLoginRepository {
             public void onFailure(@NotNull Call<ParentDataModel> call, @NotNull Throwable t) {
                 if (networkManager.isNetworkAvailable(application)) {
                     responseLiveData.setValue(Enums.LoginStatus.USER_LOGIN_FAILED);
+                } else {
+                    responseLiveData.setValue(Enums.LoginStatus.NO_INTERNET_CONNECTION);
+                }
+            }
+        });
+    }
+
+    public void loginParentUsingAdmissionId(String admissionId) {
+        final Call<AdmissionIdModel> mobileNumber = apiService.loginUsingAdmissionId(admissionId);
+        mobileNumber.enqueue(new Callback<AdmissionIdModel>() {
+            @Override
+            public void onResponse(@NotNull Call<AdmissionIdModel> call, @NotNull Response<AdmissionIdModel> response) {
+                if (response.body() != null) {
+                    if (response.body().getData() != null) {
+                        editor.putString(Constants.LOGIN_USING_ADMISSION_ID, response.body().getData().getAdmissionId());
+                        editor.apply();
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.LOGIN_USING_ADMISSION_ID, response.body().getData().getAdmissionId());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.PHONE_NUMBER, response.body().getData().getMobileNumber());
+                        responseLiveData.setValue(Enums.LoginStatus.LOGIN_USER_USING_ADMISSION_ID_SUCCESS);
+                    } else {
+                        responseLiveData.setValue(Enums.LoginStatus.LOGIN_USER_USING_ADMISSION_ID_WRONG);
+                    }
+                }else {
+                    responseLiveData.setValue(Enums.LoginStatus.LOGIN_USER_USING_ADMISSION_ID_FAILED);
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<AdmissionIdModel> call, @NotNull Throwable t) {
+                if (networkManager.isNetworkAvailable(application)) {
+                    responseLiveData.setValue(Enums.LoginStatus.LOGIN_USER_USING_ADMISSION_ID_FAILED);
                 } else {
                     responseLiveData.setValue(Enums.LoginStatus.NO_INTERNET_CONNECTION);
                 }
@@ -228,6 +260,9 @@ public class UserLoginRepository {
                     BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.INSTITUTE_NAME, response.body().getUserProfileDetails().getInstitutionName());
                     BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.GENDER, response.body().getUserProfileDetails().getGender());
                     BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.DATE_OF_BIRTH, response.body().getUserProfileDetails().getDateOfBirth());
+                    BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.PERSON_ID, response.body().getUserProfileDetails().getGender());
+                    BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.BRANCH_NAME, response.body().getUserProfileDetails().getBranchName());
+                    BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.SECTION_NAME, response.body().getUserProfileDetails().getSectionName());
 
 
                     responseLiveData.setValue(Enums.LoginStatus.GET_USER_PROFILE_DETAILS_SUCCESSFULLY);
@@ -283,20 +318,20 @@ public class UserLoginRepository {
             public void onResponse(@NotNull Call<List<BannerDetailsDataModel>> call, @NotNull Response<List<BannerDetailsDataModel>> response) {
                 if (response.body() != null) {
                     bannerDetailsDataModelList = response.body();
-                    Log.d(TAG, "onResponse: " + response.body().get(0));
+                    Log.d(TAG, "onResponse: " + response.body().get(0).toString());
                     if (bannerDetailsDataModelList == null) {
                         bannerDetailsDataModelList = new ArrayList<>();
                     }
-                    responseLiveData.setValue(Enums.LoginStatus.GET_BRANCH_DETAILS_SUCCESSFULLY);
+                    responseLiveData.setValue(Enums.LoginStatus.GET_BANNER_DETAILS_SUCCESSFULLY);
                 } else {
-                    responseLiveData.setValue(Enums.LoginStatus.GET_BRANCH_DETAILS_FAILED);
+                    responseLiveData.setValue(Enums.LoginStatus.GET_BANNER_DETAILS_FAILED);
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<List<BannerDetailsDataModel>> call, @NotNull Throwable t) {
                 if (networkManager.isNetworkAvailable(application)) {
-                    responseLiveData.setValue(Enums.LoginStatus.GET_BRANCH_DETAILS_FAILED);
+                    responseLiveData.setValue(Enums.LoginStatus.GET_BANNER_DETAILS_FAILED);
                 } else {
                     responseLiveData.setValue(Enums.LoginStatus.NO_INTERNET_CONNECTION);
                 }

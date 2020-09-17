@@ -40,7 +40,7 @@
             android:name=".view.ui.AddPostActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
 
-        <activity android:name=".view.ui.UserRegistrationActivity"
+        <activity android:name=".view.ui.UserEditProfileActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
 
         <activity android:name=".view.ui.HomeActivity"
@@ -49,6 +49,10 @@
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
 
         <activity android:name=".view.BlipBaseActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity android:name=".view.ui.PostItemDetailsActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity android:name=".view.ui.UserRegistrationActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
 
         <service android:name=".fcm.FCMMessagingService"

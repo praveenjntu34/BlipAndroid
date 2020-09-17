@@ -192,22 +192,17 @@ public class AddPostActivity extends AppCompatActivity implements
             instructorId = BlipUtility.getInstructorId(getApplicationContext());
             userId = BlipUtility.getParentId(getApplicationContext());
             int instructorSectionId = BlipUtility.getInstructorSectionId(getApplicationContext());
-            int parentSectionId = BlipUtility.getParentSectionId(getApplicationContext());
+            int personId = BlipUtility.getPersonId(getApplicationContext());
 
             if(instructorId != 0) {
                 if(postId != 0) {
-                    addPostViewModel.addPostApiCall(postDescription, postId, title, relTenantInstitutionId, instructorSectionId);
+                    addPostViewModel.addPostApiCall(postDescription, postId, title, relTenantInstitutionId,
+                            instructorSectionId, personId);
                 } else {
-                    addPostViewModel.addPostApiCall(postDescription, 0, title, relTenantInstitutionId, instructorSectionId);
-                }
-            } else if(userId != 0) {
-                if(postId != 0) {
-                    addPostViewModel.addPostApiCall(postDescription, postId, title, relTenantInstitutionId, parentSectionId);
-                } else {
-                    addPostViewModel.addPostApiCall(postDescription, 0, title, relTenantInstitutionId, parentSectionId);
+                    addPostViewModel.addPostApiCall(postDescription, 0, title, relTenantInstitutionId,
+                            instructorSectionId, personId);
                 }
             }
-
         }
     }
 

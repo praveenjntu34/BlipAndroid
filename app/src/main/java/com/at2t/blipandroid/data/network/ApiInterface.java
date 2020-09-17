@@ -1,6 +1,7 @@
 package com.at2t.blipandroid.data.network;
 
 import com.at2t.blipandroid.model.AddPostData;
+import com.at2t.blipandroid.model.AdmissionIdModel;
 import com.at2t.blipandroid.model.BannerDetailsDataModel;
 import com.at2t.blipandroid.model.BranchSectionData;
 import com.at2t.blipandroid.model.FcmTokenModel;
@@ -60,4 +61,6 @@ public interface ApiInterface {
     @GET("/institution/branch/{relTenantInstitutionId}")
     Call<List<BranchSectionData>> getBranchSectionDetails(@Path("relTenantInstitutionId") Integer relTenantInstitutionId);
 
+    @GET("parent/adm-login/{admissionId}")
+    Call<AdmissionIdModel> loginUsingAdmissionId(@Path("admissionId") String admissionId);
 }

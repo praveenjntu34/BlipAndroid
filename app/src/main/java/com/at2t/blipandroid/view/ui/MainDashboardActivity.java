@@ -17,7 +17,7 @@ import com.at2t.blipandroid.R;
 import com.at2t.blipandroid.utils.BlipUtility;
 import com.at2t.blipandroid.utils.Constants;
 import com.at2t.blipandroid.utils.Enums;
-import com.at2t.blipandroid.view.ui.fragments.AllPostsFragment;
+
 import com.at2t.blipandroid.view.ui.fragments.ContactUsFragment;
 import com.at2t.blipandroid.view.ui.fragments.HomePageFragment;
 import com.at2t.blipandroid.view.ui.fragments.UserProfileFragment;

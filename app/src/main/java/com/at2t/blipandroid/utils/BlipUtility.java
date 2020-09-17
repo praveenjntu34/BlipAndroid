@@ -20,14 +20,14 @@ public class BlipUtility {
     public static int instructorSectionId;
     public static int userSectionId;
 
-    public static  SharedPreferences sharedPreferences;
+    public static SharedPreferences sharedPreferences;
 
     public static void storeInstructorBasicInfoInSharedPref(Context context, InstructorLoginData user) {
         if (user != null) {
             instructorSectionId = SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.INSTRUCTOR_SECTION_ID, user.getSectionId());
             SharedPreferencesActivtiy.setSharedPrefString(context, Constants.USER_FIRST_NAME, user.getFirstName());
             SharedPreferencesActivtiy.setSharedPrefString(context, Constants.USER_LAST_NAME, user.getLastName());
-            instructorId =  SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.INSTRUCTOR_ID, user.getInstructorUserId());
+            instructorId = SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.INSTRUCTOR_ID, user.getInstructorUserId());
             SharedPreferencesActivtiy.setSharedPrefString(context, Constants.ROLE, user.getRole());
             SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.INSTITUTE_ID, user.getRelTenantInstitutionId());
         }
@@ -82,9 +82,7 @@ public class BlipUtility {
 
     public static int getPersonId(Context context) {
         int personId = 0;
-        if (SharedPreferencesActivtiy.getSharedPrefInteger(context, Constants.PERSON_ID) != 0) {
-            personId = SharedPreferencesActivtiy.getSharedPrefInteger(context, Constants.PERSON_ID);
-        }
+        personId = SharedPreferencesActivtiy.getSharedPrefInteger(context, Constants.PERSON_ID);
 
         return personId;
     }
@@ -106,6 +104,7 @@ public class BlipUtility {
 
         return secondaryParentName;
     }
+
     public static String getSecondaryParentPhone(Context context) {
         String secondaryParentPhone = null;
         if (SharedPreferencesActivtiy.getSharedPrefString(context, Constants.SECONDARY_PHONE_NUMBER
@@ -123,6 +122,13 @@ public class BlipUtility {
         }
 
         return firstName;
+    }
+
+    public static String getUserAdmissionId(Context context) {
+        String admissionId = null;
+        admissionId = SharedPreferencesActivtiy.getSharedPrefString(context, Constants.LOGIN_USING_ADMISSION_ID);
+
+        return admissionId;
     }
 
     public static String getEmailId(Context context) {
@@ -172,7 +178,7 @@ public class BlipUtility {
 
     public static int getInstructorSectionId(Context context) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                instructorSectionId = sharedPreferences.getInt(Constants.INSTRUCTOR_SECTION_ID, 0);
+        instructorSectionId = sharedPreferences.getInt(Constants.INSTRUCTOR_SECTION_ID, 0);
         return instructorSectionId;
     }
 
@@ -205,6 +211,30 @@ public class BlipUtility {
         userDob = sharedPreferences.getString(Constants.DATE_OF_BIRTH, "");
 
         return userDob;
+    }
+
+    public static String getUserYear(Context context) {
+        String year;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        year = sharedPreferences.getString(Constants.BRANCH_NAME, "");
+
+        return year;
+    }
+
+    public static String getUserSectionName(Context context) {
+        String sectionName;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sectionName = sharedPreferences.getString(Constants.SECTION_NAME, "");
+
+        return sectionName;
+    }
+
+    public static String getPostAttachmentImage(Context context) {
+        String postImageUrl;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        postImageUrl = sharedPreferences.getString(Constants.POSTS_ATTACHMENT, "");
+
+        return postImageUrl;
     }
 
     public static boolean getIsParentFirstLoginId(Context context) {

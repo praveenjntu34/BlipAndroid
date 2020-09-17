@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_20dp"
                 android:gravity="start"
-                android:text="@string/user_details"
+                android:text="@string/user_edit_details"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_20sp"
                 android:textStyle="bold"
@@ -166,6 +166,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rl_spinner_gender"
             android:layout_marginStart="@dimen/margin_40dp"
             android:layout_marginTop="@dimen/margin_20dp"
             android:layout_marginEnd="@dimen/margin_40dp"
@@ -266,6 +267,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rl_spinner_year"
             android:layout_marginStart="@dimen/margin_40dp"
             android:layout_marginTop="@dimen/margin_20dp"
             android:layout_marginEnd="@dimen/margin_40dp"
@@ -300,6 +302,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/rl_spinner_branch"
             android:layout_marginStart="@dimen/margin_40dp"
             android:layout_marginTop="@dimen/margin_20dp"
             android:layout_marginEnd="@dimen/margin_40dp"

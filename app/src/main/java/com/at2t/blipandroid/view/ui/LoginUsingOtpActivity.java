@@ -58,7 +58,7 @@ public class LoginUsingOtpActivity extends AppCompatActivity implements Verifica
         mobileNumber = getIntent().getStringExtra(Constants.MOBILE_NUMBER);
         isFirstParentLogin = BlipUtility.getIsParentFirstLoginId(this);
 
-//        SendOTP.initializeApp(getApplication());
+        SendOTP.initializeApp(getApplication());
         initializeViews();
         changeOtpScreenColor();
 
@@ -79,7 +79,7 @@ public class LoginUsingOtpActivity extends AppCompatActivity implements Verifica
         tvResendOtpTextView.setOnClickListener(this);
 
         setData();
-//        createVerification();
+        createVerification();
     }
 
     @Override
@@ -107,7 +107,7 @@ public class LoginUsingOtpActivity extends AppCompatActivity implements Verifica
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-//        SendOTP.getInstance().getTrigger().stop();
+        SendOTP.getInstance().getTrigger().stop();
     }
 
     private void changeOtpScreenColor() {
@@ -165,14 +165,11 @@ public class LoginUsingOtpActivity extends AppCompatActivity implements Verifica
         new SendOTPConfigBuilder()
                 .setCountryCode(91)
                 .setMobileNumber(mobileNumber)
-                .setAutoVerification(this)
-                .setOtpExpireInMinute(5)
-                .setOtpHits(10)
-                .setOtpHitsTimeOut(0L)
-                .setSenderId("BLIP")
-                .setMessage("##OTP## is Your verification code.")
+//                .setVerifyWithoutOtp(true)//direct verification while connect with mobile network
+                .setAutoVerification(LoginUsingOtpActivity.this)//Auto read otp from Sms And Verify
+                .setSenderId("ABCDEF")
+                .setMessage("##OTP## is Your verification digits.")
                 .setOtpLength(4)
-                .setVerifyWithoutOtp(true)
                 .setVerificationCallBack(this).build();
 
         SendOTP.getInstance().getTrigger().initiate();
@@ -221,18 +218,24 @@ public class LoginUsingOtpActivity extends AppCompatActivity implements Verifica
             public void run() {
 
                 if (responseCode == SendOTPResponseCode.DIRECT_VERIFICATION_SUCCESSFUL_FOR_NUMBER || responseCode == SendOTPResponseCode.OTP_VERIFIED) {
-                    if (!isFirstParentLogin) {
+                    userType = BlipUtility.getRole(getApplicationContext());
+                    if (userType.equals("Parent") && isFirstParentLogin) {
                         launchParentRegistrationScreen();
                     } else {
                         otpVerified();
                     }
                 } else if (responseCode == SendOTPResponseCode.READ_OTP_SUCCESS) {
                     setOTP(message);
+                    verifyOtp(message);
+
                 } else if (responseCode == SendOTPResponseCode.SMS_SUCCESSFUL_SEND_TO_NUMBER || responseCode == SendOTPResponseCode.DIRECT_VERIFICATION_FAILED_SMS_SUCCESSFUL_SEND_TO_NUMBER) {
+
                 } else if (responseCode == SendOTPResponseCode.NO_INTERNET_CONNECTED) {
                     Toast.makeText(getApplicationContext(), "Please check internet connection", Toast.LENGTH_SHORT).show();
+                } else if( responseCode == SendOTPResponseCode.INVALID_NUMBER_ENTERED) {
+                    Toast.makeText(getApplicationContext(), "Invalid OTP, Please try again", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Otp verification failed,Please try again", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "run: failed SendOTP response" + responseCode.getCode());
                 }
             }
 
@@ -298,12 +301,7 @@ public class LoginUsingOtpActivity extends AppCompatActivity implements Verifica
     public void onClick(View view) {
         if (view.getId() == R.id.btnLogin) {
             if (getOTPtext().length() == 4) {
-                userType = BlipUtility.getRole(this);
-                if (userType.equals("Parent") && isFirstParentLogin) {
-                    launchParentRegistrationScreen();
-                } else {
-                    otpVerified();
-                }
+                verifyOtp(getOTPtext().trim());
             } else {
                 Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show();
             }

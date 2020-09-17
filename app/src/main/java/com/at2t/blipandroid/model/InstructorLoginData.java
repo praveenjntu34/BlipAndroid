@@ -35,6 +35,17 @@ public class InstructorLoginData {
     @SerializedName("institutionName")
     private String institutionName;
 
+    @SerializedName("personId")
+    private int personId;
+
+    public int getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(int personId) {
+        this.personId = personId;
+    }
+
     public String getInstitutionName() {
         return institutionName;
     }

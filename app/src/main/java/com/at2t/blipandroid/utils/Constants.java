@@ -16,12 +16,15 @@ public class Constants {
     public static final int MOBILE_NUMBER_LENGTH = 10;
     public static final String MOBILE_NUMBER = "mobile_number";
     public static final String IS_LOGGED_IN = "is_logged_in";
+    public static final String LOGIN_USING_ADMISSION_ID = "login_using_admission_id";
     public static final String ACCESS_TOKEN = "access_token";
     public static final String INSTRUCTOR_SECTION_ID = "instructorSectionId";
     public static final String PARENT_SECTION_ID = "parentSectionId";
     public static final String INSTRUCTOR_ID = "instructorId";
     public static final String PARENT_ID = "parentId";
     public static final String PERSON_ID = "personId";
+    public static final String SECTION_NAME = "sectionName";
+    public static final String BRANCH_NAME = "branchName";
     public static final String INSTITUTE_ID = "instituteId";
     public static final String ROLE = "role";
     public static final String IS_PARENT_FIRST_LOGIN = "isFirstLogin";

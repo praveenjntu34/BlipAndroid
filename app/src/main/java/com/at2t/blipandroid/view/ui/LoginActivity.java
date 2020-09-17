@@ -22,6 +22,7 @@ import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -31,6 +32,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.at2t.blipandroid.R;
@@ -79,6 +81,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private int type = PARENT;
     private UserLoginRepository userLoginRepository;
     String fcmToken = "";
+    private TextView tvPhoneNumberText;
     private AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
 
     @Override
@@ -108,10 +111,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         checkMobileNumber();
 
                     } else if (integer == Enums.LoginStatus.USER_LOGIN_SUCCESSFULL) {
-                        Log.d("Login PhoneNumber : ", "Failed login");
-                        validatePhoneNumber();
+                        Log.d("USER_LOGIN : ", "user login successful");
+                        int parentId = BlipUtility.getParentId(getApplicationContext());
+
+                        if (parentId != 0) {
+                            loginViewModel.saveFcmTokenParent(parentId, fcmToken);
+                            loginViewModel.getBranchDetails(BlipUtility.getInstituteId(getApplicationContext()));
+                        }
+                        Intent intent = new Intent(LoginActivity.this, LoginUsingOtpActivity.class);
+                        intent.putExtra(MOBILE_NUMBER, BlipUtility.getPhoneNumber(getApplicationContext()));
+                        startActivity(intent);
+                        finish();
+
                     } else if (integer == Enums.LoginStatus.USER_DOES_NOT_EXIST) {
-                        checkMobileNumber();
+                        Log.d("USER_LOGIN : ", "user login Failed");
+
+                    } else if (integer == Enums.LoginStatus.LOGIN_USER_USING_ADMISSION_ID_SUCCESS) {
+                        Log.d("Login admission id : ", "Success login");
+                        loginUsingAdmissionId();
+                    } else if (integer == Enums.LoginStatus.LOGIN_USER_USING_ADMISSION_ID_WRONG) {
+                        Log.d("Login admission id : ", "Success failed");
+                        Toast.makeText(getApplicationContext(), "Please enter a valid Admission Id", Toast.LENGTH_SHORT).show();
+
+                    } else if (integer == Enums.LoginStatus.LOGIN_USER_USING_ADMISSION_ID_FAILED) {
+                        Log.d("Login admission id : ", "Success failed");
+                        Toast.makeText(getApplicationContext(), "Failed login using Admission Id", Toast.LENGTH_SHORT).show();
 
                     } else if (integer == Enums.LoginStatus.USER_LOGIN_FAILED) {
                         Log.d("Login PhoneNumber : ", "Failed login");
@@ -153,7 +177,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         instructorPanel = findViewById(R.id.instructorPanel);
         textInputLayoutPhone = findViewById(R.id.text_input_phone_number);
         etPhoneNumber = findViewById(R.id.EtPhoneNumber);
+        tvPhoneNumberText = findViewById(R.id.tvPhoneNumberText);
 
+        if (type == PARENT) {
+            tvPhoneNumberText.setText(getString(R.string.enter_admission_id));
+            textInputLayoutPhone.setHint(getString(R.string.admission_id));
+            etPhoneNumber.setInputType(InputType.TYPE_TEXT_VARIATION_PHONETIC);
+        }
         parentView.setCardBackgroundColor(ContextCompat.getColor(this, R.color.white));
         instructorView.setCardBackgroundColor(ContextCompat.getColor(this, R.color.white));
 
@@ -260,43 +290,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 loginViewModel.saveFcmTokenInstructor(instructorId, fcmToken);
             }
         } else if (type == PARENT) {
-            loginViewModel.loginParentUsingMobileNumber(mobileNumber);
-            int parentId = BlipUtility.getParentId(getApplicationContext());
-            if (parentId != 0) {
-                loginViewModel.saveFcmTokenParent(parentId, fcmToken);
-                loginViewModel.getBranchDetails(BlipUtility.getInstituteId(getApplicationContext()));
-            }
+            loginViewModel.loginParentUsingAdmissionId(mobileNumber);
         }
     }
 
-    public void connectWithWhatsApp() {
-        boolean installed = checkWhatsAppInstalledOrNot("com.whatsapp");
-        if (installed) {
-            String phone = "+91 8125125895";
-            String message = "Hi there, how may I help you?";
-            Intent sendIntent = new Intent("android.intent.action.MAIN");
-            sendIntent.setAction(Intent.ACTION_VIEW);
-            sendIntent.setPackage("com.whatsapp");
-            String url = "https://api.whatsapp.com/send?phone=" + phone + "&text=" + message;
-            sendIntent.setData(Uri.parse(url));
-            if (sendIntent.resolveActivity(getApplication().getPackageManager()) != null) {
-                startActivity(sendIntent);
-            }
-        } else {
-            Toast.makeText(this, "WhatsApp is not installed on your device.", Toast.LENGTH_SHORT).show();
-        }
-    }
+    public void loginUsingAdmissionId() {
+        loginViewModel.loginParentUsingMobileNumber(BlipUtility.getPhoneNumber(getApplicationContext()));
 
-    private boolean checkWhatsAppInstalledOrNot(String url) {
-        PackageManager packageManager = getPackageManager();
-        boolean appInstalled;
-        try {
-            packageManager.getPackageInfo(url, PackageManager.GET_ACTIVITIES);
-            appInstalled = true;
-        } catch (PackageManager.NameNotFoundException e) {
-            appInstalled = false;
-        }
-        return appInstalled;
     }
 
     public void changeUIColorParent(View view) {
@@ -305,6 +305,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         view.setBackgroundColor(ContextCompat.getColor(getApplication(), R.color.colorGreen));
         btnLogin.setBackground(ContextCompat.getDrawable(getApplication(), R.drawable.enabled_login_button));
         rlParent.setBackgroundColor(ContextCompat.getColor(getApplication(), R.color.colorGreen));
+        tvPhoneNumberText.setText(getString(R.string.enter_admission_id));
+        textInputLayoutPhone.setHint(getString(R.string.admission_id));
+        etPhoneNumber.setInputType(InputType.TYPE_CLASS_TEXT);
         rlInstructor.setBackgroundColor(Color.WHITE);
         parentPanel.setImageDrawable(getDrawable(R.drawable.parent_login_icon));
         instructorPanel.setImageDrawable(getDrawable(R.drawable.instructor_login_icon));
@@ -316,6 +319,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         view.setBackgroundColor(ContextCompat.getColor(getApplication(), R.color.colorPrimary));
         btnLogin.setBackgroundColor(ContextCompat.getColor(getApplication(), R.color.colorPrimary));
         rlParent.setBackgroundColor(ContextCompat.getColor(getApplication(), R.color.white));
+        tvPhoneNumberText.setText(getString(R.string.phone_number));
+        textInputLayoutPhone.setHint(getString(R.string.mobile_number));
+        etPhoneNumber.setInputType(InputType.TYPE_CLASS_PHONE);
         parentPanel.setImageDrawable(getDrawable(R.drawable.rsz_parent_white));
         instructorPanel.setImageDrawable(getDrawable(R.drawable.bluebook));
         instructorPanel.setBackgroundColor(ContextCompat.getColor(getApplication(), R.color.white));

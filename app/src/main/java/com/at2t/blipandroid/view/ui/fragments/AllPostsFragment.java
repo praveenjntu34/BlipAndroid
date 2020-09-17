@@ -236,7 +236,7 @@ public class AllPostsFragment extends BaseFragment implements
 //    @Override
 //    public void onItemClicked(int position) {
 //        PostsData postsData = postsDataModelList.get(position);
-//        PostItemDetailFragment postItemDetailFragment = new PostItemDetailFragment();
+//        PostItemDetailsActivity postItemDetailFragment = new PostItemDetailsActivity();
 //        String firstName = postsData.getFirstname();
 //        String lastName = postsData.getLastName();
 //        String fullName = firstName + " " + lastName;
@@ -252,7 +252,7 @@ public class AllPostsFragment extends BaseFragment implements
 //        postItemDetailFragment.setArguments(bundle);
 //        FragmentManager fragmentManager = getFragmentManager();
 //        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.add(R.id.container, postItemDetailFragment, PostItemDetailFragment.TAG);
+//        fragmentTransaction.add(R.id.container, postItemDetailFragment, PostItemDetailsActivity.TAG);
 //        fragmentTransaction.addToBackStack(null);
 //        fragmentTransaction.commit();
 //    }

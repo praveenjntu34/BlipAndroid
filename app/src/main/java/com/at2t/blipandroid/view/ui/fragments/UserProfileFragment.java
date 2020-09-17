@@ -19,7 +19,7 @@ import com.at2t.blipandroid.utils.BaseFragment;
 import com.at2t.blipandroid.utils.BlipUtility;
 import com.at2t.blipandroid.utils.Constants;
 import com.at2t.blipandroid.view.BlipBaseActivity;
-import com.at2t.blipandroid.view.ui.UserRegistrationActivity;
+import com.at2t.blipandroid.view.ui.UserEditProfileActivity;
 import com.at2t.blipandroid.viewmodel.LoginViewModel;
 
 public class UserProfileFragment extends BaseFragment {
@@ -81,7 +81,7 @@ public class UserProfileFragment extends BaseFragment {
         firstName = BlipUtility.getFirstName(getContext());
         lastName = BlipUtility.getLastName(getContext());
         fullName = firstName + " " + lastName;
-        tvUserName.setText(fullName);
+
 
         userType = BlipUtility.getRole(getContext());
 
@@ -90,12 +90,15 @@ public class UserProfileFragment extends BaseFragment {
             editIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getActivity(), UserRegistrationActivity.class);
+                    Intent intent = new Intent(getActivity(), UserEditProfileActivity.class);
                     startActivity(intent);
                 }
             });
+            fullName = BlipUtility.getChildrenName(getContext());
+            tvUserName.setText(fullName);
         } else {
             editIcon.setVisibility(View.GONE);
+            tvUserName.setText(fullName);
         }
 
         tvAboutUs.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +135,7 @@ public class UserProfileFragment extends BaseFragment {
     }
 
     public static void clearUserLocalInfo(Context context) {
-        BlipUtility.clearSharedPref(context, Constants.FCM_TOKEN);
+//        BlipUtility.clearSharedPref(context, Constants.FCM_TOKEN);
         BlipUtility.clearSharedPref(context, Constants.USER_FIRST_NAME);
         BlipUtility.clearSharedPref(context, Constants.USER_LAST_NAME);
         BlipUtility.clearSharedPref(context, Constants.PARENT_ID);

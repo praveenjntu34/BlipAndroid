@@ -18,6 +18,9 @@ public class AddPostData {
     @SerializedName("sectionId")
     private int sectionId;
 
+    @SerializedName("personId")
+    private int personId;
+
     @SerializedName("attachmentStreamId")
     private String postAttachmentId;
 
@@ -25,12 +28,21 @@ public class AddPostData {
         return postAttachmentId;
     }
 
-    public AddPostData(String message, int postId, String title, int relTenantInstitutionId, int sectionId) {
+    public AddPostData(String message, int postId, String title, int relTenantInstitutionId, int sectionId, int personId) {
         this.message = message;
         this.postId = postId;
         this.title = title;
         this.relTenantInstitutionId = relTenantInstitutionId;
         this.sectionId = sectionId;
+        this.personId = personId;
+    }
+
+    public int getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(int personId) {
+        this.personId = personId;
     }
 
     public void setPostAttachmentId(String postAttachmentId) {

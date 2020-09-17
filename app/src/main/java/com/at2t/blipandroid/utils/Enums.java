@@ -23,7 +23,9 @@ public class Enums {
             LoginStatus.GET_USER_PROFILE_DETAILS_FAILED,
             LoginStatus.GET_ALL_POSTS_SUCCESSFULLY,
             LoginStatus.GET_ALL_POSTS_FAILED,
-
+            LoginStatus.LOGIN_USER_USING_ADMISSION_ID_SUCCESS,
+            LoginStatus.LOGIN_USER_USING_ADMISSION_ID_WRONG,
+            LoginStatus.LOGIN_USER_USING_ADMISSION_ID_FAILED
     })
     @Retention(RetentionPolicy.SOURCE)
 
@@ -48,5 +50,8 @@ public class Enums {
         int GET_BANNER_DETAILS_FAILED = 18;
         int GET_BRANCH_DETAILS_SUCCESSFULLY = 19;
         int GET_BRANCH_DETAILS_FAILED = 20;
+        int LOGIN_USER_USING_ADMISSION_ID_SUCCESS = 21;
+        int LOGIN_USER_USING_ADMISSION_ID_WRONG = 22;
+        int LOGIN_USER_USING_ADMISSION_ID_FAILED = 23;
     }
 }

@@ -51,6 +51,12 @@ public class UserProfileDetails {
     @SerializedName("dateOfBirth")
     private String dateOfBirth;
 
+    @SerializedName("sectionName")
+    private String sectionName;
+
+    @SerializedName("branchName")
+    private String branchName;
+
     /**
      * No args constructor for use in serialization
      */
@@ -73,6 +79,22 @@ public class UserProfileDetails {
         this.institutionName = institutionName;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getSectionName() {
+        return sectionName;
+    }
+
+    public void setSectionName(String sectionName) {
+        this.sectionName = sectionName;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
     }
 
     public String getInstitutionName() {
