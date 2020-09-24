@@ -277,7 +277,7 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
 
     private void updateUserDetails(String userMobileNumber, String admissionId, String userFullName, String emailIdUpdatedStr, String userDateOfBirthStr, String userGenderStr, String userFatherName, String userMotherNameStr, String userParentMobileNumber, String userYear, String userBranchStr) {
 
-        loginViewModel.updateUserProfileDetails(admissionId, childId, userFullName, emailIdUpdatedStr,
+        loginViewModel.updateUserProfileDetails(branchId, branchName, branchSectionName,admissionId, childId, userFullName, emailIdUpdatedStr,
                 firstNameStr, lastNameStr, parentId, personId, userMobileNumber, relTenantInstitutionId,
                 userFatherName, userParentMobileNumber, sectionId, instituteName, userGenderStr, userDateOfBirthStr);
     }
@@ -551,7 +551,7 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
         secondaryPhoneNumber = BlipUtility.getSecondaryParentPhone(getApplicationContext());
         etParentMobileNumber.setText(secondaryPhoneNumber);
 
-        sectionId = BlipUtility.getParentSectionId(getApplicationContext());
+        personId = BlipUtility.getPersonId(getApplicationContext());
 
         instituteName = BlipUtility.getUserInstituteName(getApplicationContext());
     }

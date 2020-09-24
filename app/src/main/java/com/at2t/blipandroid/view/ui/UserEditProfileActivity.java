@@ -242,17 +242,21 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
         tvUserBranch.setTextColor(Color.BLACK);
     }
 
-    private void updateUserDetails(String userMobileNumber, String admissionId, String userFullName, String emailIdUpdatedStr, String userDateOfBirthStr, String userGenderStr, String userFatherName, String userMotherNameStr, String userParentMobileNumber, String userYear, String userBranchStr) {
+    private void updateUserDetails(String userMobileNumber, String admissionId, String userFullName, String emailIdUpdatedStr,
+                                   String userDateOfBirthStr, String userGenderStr, String userFatherName, String userMotherNameStr,
+                                   String userParentMobileNumber, String userYear, String userBranchStr) {
 
-        loginViewModel.updateUserProfileDetails(admissionId, childId, userFullName, emailIdUpdatedStr,
-                firstNameStr, lastNameStr, parentId, personId, userMobileNumber, relTenantInstitutionId,
-                userFatherName, userParentMobileNumber, sectionId, instituteName, userGenderStr, userDateOfBirthStr);
+        personId = BlipUtility.getPersonId(getApplicationContext());
+
+        loginViewModel.updateUserProfileDetails(branchId, branchName, branchSectionName, admissionId,
+                childId, childrenName, emailIdUpdatedStr, userFatherName, lastNameStr, parentId, personId,
+                userMobileNumber, relTenantInstitutionId, userMotherNameStr, userParentMobileNumber,
+                sectionId, instituteName, userGenderStr, userDateOfBirthStr);
     }
 
     private boolean isAllFieldsEntered(String mobileNumber, String admissionId, String fullName,
                                        String emailText, String userDob, String genderStr,
-                                       String fatherName, String motherName, String userParentMobileNumber,
-                                       String year, String branchName) {
+                                       String fatherName, String motherName, String userParentMobileNumber) {
         setNoError();
         boolean isFilled = true;
         if (fullName.length() < 1) {
@@ -288,14 +292,6 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
         if (genderStr.isEmpty()) {
             isFilled = false;
             Toast.makeText(this, "Please select your gender", Toast.LENGTH_SHORT).show();
-        }
-        if (year.isEmpty()) {
-            isFilled = false;
-            Toast.makeText(this, "Please select your year", Toast.LENGTH_SHORT).show();
-        }
-        if (branchName.isEmpty()) {
-            isFilled = false;
-            Toast.makeText(this, "Please select your branch", Toast.LENGTH_SHORT).show();
         }
         if (userDob.isEmpty()) {
             isFilled = false;
@@ -425,6 +421,7 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
                 TextView selectedTextView = (TextView) selectedItemView;
                 if (selectedItemView != null && selectedItemView instanceof TextView) {
                     ((TextView) selectedItemView).setTextColor(ContextCompat.getColor(getApplication(), R.color.black));
+                    genderStr = genderList.get(position);
                 }
             }
 
@@ -444,11 +441,11 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
             String userParentMobileNumber = etParentMobileNumber.getText().toString();
             String userBranchStr = branchSectionName;
             String userYear = branchName;
-            String userGenderStr = genderStr;
+            String userGenderStr = null;
             if (genderStr.equals("Female")) {
-                genderStr = "F";
+                userGenderStr = "F";
             } else if (genderStr.equals("Male")) {
-                genderStr = "M";
+                userGenderStr = "M";
             }
             String userDateOfBirthStr;
             if (currentDateString != null) {
@@ -461,8 +458,7 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
             String emailIdUpdatedStr = etUserEmailId.getText().toString();
 
             if (isAllFieldsEntered(userMobileNumber, admissionId, userFullName, emailIdUpdatedStr,
-                    userDateOfBirthStr, userGenderStr, userFatherName, userMotherNameStr, userParentMobileNumber,
-                    userYear, userBranchStr)) {
+                    userDateOfBirthStr, userGenderStr, userFatherName, userMotherNameStr, userParentMobileNumber)) {
                 saveBtn.setEnabled(true);
                 updateUserDetails(userMobileNumber, admissionId, userFullName, emailIdUpdatedStr,
                         userDateOfBirthStr, userGenderStr, userFatherName, userMotherNameStr, userParentMobileNumber,
@@ -504,7 +500,7 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
         firstNameStr = BlipUtility.getFirstName(getApplicationContext());
         lastNameStr = BlipUtility.getLastName(getApplicationContext());
 
-        userFullNameStr = firstNameStr + " " + lastNameStr;
+        userFullNameStr = BlipUtility.getChildrenName(getApplicationContext());
         etUserFullName.setText(userFullNameStr);
 
         userAdmissionIdStr = BlipUtility.getAdmissionId(getApplicationContext());
@@ -516,22 +512,19 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
         emailIdStr = BlipUtility.getEmailId(getApplicationContext());
         etUserEmailId.setText(emailIdStr);
 
-        //TODO dob, gender, mother name
         etUserDob.setText(currentDateString);
 
         childId = BlipUtility.getChildId(getApplicationContext());
         childrenName = BlipUtility.getChildrenName(getApplicationContext());
-        parentId = BlipUtility.getParentId(getApplicationContext());
-        relTenantInstitutionId = BlipUtility.getInstituteId(getApplicationContext());
+        admissionId = BlipUtility.getUserAdmissionId(getApplicationContext());
+
+        String userFatherName = firstNameStr + " " + lastNameStr;
+        etUserFatherName.setText(userFatherName);
 
         secondaryParentName = BlipUtility.getSecondaryParentName(getApplicationContext());
-        etUserFatherName.setText(secondaryParentName);
+        etUserMotherName.setText(secondaryParentName);
 
         secondaryPhoneNumber = BlipUtility.getSecondaryParentPhone(getApplicationContext());
         etParentMobileNumber.setText(secondaryPhoneNumber);
-
-        sectionId = BlipUtility.getParentSectionId(getApplicationContext());
-
-        instituteName = BlipUtility.getUserInstituteName(getApplicationContext());
     }
 }

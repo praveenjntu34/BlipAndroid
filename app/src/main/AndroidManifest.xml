@@ -43,8 +43,6 @@
         <activity android:name=".view.ui.UserEditProfileActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
 
-        <activity android:name=".view.ui.HomeActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
         <activity android:name=".view.ui.LoginActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
 

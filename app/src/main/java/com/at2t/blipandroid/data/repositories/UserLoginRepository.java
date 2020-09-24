@@ -62,7 +62,7 @@ public class UserLoginRepository {
             @Override
             public void onResponse(@NotNull Call<InstructorLoginData> call, @NotNull Response<InstructorLoginData> response) {
                 if (response.body() != null) {
-                    if (response.body().getInstructorUserId() != 0) {
+                    if (response.body().getError() == null) {
                         BlipUtility.storeInstructorBasicInfoInSharedPref(application, response.body());
                         responseLiveData.setValue(Enums.LoginStatus.INSTRUCTOR_LOGIN_SUCCESSFULL);
                         BlipUtility.setSharedPrefInteger(application.getApplicationContext(), Constants.INSTRUCTOR_SECTION_ID, response.body().getSectionId());
@@ -114,6 +114,8 @@ public class UserLoginRepository {
                         BlipUtility.setSharedPrefInteger(application.getApplicationContext(), Constants.PARENT_SECTION_ID, response.body().getParentLoginDataList().get(0).getSectionId());
                         BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.ROLE, response.body().getParentLoginDataList().get(0).getRole());
                         BlipUtility.setSharedPrefBoolean(application.getApplicationContext(), Constants.IS_PARENT_FIRST_LOGIN, response.body().getParentLoginDataList().get(0).isFirstLogin());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.USER_FIRST_NAME, response.body().getParentLoginDataList().get(0).getFirstName());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.USER_LAST_NAME, response.body().getParentLoginDataList().get(0).getLastName());
                         editor.putString(Constants.ACCESS_TOKEN, "1234");
                         editor.putInt(Constants.PARENT_SECTION_ID, response.body().getParentLoginDataList().get(0).getSectionId());
                         editor.putBoolean(Constants.IS_LOGGED_IN, true);
@@ -216,9 +218,10 @@ public class UserLoginRepository {
         });
     }
 
-    public void updateUserProfileDetails(String admissionId, Integer childId, String childrenName, String email, String firstName, String lastName, Integer parentId, Integer personId, String phoneNumber, Integer relTenantInstitutionId, String secondaryParentName, String secondaryPhoneNumber, Integer sectionId,
+    public void updateUserProfileDetails(int branchId, String branchName, String branchSectionName,String admissionId, Integer childId, String childrenName, String email, String firstName, String lastName, Integer parentId, Integer personId, String phoneNumber, Integer relTenantInstitutionId, String secondaryParentName, String secondaryPhoneNumber, Integer sectionId,
                                          String institutionName, String gender, String dateOfBirth) {
-        UserProfileDetails userProfileDetails = new UserProfileDetails(admissionId, childId, childrenName,
+        UserProfileDetails userProfileDetails = new UserProfileDetails( branchId, branchName, branchSectionName,
+                admissionId, childId, childrenName,
                 email, firstName, lastName, parentId, personId, phoneNumber, relTenantInstitutionId,
                 secondaryParentName, secondaryPhoneNumber, sectionId, institutionName, gender, dateOfBirth);
 
@@ -253,20 +256,27 @@ public class UserLoginRepository {
             @Override
             public void onResponse(@NotNull Call<UserProfileData> call, @NotNull Response<UserProfileData> response) {
                 if (response.body() != null) {
-                    BlipUtility.storeParentProfileDetailsSharedPref(application, response.body().getUserProfileDetails());
+                    if (response.body().getUserProfileDetails() != null) {
+                        BlipUtility.storeParentProfileDetailsSharedPref(application, response.body().getUserProfileDetails());
 
-                    BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.MOBILE_NUMBER, response.body().getUserProfileDetails().getPhoneNumber());
-                    BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.ADMISSION_ID, response.body().getUserProfileDetails().getAdmissionId());
-                    BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.INSTITUTE_NAME, response.body().getUserProfileDetails().getInstitutionName());
-                    BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.GENDER, response.body().getUserProfileDetails().getGender());
-                    BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.DATE_OF_BIRTH, response.body().getUserProfileDetails().getDateOfBirth());
-                    BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.PERSON_ID, response.body().getUserProfileDetails().getGender());
-                    BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.BRANCH_NAME, response.body().getUserProfileDetails().getBranchName());
-                    BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.SECTION_NAME, response.body().getUserProfileDetails().getSectionName());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.USER_FIRST_NAME, response.body().getUserProfileDetails().getFirstName());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.USER_LAST_NAME, response.body().getUserProfileDetails().getLastName());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.SECONDARY_PARENT_NAME, response.body().getUserProfileDetails().getSecondaryParentName());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.MOBILE_NUMBER, response.body().getUserProfileDetails().getPhoneNumber());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.ADMISSION_ID, response.body().getUserProfileDetails().getAdmissionId());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.INSTITUTE_NAME, response.body().getUserProfileDetails().getInstitutionName());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.GENDER, response.body().getUserProfileDetails().getGender());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.DATE_OF_BIRTH, response.body().getUserProfileDetails().getDateOfBirth());
+                        BlipUtility.setSharedPrefInteger(application.getApplicationContext(), Constants.PERSON_ID, response.body().getUserProfileDetails().getPersonId());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.BRANCH_NAME, response.body().getUserProfileDetails().getBranchName());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.SECTION_NAME, response.body().getUserProfileDetails().getSectionName());
+                        BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.SECONDARY_PHONE_NUMBER, response.body().getUserProfileDetails().getSecondaryPhoneNumber());
 
-
-                    responseLiveData.setValue(Enums.LoginStatus.GET_USER_PROFILE_DETAILS_SUCCESSFULLY);
-                } else {
+                        responseLiveData.setValue(Enums.LoginStatus.GET_USER_PROFILE_DETAILS_SUCCESSFULLY);
+                    }else {
+                        responseLiveData.setValue(Enums.LoginStatus.GET_USER_PROFILE_DETAILS_FAILED);
+                    }
+                }else {
                     responseLiveData.setValue(Enums.LoginStatus.GET_USER_PROFILE_DETAILS_FAILED);
                 }
             }

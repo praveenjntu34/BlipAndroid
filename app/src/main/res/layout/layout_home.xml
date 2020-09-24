@@ -46,7 +46,6 @@
             android:layout_marginStart="24dp"
             android:fontFamily="sans-serif-medium"
             android:gravity="center_vertical"
-            android:text="Hello Shaily!"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="18sp"

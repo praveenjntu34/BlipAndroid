@@ -38,6 +38,17 @@ public class InstructorLoginData {
     @SerializedName("personId")
     private int personId;
 
+    @SerializedName("error")
+    private String error;
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
     public int getPersonId() {
         return personId;
     }

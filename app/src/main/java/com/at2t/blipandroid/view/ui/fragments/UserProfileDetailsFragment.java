@@ -133,11 +133,12 @@ public class UserProfileDetailsFragment extends BaseFragment {
         tvUserPhone.setText(phoneNumber);
         tvUserEmail.setText(emailId);
         tvUserParentMobile.setText(userParentMobileNumber);
-        tvUserFatherName.setText(userFatherName);
         tvAdmissionId.setText(userAdmissionId);
         tvUserDateOfBirth.setText(dateOfBirth);
         tvUserYear.setText(year);
+        tvInstituteName.setText(instituteName);
         tvUserBranch.setText(branch);
+        tvUserMotherName.setText(userMotherName);
 
         llUserParentMobile.setVisibility(View.VISIBLE);
         llUserMotherName.setVisibility(View.VISIBLE);
@@ -166,8 +167,9 @@ public class UserProfileDetailsFragment extends BaseFragment {
         String userType = BlipUtility.getRole(getContext());
 
         if (userType.equals("Parent")) {
-            fullName = BlipUtility.getChildrenName(getContext());
-            tvUserFullName.setText(fullName);
+            String fullChildName = BlipUtility.getChildrenName(getContext());
+            tvUserFullName.setText(fullChildName);
+            tvUserFatherName.setText(fullName);
         } else {
             tvUserFullName.setText(fullName);
         }
@@ -192,7 +194,7 @@ public class UserProfileDetailsFragment extends BaseFragment {
         year = BlipUtility.getUserSectionName(getContext());
         branch = BlipUtility.getUserYear(getContext());
 
-        userFatherName = BlipUtility.getSecondaryParentName(getContext());
+        userMotherName = BlipUtility.getSecondaryParentName(getContext());
     }
 
 }

@@ -24,6 +24,9 @@ public class ParentLoginData {
     @SerializedName("isFirstLogin")
     private boolean isFirstLogin;
 
+    @SerializedName("institutionName")
+    private String institutionName;
+
     /**
      * No args constructor for use in serialization
      *
@@ -48,6 +51,14 @@ public class ParentLoginData {
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
+    }
+
+    public String getInstitutionName() {
+        return institutionName;
+    }
+
+    public void setInstitutionName(String institutionName) {
+        this.institutionName = institutionName;
     }
 
     public boolean isFirstLogin() {

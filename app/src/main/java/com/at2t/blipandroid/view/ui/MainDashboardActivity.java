@@ -87,7 +87,6 @@ public class MainDashboardActivity extends AppCompatActivity {
                                 fragment = new ContactUsFragment();
                                 break;
                         }
-                        MainDashboardActivity.this.clearBackStack();
                         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
                         return true;
                     }

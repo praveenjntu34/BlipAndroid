@@ -145,27 +145,9 @@ public class LoginUsingOtpActivity extends AppCompatActivity implements Verifica
     }
 
     private void createVerification() {
-        //<#> ##OTP## TODO put this back on place, once MSG91 is up and running
-        String OTP = "1234";
-//        new SendOTPConfigBuilder()
-//                .setCountryCode(91)
-//                .setMobileNumber(mobileNumber)
-//                .setAutoVerification(this)
-//                .setOtpExpireInMinute(5)
-//                .setOtpHits(10)
-//                .setOtpHitsTimeOut(0L)
-//                .setSenderId("BLIP")
-//                .setMessage("<#> ##OTP## is Your verification code.")
-//                .setOtpLength(4)
-//                .setVerifyWithoutOtp(true)
-//                .setVerificationCallBack(this).build();
-//
-//        SendOTP.getInstance().getTrigger().initiate();
-
         new SendOTPConfigBuilder()
                 .setCountryCode(91)
                 .setMobileNumber(mobileNumber)
-//                .setVerifyWithoutOtp(true)//direct verification while connect with mobile network
                 .setAutoVerification(LoginUsingOtpActivity.this)//Auto read otp from Sms And Verify
                 .setSenderId("ABCDEF")
                 .setMessage("##OTP## is Your verification digits.")
@@ -204,12 +186,6 @@ public class LoginUsingOtpActivity extends AppCompatActivity implements Verifica
         }.start();
     }
 
-//    private void setData() {
-//        resendText = getApplication().getResources().getString(R.string.didn_t_get_code);
-//        timerTextView.setText(resendText);
-//        tvResendOtpTextView.setVisibility(View.GONE);
-//    }
-
     @Override
     public void onSendOtpResponse(final SendOTPResponseCode responseCode, final String message) {
         Log.e(TAG, "onSendOtpResponse: " + responseCode.getCode() + " " + responseCode + " " + message);
@@ -232,9 +208,10 @@ public class LoginUsingOtpActivity extends AppCompatActivity implements Verifica
 
                 } else if (responseCode == SendOTPResponseCode.NO_INTERNET_CONNECTED) {
                     Toast.makeText(getApplicationContext(), "Please check internet connection", Toast.LENGTH_SHORT).show();
-                } else if( responseCode == SendOTPResponseCode.INVALID_NUMBER_ENTERED) {
+                } else if(responseCode == SendOTPResponseCode.SERVER_ERROR_OTP_NOT_VERIFIED) {
                     Toast.makeText(getApplicationContext(), "Invalid OTP, Please try again", Toast.LENGTH_SHORT).show();
                 } else {
+                    Toast.makeText(getApplicationContext(), "Something went wrong, Please try again", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "run: failed SendOTP response" + responseCode.getCode());
                 }
             }

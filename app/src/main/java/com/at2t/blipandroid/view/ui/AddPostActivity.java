@@ -226,6 +226,11 @@ public class AddPostActivity extends AppCompatActivity implements
         tvDateSelected.setText(currentDateString);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     private void onClickListener() {
         ivAttachment.setOnClickListener(new View.OnClickListener() {
             @Override

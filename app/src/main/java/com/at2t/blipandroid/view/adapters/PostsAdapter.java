@@ -192,6 +192,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
 
     private String convertEpochtoDateFormat(long epochDate) {
         Date date = new Date(epochDate);
+        date.setHours(date.getHours() + 5);
+        date.setMinutes(date.getMinutes() + 30);
         DateFormat format = new SimpleDateFormat("dd-MM-yyyy hh:mm");
         format.setTimeZone(TimeZone.getTimeZone("IST/UTC"));
         String formatted = format.format(date);

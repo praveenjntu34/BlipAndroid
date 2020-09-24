@@ -72,16 +72,14 @@ public class BlipUtility {
     }
 
     public static int getChildId(Context context) {
-        int childId = 0;
-        if (SharedPreferencesActivtiy.getSharedPrefInteger(context, Constants.CHILD_ID) != 0) {
-            childId = SharedPreferencesActivtiy.getSharedPrefInteger(context, Constants.CHILD_ID);
-        }
+        int childId;
+        childId = SharedPreferencesActivtiy.getSharedPrefInteger(context, Constants.CHILD_ID);
 
         return childId;
     }
 
     public static int getPersonId(Context context) {
-        int personId = 0;
+        int personId;
         personId = SharedPreferencesActivtiy.getSharedPrefInteger(context, Constants.PERSON_ID);
 
         return personId;

@@ -89,6 +89,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initializeViews();
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         loginViewModel.init(getApplication());
 
@@ -154,8 +155,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
-
-        initializeViews();
     }
 
     @Override
@@ -330,7 +329,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btnLogin) {
-            view.startAnimation(buttonClick);
             mobileNumber = etPhoneNumber.getText().toString();
             goToOtpScreen();
         } else if (view.getId() == R.id.rl_parent) {

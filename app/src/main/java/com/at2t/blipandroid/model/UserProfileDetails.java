@@ -51,6 +51,9 @@ public class UserProfileDetails {
     @SerializedName("dateOfBirth")
     private String dateOfBirth;
 
+    @SerializedName("branchId")
+    private int branchId;
+
     @SerializedName("sectionName")
     private String sectionName;
 
@@ -61,8 +64,11 @@ public class UserProfileDetails {
      * No args constructor for use in serialization
      */
 
-    public UserProfileDetails(String admissionId, Integer childId, String childrenName, String email, String firstName, String lastName, Integer parentId, Integer personId, String phoneNumber, Integer relTenantInstitutionId, String secondaryParentName, String secondaryPhoneNumber, Integer sectionId,
+    public UserProfileDetails( int branchId, String branchName, String branchSectionName, String admissionId, Integer childId, String childrenName, String email, String firstName, String lastName, Integer parentId, Integer personId, String phoneNumber, Integer relTenantInstitutionId, String secondaryParentName, String secondaryPhoneNumber, Integer sectionId,
                               String institutionName, String gender, String dateOfBirth) {
+        this.branchId = branchId;
+        this.branchName = branchName;
+        this.sectionName = branchSectionName;
         this.admissionId = admissionId;
         this.childId = childId;
         this.childrenName = childrenName;
@@ -79,6 +85,14 @@ public class UserProfileDetails {
         this.institutionName = institutionName;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public int getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(int branchId) {
+        this.branchId = branchId;
     }
 
     public String getSectionName() {

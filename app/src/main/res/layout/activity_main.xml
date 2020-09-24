@@ -171,7 +171,6 @@
             android:layout_marginBottom="24dp"
             android:background="@color/colorGreen"
             android:gravity="center"
-            android:focusableInTouchMode="true"
             android:stateListAnimator="@null"
             android:text="@string/login_with_otp"
             android:textAllCaps="false"

@@ -43,10 +43,15 @@ public class LoginViewModel extends ViewModel {
         userLoginRepository.parentLoginUsingPhone(phoneNumber);
     }
 
-    public void updateUserProfileDetails(String admissionId, Integer childId, String childrenName, String email, String firstName, String lastName, Integer parentId, Integer personId, String phoneNumber, Integer relTenantInstitutionId, String secondaryParentName, String secondaryPhoneNumber, Integer sectionId,
+    public void updateUserProfileDetails(int branchId, String branchName, String branchSectionName,
+                                         String admissionId, Integer childId, String childrenName,
+                                         String email, String firstName, String lastName,
+                                         Integer parentId, Integer personId, String phoneNumber,
+                                         Integer relTenantInstitutionId, String secondaryParentName,
+                                         String secondaryPhoneNumber, Integer sectionId,
                                          String instituteName, String gender, String dob) {
 
-        userLoginRepository.updateUserProfileDetails(admissionId, childId, childrenName,
+        userLoginRepository.updateUserProfileDetails(branchId, branchName, branchSectionName, admissionId, childId, childrenName,
                 email, firstName, lastName, parentId, personId, phoneNumber, relTenantInstitutionId,
                 secondaryParentName, secondaryPhoneNumber, sectionId, instituteName, gender, dob);
     }

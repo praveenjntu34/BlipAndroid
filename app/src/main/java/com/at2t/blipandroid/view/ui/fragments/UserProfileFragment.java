@@ -135,7 +135,7 @@ public class UserProfileFragment extends BaseFragment {
     }
 
     public static void clearUserLocalInfo(Context context) {
-//        BlipUtility.clearSharedPref(context, Constants.FCM_TOKEN);
+        BlipUtility.clearSharedPref(context, Constants.FCM_TOKEN);
         BlipUtility.clearSharedPref(context, Constants.USER_FIRST_NAME);
         BlipUtility.clearSharedPref(context, Constants.USER_LAST_NAME);
         BlipUtility.clearSharedPref(context, Constants.PARENT_ID);
@@ -154,5 +154,6 @@ public class UserProfileFragment extends BaseFragment {
         BlipUtility.clearSharedPref(context, Constants.CHILD_ID);
         BlipUtility.clearSharedPref(context, Constants.CHILDREN_NAME);
         BlipUtility.clearSharedPref(context, Constants.ROLE);
+        BlipUtility.clearSharedPref(context, Constants.DATE_OF_BIRTH);
     }
 }
