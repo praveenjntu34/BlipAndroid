@@ -105,6 +105,7 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
     String currentDateString;
     String instituteName;
     Calendar myCalendar;
+    String userFatherName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -155,8 +156,10 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
         etUserAdmissionId.setText(BlipUtility.getAdmissionId(getApplicationContext()));
         etUserDob.setText(BlipUtility.getUserDob(getApplicationContext()));
 
-        secondaryParentName = BlipUtility.getSecondaryParentName(getApplicationContext());
-        etUserFatherName.setText(secondaryParentName);
+        firstNameStr = BlipUtility.getFirstName(getApplicationContext());
+        lastNameStr = BlipUtility.getLastName(getApplicationContext());
+        userFatherName = firstNameStr + " " + lastNameStr;
+        etUserFatherName.setText(userFatherName);
 
         secondaryPhoneNumber = BlipUtility.getSecondaryParentPhone(getApplicationContext());
         etParentMobileNumber.setText(secondaryPhoneNumber);
@@ -247,6 +250,7 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
                                    String userParentMobileNumber, String userYear, String userBranchStr) {
 
         personId = BlipUtility.getPersonId(getApplicationContext());
+        userDateOfBirthStr = etUserDob.getText().toString();
 
         loginViewModel.updateUserProfileDetails(branchId, branchName, branchSectionName, admissionId,
                 childId, childrenName, emailIdUpdatedStr, userFatherName, lastNameStr, parentId, personId,
@@ -436,7 +440,6 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.saveBtn) {
-            String userFatherName = etUserFatherName.getText().toString();
             String userMotherNameStr = etUserMotherName.getText().toString();
             String userParentMobileNumber = etParentMobileNumber.getText().toString();
             String userBranchStr = branchSectionName;
@@ -463,11 +466,10 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
                 updateUserDetails(userMobileNumber, admissionId, userFullName, emailIdUpdatedStr,
                         userDateOfBirthStr, userGenderStr, userFatherName, userMotherNameStr, userParentMobileNumber,
                         userYear, userBranchStr);
+                Intent intent = new Intent(this, MainDashboardActivity.class);
+                startActivity(intent);
+                finish();
             }
-
-            Intent intent = new Intent(this, MainDashboardActivity.class);
-            startActivity(intent);
-            finish();
         } else if (view.getId() == R.id.etUser_dob) {
             myCalendar = Calendar.getInstance();
             DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -479,6 +481,8 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
                     myCalendar.set(Calendar.MONTH, monthOfYear);
                     myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                     updateLabel(year, monthOfYear, dayOfMonth);
+                    currentDateString = (year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                    etUserDob.setText(currentDateString);
                 }
 
             };
@@ -497,9 +501,6 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
     }
 
     private void setData() {
-        firstNameStr = BlipUtility.getFirstName(getApplicationContext());
-        lastNameStr = BlipUtility.getLastName(getApplicationContext());
-
         userFullNameStr = BlipUtility.getChildrenName(getApplicationContext());
         etUserFullName.setText(userFullNameStr);
 
@@ -512,14 +513,9 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
         emailIdStr = BlipUtility.getEmailId(getApplicationContext());
         etUserEmailId.setText(emailIdStr);
 
-        etUserDob.setText(currentDateString);
-
         childId = BlipUtility.getChildId(getApplicationContext());
         childrenName = BlipUtility.getChildrenName(getApplicationContext());
         admissionId = BlipUtility.getUserAdmissionId(getApplicationContext());
-
-        String userFatherName = firstNameStr + " " + lastNameStr;
-        etUserFatherName.setText(userFatherName);
 
         secondaryParentName = BlipUtility.getSecondaryParentName(getApplicationContext());
         etUserMotherName.setText(secondaryParentName);

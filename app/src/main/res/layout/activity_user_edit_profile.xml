@@ -215,7 +215,7 @@
                 android:layout_height="match_parent"
                 android:focusableInTouchMode="true"
                 android:inputType="textCapWords"
-                android:maxLength="20"
+                android:maxLength="100"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_14sp" />
         </com.google.android.material.textfield.TextInputLayout>

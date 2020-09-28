@@ -105,6 +105,8 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
     String currentDateString;
     String instituteName;
     Calendar myCalendar;
+    String selectedBranch;
+    int selectedBranchId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -148,6 +150,11 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
     private void setProfilePreFilledDate() {
         childId = BlipUtility.getChildId(getApplicationContext());
         childrenName = BlipUtility.getChildrenName(getApplicationContext());
+        etUserFullName.setText(childrenName);
+
+        emailIdStr = BlipUtility.getEmailId(getApplicationContext());
+        etUserEmailId.setText(emailIdStr);
+
         parentId = BlipUtility.getParentId(getApplicationContext());
         relTenantInstitutionId = BlipUtility.getInstituteId(getApplicationContext());
 
@@ -155,8 +162,14 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
         etUserAdmissionId.setText(BlipUtility.getAdmissionId(getApplicationContext()));
         etUserDob.setText(BlipUtility.getUserDob(getApplicationContext()));
 
+        firstNameStr = BlipUtility.getFirstName(getApplicationContext());
+        lastNameStr = BlipUtility.getLastName(getApplicationContext());
+
+        String userFatherName = firstNameStr + " " + lastNameStr;
+        etUserFatherName.setText(userFatherName);
+
         secondaryParentName = BlipUtility.getSecondaryParentName(getApplicationContext());
-        etUserFatherName.setText(secondaryParentName);
+        etUserMotherName.setText(secondaryParentName);
 
         secondaryPhoneNumber = BlipUtility.getSecondaryParentPhone(getApplicationContext());
         etParentMobileNumber.setText(secondaryPhoneNumber);
@@ -184,6 +197,15 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
 
         spinnerYear = (Spinner) findViewById(R.id.sp_year_selector);
         tvUserYear = (TextView) findViewById(R.id.tv_user_year);
+        tvUserYear.setText(BlipUtility.getUserSectionName(getApplicationContext()));
+        tvUserYear.setTextColor(Color.BLACK);
+
+        spinnerBranch = (Spinner) findViewById(R.id.sp_branch_selector);
+        tvUserBranch = (TextView) findViewById(R.id.tv_user_branch);
+
+        tvUserBranch.setText(BlipUtility.getUserYear(getApplicationContext()));
+        tvUserBranch.setTextColor(Color.BLACK);
+
 
         if (branchSectionDataList != null && branchSectionDataList.size() > 1) {
             spinnerYear.setOnTouchListener(spinnerOnTouch);
@@ -211,7 +233,8 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
                     @Override
                     public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                         getValueOfBranch(position, branchSectionDataList);
-
+                        selectedBranchId = branchSectionDataList.get(position).getBranchId();
+                        selectedBranch = branchSectionDataList.get(position).getBranchName();
                     }
 
                     @Override
@@ -232,12 +255,7 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
         }
         branchSectionNameList.add(0, "Select branch");
 
-        spinnerBranch = (Spinner) findViewById(R.id.sp_branch_selector);
-        tvUserBranch = (TextView) findViewById(R.id.tv_user_branch);
 
-        if (branchSectionNameList != null) {
-            tvUserBranch.setVisibility(View.GONE);
-        }
 
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout
                 .item_branch_spinner, branchSectionNameList) {
@@ -258,6 +276,8 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
 
                 TextView selectedTextView = (TextView) selectedItemView;
                 if (selectedItemView != null && selectedItemView instanceof TextView) {
+                    tvUserBranch.setText("");
+                    tvUserBranch.setTextColor(Color.BLACK);
                     ((TextView) selectedItemView).setTextColor(ContextCompat.getColor(getApplication(), R.color.black));
                 }
             }
@@ -277,9 +297,13 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
 
     private void updateUserDetails(String userMobileNumber, String admissionId, String userFullName, String emailIdUpdatedStr, String userDateOfBirthStr, String userGenderStr, String userFatherName, String userMotherNameStr, String userParentMobileNumber, String userYear, String userBranchStr) {
 
-        loginViewModel.updateUserProfileDetails(branchId, branchName, branchSectionName,admissionId, childId, userFullName, emailIdUpdatedStr,
-                firstNameStr, lastNameStr, parentId, personId, userMobileNumber, relTenantInstitutionId,
-                userFatherName, userParentMobileNumber, sectionId, instituteName, userGenderStr, userDateOfBirthStr);
+        personId = BlipUtility.getPersonId(getApplicationContext());
+        admissionId = etUserAdmissionId.getText().toString();
+
+        loginViewModel.updateUserProfileDetails(selectedBranchId, selectedBranch, branchSectionName, admissionId,
+                childId, childrenName, emailIdUpdatedStr,
+                userFatherName, lastNameStr, parentId, personId, userMobileNumber, relTenantInstitutionId,
+                userMotherNameStr, userParentMobileNumber, sectionId, instituteName, userGenderStr, userDateOfBirthStr);
     }
 
     private boolean isAllFieldsEntered(String mobileNumber, String admissionId, String fullName,
@@ -326,7 +350,7 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
             isFilled = false;
             Toast.makeText(this, "Please select your year", Toast.LENGTH_SHORT).show();
         }
-        if (branchName.isEmpty()) {
+        if (BlipUtility.getUserYear(getApplicationContext()) == null) {
             isFilled = false;
             Toast.makeText(this, "Please select your branch", Toast.LENGTH_SHORT).show();
         }
@@ -422,6 +446,8 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
 
         spinnerGender = (Spinner) findViewById(R.id.sp_gender_selector);
         tvUserGender = (TextView) findViewById(R.id.tv_user_gender);
+        tvUserGender.setText(BlipUtility.getUserGender(getApplicationContext()));
+        tvUserGender.setTextColor(Color.BLACK);
 
         if (genderList != null) {
             tvUserGender.setVisibility(View.GONE);
@@ -489,11 +515,11 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
                 updateUserDetails(userMobileNumber, admissionId, userFullName, emailIdUpdatedStr,
                         userDateOfBirthStr, userGenderStr, userFatherName, userMotherNameStr, userParentMobileNumber,
                         userYear, userBranchStr);
-            }
 
-            Intent intent = new Intent(this, MainDashboardActivity.class);
-            startActivity(intent);
-            finish();
+                Intent intent = new Intent(this, MainDashboardActivity.class);
+                startActivity(intent);
+                finish();
+            }
         } else if (view.getId() == R.id.etUser_dob) {
             myCalendar = Calendar.getInstance();
             DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -505,6 +531,8 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
                     myCalendar.set(Calendar.MONTH, monthOfYear);
                     myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                     updateLabel(year, monthOfYear, dayOfMonth);
+                    currentDateString = (year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                    etUserDob.setText(currentDateString);
                 }
 
             };
@@ -523,10 +551,7 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
     }
 
     private void setData() {
-        firstNameStr = BlipUtility.getFirstName(getApplicationContext());
-        lastNameStr = BlipUtility.getLastName(getApplicationContext());
-
-        userFullNameStr = firstNameStr + " " + lastNameStr;
+        userFullNameStr = BlipUtility.getChildrenName(getApplicationContext());
         etUserFullName.setText(userFullNameStr);
 
         userAdmissionIdStr = BlipUtility.getAdmissionId(getApplicationContext());
@@ -538,20 +563,16 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
         emailIdStr = BlipUtility.getEmailId(getApplicationContext());
         etUserEmailId.setText(emailIdStr);
 
-        etUserDob.setText(currentDateString);
-
         childId = BlipUtility.getChildId(getApplicationContext());
         childrenName = BlipUtility.getChildrenName(getApplicationContext());
         parentId = BlipUtility.getParentId(getApplicationContext());
         relTenantInstitutionId = BlipUtility.getInstituteId(getApplicationContext());
 
         secondaryParentName = BlipUtility.getSecondaryParentName(getApplicationContext());
-        etUserFatherName.setText(secondaryParentName);
+        etUserMotherName.setText(secondaryParentName);
 
         secondaryPhoneNumber = BlipUtility.getSecondaryParentPhone(getApplicationContext());
         etParentMobileNumber.setText(secondaryPhoneNumber);
-
-        personId = BlipUtility.getPersonId(getApplicationContext());
 
         instituteName = BlipUtility.getUserInstituteName(getApplicationContext());
     }
