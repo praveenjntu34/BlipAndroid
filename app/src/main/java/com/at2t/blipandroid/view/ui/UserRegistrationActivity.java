@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,7 @@ import java.util.Locale;
 
 public class UserRegistrationActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static String TAG = "UserEditProfileActivity";
+    public static String TAG = "UserRegistrationActivity";
     private LoginViewModel loginViewModel;
     private EditText etUserFullName;
     private EditText etUserMobileNumber;
@@ -106,12 +107,14 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
     String instituteName;
     Calendar myCalendar;
     String selectedBranch;
+    String selectedSelectionName;
+    String selectedGender;
     int selectedBranchId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_edit_profile);
+        setContentView(R.layout.activity_user_registration);
 
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         loginViewModel.init(getApplication());
@@ -123,9 +126,12 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
             public void onChanged(Integer integer) {
                 if (integer != null) {
                     if (integer == Enums.LoginStatus.PROFILE_UPDATED_SUCCESSFULLY) {
-                        Toast.makeText(getApplicationContext(), "Profile details saved successfully.", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onChanged: Profile details saved successfully");
+                        Intent intent = new Intent(UserRegistrationActivity.this, MainDashboardActivity.class);
+                        startActivity(intent);
+                        finish();
                     } else if (integer == Enums.LoginStatus.PROFILE_UPDATE_FAILED) {
-                        Toast.makeText(getApplicationContext(), "Failed saving the profile details", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onChanged: Failed saving the profile details");
                     }
                     if (integer == Enums.LoginStatus.GET_USER_PROFILE_DETAILS_SUCCESSFULLY) {
                         setProfilePreFilledDate();
@@ -247,7 +253,7 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
         }
     };
 
-    private void getValueOfBranch(int position, List<BranchSectionData> branchSectionDataList) {
+    private void getValueOfBranch(int position, final List<BranchSectionData> branchSectionDataList) {
         List<String> branchSectionNameList = new ArrayList<>();
         for (int j = 0; j < branchSectionDataList.get(position).getSections().size(); j++) {
             branchSectionName = branchSectionDataList.get(position).getSections().get(j).getSectionName();
@@ -292,7 +298,7 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
 
     @Override
     public void onBackPressed() {
-        moveTaskToBack(true);
+        finish();
     }
 
     private void updateUserDetails(String userMobileNumber, String admissionId, String userFullName, String emailIdUpdatedStr, String userDateOfBirthStr, String userGenderStr, String userFatherName, String userMotherNameStr, String userParentMobileNumber, String userYear, String userBranchStr) {
@@ -472,6 +478,7 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
 
                 TextView selectedTextView = (TextView) selectedItemView;
                 if (selectedItemView != null && selectedItemView instanceof TextView) {
+                    selectedGender = genderList.get(position);
                     ((TextView) selectedItemView).setTextColor(ContextCompat.getColor(getApplication(), R.color.black));
                 }
             }
@@ -491,7 +498,7 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
             String userMotherNameStr = etUserMotherName.getText().toString();
             String userParentMobileNumber = etParentMobileNumber.getText().toString();
             String userBranchStr = branchSectionName;
-            String userYear = branchName;
+            String userYear = selectedBranch;
             String userGenderStr = genderStr;
             if (genderStr.equals("Female")) {
                 genderStr = "F";
@@ -515,10 +522,6 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
                 updateUserDetails(userMobileNumber, admissionId, userFullName, emailIdUpdatedStr,
                         userDateOfBirthStr, userGenderStr, userFatherName, userMotherNameStr, userParentMobileNumber,
                         userYear, userBranchStr);
-
-                Intent intent = new Intent(this, MainDashboardActivity.class);
-                startActivity(intent);
-                finish();
             }
         } else if (view.getId() == R.id.etUser_dob) {
             myCalendar = Calendar.getInstance();
@@ -531,7 +534,7 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
                     myCalendar.set(Calendar.MONTH, monthOfYear);
                     myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                     updateLabel(year, monthOfYear, dayOfMonth);
-                    currentDateString = (year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                    currentDateString = (dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                     etUserDob.setText(currentDateString);
                 }
 
@@ -544,7 +547,7 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
     }
 
     private void updateLabel(int year, int monthOfYear, int dayOfMonth) {
-        String myFormat = (year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+        String myFormat = (dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         etUserDob.setText(sdf.format(myCalendar.getTime()));

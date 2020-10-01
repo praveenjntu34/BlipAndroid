@@ -154,7 +154,7 @@ public class UserLoginRepository {
                     } else {
                         responseLiveData.setValue(Enums.LoginStatus.LOGIN_USER_USING_ADMISSION_ID_WRONG);
                     }
-                }else {
+                } else {
                     responseLiveData.setValue(Enums.LoginStatus.LOGIN_USER_USING_ADMISSION_ID_FAILED);
                 }
             }
@@ -218,14 +218,14 @@ public class UserLoginRepository {
         });
     }
 
-    public void updateUserProfileDetails(int branchId, String branchName, String branchSectionName,String admissionId, Integer childId, String childrenName, String email, String firstName, String lastName, Integer parentId, Integer personId, String phoneNumber, Integer relTenantInstitutionId, String secondaryParentName, String secondaryPhoneNumber, Integer sectionId,
+    public void updateUserProfileDetails(int branchId, String branchName, String branchSectionName, String admissionId, Integer childId, String childrenName, String email, String firstName, String lastName, Integer parentId, Integer personId, String phoneNumber, Integer relTenantInstitutionId, String secondaryParentName, String secondaryPhoneNumber, Integer sectionId,
                                          String institutionName, String gender, String dateOfBirth) {
-        UserProfileDetails userProfileDetails = new UserProfileDetails( branchId, branchName, branchSectionName,
+        UserProfileDetails userProfileDetails = new UserProfileDetails(branchId, branchName, branchSectionName,
                 admissionId, childId, childrenName,
                 email, firstName, lastName, parentId, personId, phoneNumber, relTenantInstitutionId,
                 secondaryParentName, secondaryPhoneNumber, sectionId, institutionName, gender, dateOfBirth);
 
-        Call<ResponseBody> userProfileDetailsCall = apiService.updateUserProfile(userProfileDetails);
+        final Call<ResponseBody> userProfileDetailsCall = apiService.updateUserProfile(userProfileDetails);
         userProfileDetailsCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
@@ -235,14 +235,14 @@ public class UserLoginRepository {
                     editor.putBoolean(Constants.IS_LOGGED_IN, true);
                     editor.putBoolean(Constants.PARENTLOGIN, true);
                 } else {
-                    responseLiveData.setValue(Enums.LoginStatus.PROFILE_UPDATED_SUCCESSFULLY);
+                    responseLiveData.setValue(Enums.LoginStatus.PROFILE_UPDATE_FAILED);
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
                 if (networkManager.isNetworkAvailable(application)) {
-                    responseLiveData.setValue(Enums.LoginStatus.PROFILE_UPDATED_SUCCESSFULLY);
+                    responseLiveData.setValue(Enums.LoginStatus.PROFILE_UPDATE_FAILED);
                 } else {
                     responseLiveData.setValue(Enums.LoginStatus.NO_INTERNET_CONNECTION);
                 }
@@ -273,10 +273,10 @@ public class UserLoginRepository {
                         BlipUtility.setSharedPrefString(application.getApplicationContext(), Constants.SECONDARY_PHONE_NUMBER, response.body().getUserProfileDetails().getSecondaryPhoneNumber());
 
                         responseLiveData.setValue(Enums.LoginStatus.GET_USER_PROFILE_DETAILS_SUCCESSFULLY);
-                    }else {
+                    } else {
                         responseLiveData.setValue(Enums.LoginStatus.GET_USER_PROFILE_DETAILS_FAILED);
                     }
-                }else {
+                } else {
                     responseLiveData.setValue(Enums.LoginStatus.GET_USER_PROFILE_DETAILS_FAILED);
                 }
             }
@@ -298,10 +298,10 @@ public class UserLoginRepository {
             @Override
             public void onResponse(@NotNull Call<List<BranchSectionData>> call, @NotNull Response<List<BranchSectionData>> response) {
                 if (response.body() != null) {
-                        branchListLiveData = response.body();
-                        if (branchListLiveData == null) {
-                            branchListLiveData = new ArrayList<>();
-                        }
+                    branchListLiveData = response.body();
+                    if (branchListLiveData == null) {
+                        branchListLiveData = new ArrayList<>();
+                    }
                     responseLiveData.setValue(Enums.LoginStatus.GET_BRANCH_DETAILS_SUCCESSFULLY);
                 } else {
                     responseLiveData.setValue(Enums.LoginStatus.GET_BRANCH_DETAILS_FAILED);
@@ -318,7 +318,6 @@ public class UserLoginRepository {
             }
         });
     }
-
 
 
     public void getBannerDetails(Integer relTenantInstitutionId) {

@@ -147,7 +147,6 @@ public class LoginUsingOtpActivity extends AppCompatActivity implements Verifica
         new SendOTPConfigBuilder()
                 .setCountryCode(91)
                 .setMobileNumber(mobileNumber)
-                .setVerifyWithoutOtp(true)//remove it later
                 .setAutoVerification(LoginUsingOtpActivity.this)//Auto read otp from Sms And Verify
                 .setSenderId("ABCDEF")
                 .setMessage("##OTP## is Your verification digits.")
@@ -210,19 +209,7 @@ public class LoginUsingOtpActivity extends AppCompatActivity implements Verifica
                     Toast.makeText(getApplicationContext(), "Please check internet connection", Toast.LENGTH_SHORT).show();
                 } else if(responseCode == SendOTPResponseCode.SERVER_ERROR_OTP_NOT_VERIFIED) {
                     Toast.makeText(getApplicationContext(), "Invalid OTP, Please try again", Toast.LENGTH_SHORT).show();
-                    userType = BlipUtility.getRole(getApplicationContext());//remove this
-                    if (userType.equals("Parent") && isFirstParentLogin) {
-                        launchParentRegistrationScreen();
-                    } else {
-                        otpVerified();
-                    }
                 } else {
-                    userType = BlipUtility.getRole(getApplicationContext());//remove this
-                    if (userType.equals("Parent") && isFirstParentLogin) {
-                        launchParentRegistrationScreen();
-                    } else {
-                        otpVerified();
-                    }
                     Log.d(TAG, "run: failed SendOTP response" + responseCode.getCode());
                 }
             }
