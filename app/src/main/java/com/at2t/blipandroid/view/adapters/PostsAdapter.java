@@ -106,7 +106,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
                 final String encodedString = postsData.getPostAttachmentId();
                 final String pureBase64Encoded = encodedString.substring(encodedString.indexOf(",") + 1);
                 decodedBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
-                BlipUtility.setSharedPrefString(mContext, Constants.POSTS_ATTACHMENT, postsData.getPostAttachmentId());
+
                 Glide.with(mContext).load(decodedBytes).into(postsViewHolder.postImg);
             } else {
                 postsViewHolder.postImg.setVisibility(View.GONE);
@@ -118,7 +118,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
         postsViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                BlipUtility.clearSharedPref(mContext, Constants.POSTS_ATTACHMENT);
+                BlipUtility.setSharedPrefString(mContext, Constants.POSTS_ATTACHMENT, postsData.getPostAttachmentId());
                 fragmentJump(postsDataList, i);
             }
         });

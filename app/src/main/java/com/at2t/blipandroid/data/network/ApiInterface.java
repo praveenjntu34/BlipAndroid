@@ -55,7 +55,7 @@ public interface ApiInterface {
     @POST("fcm/parent")
     Call<ResponseBody> postFcmTokenForParent(@Body FcmTokenModel fcmTokenModel);
 
-    @GET("banner/{relTenantInstitutionId}")
+    @GET("banner/institution/{relTenantInstitutionId}")
     Call<List<BannerDetailsDataModel>> getBannerDetails(@Path("relTenantInstitutionId") Integer relTenantInstitutionId);
 
     @GET("/institution/branch/{relTenantInstitutionId}")

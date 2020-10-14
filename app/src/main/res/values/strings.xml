@@ -68,7 +68,8 @@
     <string name="full_name">Full Name</string>
     <string name="date_of_birth">Date of birth</string>
     <string name="gender">Gender</string>
-    <string name="father_name">Father Name</string>
+    <string name="father_name1">Father FirstName</string>
+    <string name="father_name2">Father LastName</string>
     <string name="mother_name">Mother name</string>
     <string name="parent_mobile_number">Parent mobile number</string>
     <string name="select_branch">Select branch</string>

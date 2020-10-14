@@ -318,55 +318,59 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
                                        String year, String branchName) {
         setNoError();
         boolean isFilled = true;
-        if (fullName.length() < 1) {
-            isFilled = false;
-            userFullNameInputLayout.setError("Enter your full name");
-        }
-        if (mobileNumber.length() < 1) {
-            isFilled = false;
-            userMobileNumberInputLayout.setError("Enter your mobile number");
-        }
-        if (emailText == null) {
-            if (emailText.length() < 1) {
-                userEmailIdInputLayout.setError("Enter your email id");
+        try {
+            if (fullName.length() < 1) {
                 isFilled = false;
-            } else {
-                if (!isValid(emailText)) {
+                userFullNameInputLayout.setError("Enter your full name");
+            }
+            if (mobileNumber.length() < 1) {
+                isFilled = false;
+                userMobileNumberInputLayout.setError("Enter your mobile number");
+            }
+            if (emailText == null) {
+                if (emailText.length() < 1) {
+                    userEmailIdInputLayout.setError("Enter your email id");
                     isFilled = false;
-                    userEmailIdInputLayout.setError("Please enter your valid email");
+                } else {
+                    if (!isValid(emailText)) {
+                        isFilled = false;
+                        userEmailIdInputLayout.setError("Please enter your valid email");
+                    }
                 }
             }
-        }
-        if (userParentMobileNumber == null) {
-            if (userParentMobileNumber.length() < 1) {
-                parentMobileNumberInputLayout.setError("Enter your parent phone number ");
-                isFilled = false;
-            } else {
-                if (userParentMobileNumber.length() != 10) {
+            if (userParentMobileNumber == null) {
+                if (userParentMobileNumber.length() < 1) {
+                    parentMobileNumberInputLayout.setError("Enter your parent phone number ");
                     isFilled = false;
-                    parentMobileNumberInputLayout.setError("Enter your parent's valid phone number ");
+                } else {
+                    if (userParentMobileNumber.length() != 10) {
+                        isFilled = false;
+                        parentMobileNumberInputLayout.setError("Enter your parent's valid phone number ");
+                    }
                 }
             }
-        }
-        if (genderStr.isEmpty()) {
-            isFilled = false;
-            Toast.makeText(this, "Please select your gender", Toast.LENGTH_SHORT).show();
-        }
-        if (year.isEmpty()) {
-            isFilled = false;
-            Toast.makeText(this, "Please select your year", Toast.LENGTH_SHORT).show();
-        }
-        if (BlipUtility.getUserYear(getApplicationContext()) == null) {
-            isFilled = false;
-            Toast.makeText(this, "Please select your branch", Toast.LENGTH_SHORT).show();
-        }
-        if (userDob.isEmpty()) {
-            isFilled = false;
-            userDobInputLayout.setError("Please enter your Dob");
-        }
-        if (!checkBoxTerms.isChecked()) {
-            isFilled = false;
-            Toast.makeText(this, "Please tick the box of terms and conditions", Toast.LENGTH_SHORT).show();
+            if (genderStr.isEmpty()) {
+                isFilled = false;
+                Toast.makeText(this, "Please select your gender", Toast.LENGTH_SHORT).show();
+            }
+            if (year.isEmpty()) {
+                isFilled = false;
+                Toast.makeText(this, "Please select your year", Toast.LENGTH_SHORT).show();
+            }
+            if (BlipUtility.getUserYear(getApplicationContext()) == null) {
+                isFilled = false;
+                Toast.makeText(this, "Please select your branch", Toast.LENGTH_SHORT).show();
+            }
+            if (userDob.isEmpty()) {
+                isFilled = false;
+                userDobInputLayout.setError("Please enter your Dob");
+            }
+            if (!checkBoxTerms.isChecked()) {
+                isFilled = false;
+                Toast.makeText(this, "Please tick the box of terms and conditions", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return isFilled;
     }
@@ -534,7 +538,7 @@ public class UserRegistrationActivity extends AppCompatActivity implements View.
                     myCalendar.set(Calendar.MONTH, monthOfYear);
                     myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                     updateLabel(year, monthOfYear, dayOfMonth);
-                    currentDateString = (dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                    currentDateString = (year  + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
                     etUserDob.setText(currentDateString);
                 }
 

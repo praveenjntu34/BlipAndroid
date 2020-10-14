@@ -205,12 +205,34 @@
             android:layout_marginStart="@dimen/margin_40dp"
             android:layout_marginTop="@dimen/margin_20dp"
             android:layout_marginEnd="@dimen/margin_40dp"
-            android:hint="@string/father_name"
+            android:hint="@string/father_name1"
             android:textColorHint="@color/blue"
             app:hintTextAppearance="@style/TextLabel">
 
             <EditText
                 android:id="@+id/etUser_father_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusableInTouchMode="true"
+                android:inputType="textCapWords"
+                android:maxLength="100"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_user_father_name2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_40dp"
+            android:layout_marginTop="@dimen/margin_20dp"
+            android:layout_marginEnd="@dimen/margin_40dp"
+            android:hint="@string/father_name2"
+            android:textColorHint="@color/blue"
+            app:hintTextAppearance="@style/TextLabel">
+
+            <EditText
+                android:id="@+id/etUser_father_name2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:focusableInTouchMode="true"

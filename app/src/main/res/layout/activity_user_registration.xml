@@ -205,7 +205,7 @@
             android:layout_marginStart="@dimen/margin_40dp"
             android:layout_marginTop="@dimen/margin_20dp"
             android:layout_marginEnd="@dimen/margin_40dp"
-            android:hint="@string/father_name"
+            android:hint="@string/father_name1"
             android:textColorHint="@color/blue"
             app:hintTextAppearance="@style/TextLabel">
 

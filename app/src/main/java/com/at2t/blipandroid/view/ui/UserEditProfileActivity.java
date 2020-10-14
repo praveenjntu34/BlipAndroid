@@ -49,6 +49,7 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
     private EditText etParentMobileNumber;
     private EditText etUserEmailId;
     private EditText etUserFatherName;
+    private EditText etUserFatherName2;
     private EditText etUserMotherName;
     private EditText etUserAdmissionId;
     private EditText etUserDob;
@@ -59,6 +60,7 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
     private TextInputLayout userEmailIdInputLayout;
     private TextInputLayout userDobInputLayout;
     private TextInputLayout userFatherNameInputLayout;
+    private TextInputLayout userFatherNameInputLayout2;
     private TextInputLayout userMotherNameInputLayout;
     private TextInputLayout userAdmissionIdInputLayout;
 
@@ -106,6 +108,7 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
     String instituteName;
     Calendar myCalendar;
     String userFatherName;
+    String userFatherName2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -158,8 +161,9 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
 
         firstNameStr = BlipUtility.getFirstName(getApplicationContext());
         lastNameStr = BlipUtility.getLastName(getApplicationContext());
-        userFatherName = firstNameStr + " " + lastNameStr;
-        etUserFatherName.setText(userFatherName);
+//        userFatherName = firstNameStr + " " + lastNameStr;
+        etUserFatherName.setText(firstNameStr);
+        etUserFatherName2.setText(lastNameStr);
 
         secondaryPhoneNumber = BlipUtility.getSecondaryParentPhone(getApplicationContext());
         etParentMobileNumber.setText(secondaryPhoneNumber);
@@ -246,14 +250,14 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
     }
 
     private void updateUserDetails(String userMobileNumber, String admissionId, String userFullName, String emailIdUpdatedStr,
-                                   String userDateOfBirthStr, String userGenderStr, String userFatherName, String userMotherNameStr,
+                                   String userDateOfBirthStr, String userGenderStr, String userFatherName, String userFatherName2, String userMotherNameStr,
                                    String userParentMobileNumber, String userYear, String userBranchStr) {
 
         personId = BlipUtility.getPersonId(getApplicationContext());
         userDateOfBirthStr = etUserDob.getText().toString();
 
         loginViewModel.updateUserProfileDetails(branchId, branchName, branchSectionName, admissionId,
-                childId, childrenName, emailIdUpdatedStr, userFatherName, lastNameStr, parentId, personId,
+                childId, childrenName, emailIdUpdatedStr, userFatherName, userFatherName2, parentId, personId,
                 userMobileNumber, relTenantInstitutionId, userMotherNameStr, userParentMobileNumber,
                 sectionId, instituteName, userGenderStr, userDateOfBirthStr);
     }
@@ -326,6 +330,7 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
         etUserAdmissionId = findViewById(R.id.etUser_admission_no);
         etUserDob = findViewById(R.id.etUser_dob);
         etUserFatherName = findViewById(R.id.etUser_father_name);
+        etUserFatherName2 = findViewById(R.id.etUser_father_name2);
         etUserMotherName = findViewById(R.id.etUser_mother_name);
         etParentMobileNumber = findViewById(R.id.et_parent_phone_number);
         etUserEmailId = findViewById(R.id.etUser_email);
@@ -338,6 +343,7 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
         userDobInputLayout = findViewById(R.id.text_input_user_dob);
         userEmailIdInputLayout = findViewById(R.id.text_input_user_email);
         userFatherNameInputLayout = findViewById(R.id.text_input_user_father_name);
+        userFatherNameInputLayout2 = findViewById(R.id.text_input_user_father_name2);
         userMotherNameInputLayout = findViewById(R.id.text_input_user_mother_name);
         parentMobileNumberInputLayout = findViewById(R.id.text_input_parent_phone_number);
         rlBranch = findViewById(R.id.rl_spinner_branch);
@@ -349,6 +355,7 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
         etUserAdmissionId.addTextChangedListener(new MyTextWatcher(userAdmissionIdInputLayout));
         etUserDob.addTextChangedListener(new MyTextWatcher(userDobInputLayout));
         etUserFatherName.addTextChangedListener(new MyTextWatcher(userFatherNameInputLayout));
+        etUserFatherName2.addTextChangedListener(new MyTextWatcher(userFatherNameInputLayout2));
         etUserMotherName.addTextChangedListener(new MyTextWatcher(userMotherNameInputLayout));
         etParentMobileNumber.addTextChangedListener(new MyTextWatcher(parentMobileNumberInputLayout));
         etUserEmailId.addTextChangedListener(new MyTextWatcher(userEmailIdInputLayout));
@@ -459,12 +466,13 @@ public class UserEditProfileActivity extends AppCompatActivity implements View.O
             String userMobileNumber = etUserMobileNumber.getText().toString();
             String userFullName = etUserFullName.getText().toString();
             String emailIdUpdatedStr = etUserEmailId.getText().toString();
-
+            String fname = etUserFatherName.getText().toString();
+            String lname = etUserFatherName2.getText().toString();
             if (isAllFieldsEntered(userMobileNumber, admissionId, userFullName, emailIdUpdatedStr,
                     userDateOfBirthStr, userGenderStr, userFatherName, userMotherNameStr, userParentMobileNumber)) {
                 saveBtn.setEnabled(true);
                 updateUserDetails(userMobileNumber, admissionId, userFullName, emailIdUpdatedStr,
-                        userDateOfBirthStr, userGenderStr, userFatherName, userMotherNameStr, userParentMobileNumber,
+                        userDateOfBirthStr, userGenderStr, fname,lname, userMotherNameStr, userParentMobileNumber,
                         userYear, userBranchStr);
                 Intent intent = new Intent(this, MainDashboardActivity.class);
                 startActivity(intent);
