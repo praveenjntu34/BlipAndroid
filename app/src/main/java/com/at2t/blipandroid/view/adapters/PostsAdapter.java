@@ -119,7 +119,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
             @Override
             public void onClick(View view) {
                 BlipUtility.clearSharedPref(mContext, Constants.POSTS_ATTACHMENT);
-                BlipUtility.setSharedPrefString(mContext, Constants.POSTS_ATTACHMENT, postsData.getPostAttachmentId());
+                BlipUtility.setSharedPrefString(mContext, Constants.POSTS_ATTACHMENT, postsDataList.get(i).getPostAttachmentId());
                 fragmentJump(postsDataList, i);
             }
         });
