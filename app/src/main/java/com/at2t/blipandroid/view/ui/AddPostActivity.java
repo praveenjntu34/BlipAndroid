@@ -92,7 +92,6 @@ public class AddPostActivity extends AppCompatActivity implements
                         Toast.makeText(getApplicationContext()
                                 , "Added data successfully", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(AddPostActivity.this, MainDashboardActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         break;
                     case AddPostViewModel.ADDING_DATA_FAILED:
@@ -229,7 +228,7 @@ public class AddPostActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        finish();
+        super.onBackPressed();
     }
 
     private void onClickListener() {
