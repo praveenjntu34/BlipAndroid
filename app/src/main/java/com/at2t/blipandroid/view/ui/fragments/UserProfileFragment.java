@@ -83,9 +83,9 @@ public class UserProfileFragment extends BaseFragment {
         fullName = firstName + " " + lastName;
 
 
-        userType = BlipUtility.getRole(getContext());
+        int parentId = BlipUtility.getParentId(getContext());
 
-        if (userType.equals("Parent")) {
+        if (parentId != 0) {
             editIcon.setVisibility(View.VISIBLE);
             editIcon.setOnClickListener(new View.OnClickListener() {
                 @Override

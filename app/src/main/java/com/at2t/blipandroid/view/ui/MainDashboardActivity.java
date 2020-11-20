@@ -102,7 +102,7 @@ public class MainDashboardActivity extends AppCompatActivity {
     private void clearBackStack() {
         FragmentManager fm = getSupportFragmentManager();
         if (fm.getBackStackEntryCount() > 0) {
-            fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            fm.popBackStack();
         }
     }
 

@@ -318,6 +318,4 @@ public class AddPostActivity extends AppCompatActivity implements
             }
         }
     }
-
-
 }

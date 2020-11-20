@@ -3,14 +3,10 @@ package com.at2t.blipandroid.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
-import com.at2t.blipandroid.model.BranchSectionData;
 import com.at2t.blipandroid.model.InstructorLoginData;
 import com.at2t.blipandroid.model.ParentLoginData;
 import com.at2t.blipandroid.model.UserProfileDetails;
-
-import java.util.List;
 
 public class BlipUtility {
 
@@ -19,6 +15,7 @@ public class BlipUtility {
 
     public static int instructorSectionId;
     public static int userSectionId;
+    public static String role;
 
     public static SharedPreferences sharedPreferences;
 
@@ -28,7 +25,7 @@ public class BlipUtility {
             SharedPreferencesActivtiy.setSharedPrefString(context, Constants.USER_FIRST_NAME, user.getFirstName());
             SharedPreferencesActivtiy.setSharedPrefString(context, Constants.USER_LAST_NAME, user.getLastName());
             instructorId = SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.INSTRUCTOR_ID, user.getInstructorUserId());
-            SharedPreferencesActivtiy.setSharedPrefString(context, Constants.ROLE, user.getRole());
+            role = SharedPreferencesActivtiy.setSharedPrefString(context, Constants.ROLE, user.getRole());
             SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.INSTITUTE_ID, user.getRelTenantInstitutionId());
         }
     }
@@ -39,7 +36,7 @@ public class BlipUtility {
             SharedPreferencesActivtiy.setSharedPrefString(context, Constants.USER_FIRST_NAME, user.getFirstName());
             SharedPreferencesActivtiy.setSharedPrefString(context, Constants.USER_LAST_NAME, user.getLastName());
             userId = SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.PARENT_ID, user.getParentId());
-            SharedPreferencesActivtiy.setSharedPrefString(context, Constants.ROLE, user.getRole());
+            role = SharedPreferencesActivtiy.setSharedPrefString(context, Constants.ROLE, user.getRole());
             SharedPreferencesActivtiy.setSharedPref(context, Constants.IS_PARENT_FIRST_LOGIN, user.isFirstLogin());
             SharedPreferencesActivtiy.setSharedPrefInteger(context, Constants.INSTITUTE_ID, user.getRelTenantInstitutionId());
         }
@@ -157,7 +154,7 @@ public class BlipUtility {
     }
 
     public static String getRole(Context context) {
-        String role = null;
+//        String role = null;
         if (SharedPreferencesActivtiy.getSharedPrefString(context, Constants.ROLE) != null && !SharedPreferencesActivtiy.getSharedPrefString(context, Constants.ROLE).isEmpty()) {
             role = SharedPreferencesActivtiy.getSharedPrefString(context, Constants.ROLE);
         }
