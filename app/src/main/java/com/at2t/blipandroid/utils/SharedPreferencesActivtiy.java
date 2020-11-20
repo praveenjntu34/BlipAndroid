@@ -28,11 +28,12 @@ public class SharedPreferencesActivtiy {
         return isValidPhone;
     }
 
-    public static void setSharedPrefString(Context context, String key, String value) {
+    public static String setSharedPrefString(Context context, String key, String value) {
         SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preference.edit();
         editor.putString(key, value);
         editor.apply();
+        return value;
     }
 
     public static int setSharedPrefInteger(Context context, String key, int value) {

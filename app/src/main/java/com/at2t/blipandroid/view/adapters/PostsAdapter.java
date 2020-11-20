@@ -7,7 +7,6 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -22,13 +21,11 @@ import android.widget.TextView;
 
 import com.at2t.blipandroid.R;
 import com.at2t.blipandroid.model.PostsData;
-import com.at2t.blipandroid.utils.BlipUtility;
-import com.at2t.blipandroid.utils.Constants;
-import com.at2t.blipandroid.view.ui.PostItemDetailsActivity;
 import com.bumptech.glide.Glide;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -38,7 +35,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
     private static final String TAG = "PostListAdapter";
     public static final int MAX_LINES = 3;
     private Context mContext;
-    private List<? extends PostsData> postsDataList;
+    private List<PostsData> postsDataList = new ArrayList<>();
     private LayoutInflater layoutInflater;
     private int auditCreatedid;
     private String firstName;
@@ -47,18 +44,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
     private String dateOfPost;
     private byte[] decodedBytes;
     private boolean postImageExists = false;
+    private OnPostItemClickListener mOnPostItemClickListener;
 
-    public PostsAdapter(Context context, List<PostsData> postsDataList) {
+    public PostsAdapter(Context context, List<PostsData> postsDataList, OnPostItemClickListener onPostItemClickListener) {
         this.mContext = context;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.postsDataList = postsDataList;
+        this.mOnPostItemClickListener = onPostItemClickListener;
     }
 
     @NonNull
     @Override
     public PostsAdapter.PostsViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View rootView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.post_card_item, viewGroup, false);
-        return new PostsViewHolder(rootView);
+        return new PostsViewHolder(rootView, mOnPostItemClickListener);
     }
 
     @Override
@@ -82,15 +81,21 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
                     String moreString = mContext.getString(R.string.view_more);
                     String suffix = "  " + moreString;
 
-                    // 3 is a "magic number" but it's just basically the length of the ellipsis we're going to insert
-                    String actionDisplayText = postsDataList.get(i).getMessage().substring(0, lastCharShown - suffix.length() - 3) + "..." + suffix;
+                    try {
 
-                    SpannableString truncatedSpannableString = new SpannableString(actionDisplayText);
-                    int startIndex = actionDisplayText.indexOf(moreString);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        truncatedSpannableString.setSpan(new ForegroundColorSpan(mContext.getColor(android.R.color.holo_blue_light)), startIndex, startIndex + moreString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        // 3 is a "magic number" but it's just basically the length of the ellipsis we're going to insert
+                        String actionDisplayText = postsDataList.get(i).getMessage().substring(0, lastCharShown - suffix.length() - 3) + "..." + suffix;
+
+                        SpannableString truncatedSpannableString = new SpannableString(actionDisplayText);
+                        int startIndex = actionDisplayText.indexOf(moreString);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            truncatedSpannableString.setSpan(new ForegroundColorSpan(mContext.getColor(android.R.color.holo_blue_light)), startIndex, startIndex + moreString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        }
+
+                        postsViewHolder.txtView_description.setText(truncatedSpannableString);
+                    } catch (IndexOutOfBoundsException e) {
+                        Log.e(TAG, "run: ", e.getCause());
                     }
-                    postsViewHolder.txtView_description.setText(truncatedSpannableString);
                 }
             }
         });
@@ -115,14 +120,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
             Log.e(TAG, "onBindViewHolder: ", e.getCause());
         }
 
-        postsViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BlipUtility.clearSharedPref(mContext, Constants.POSTS_ATTACHMENT);
-                BlipUtility.setSharedPrefString(mContext, Constants.POSTS_ATTACHMENT, postsDataList.get(i).getPostAttachmentId());
-                fragmentJump(postsDataList, i);
-            }
-        });
     }
 
     private void addCardHeaderColor(PostsViewHolder postsViewHolder, int i) {
@@ -151,32 +148,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
             postsViewHolder.imgView_icon.setImageResource(R.drawable.user_avatar);
             postsViewHolder.cardTopHeader.setBackgroundResource(R.drawable.red_card_header_gradient);
         }
-    }
-
-    private void fragmentJump(List<? extends PostsData> postsDataList, int i) {
-        String firstName = postsDataList.get(i).getFirstname();
-        String lastName = postsDataList.get(i).getLastName();
-        String fullName;
-        if (firstName == null && lastName == null) {
-            fullName = postsDataList.get(i).getInstitutionName();
-        } else {
-            fullName = firstName + " " + lastName;
-        }
-
-        if (postsDataList.get(i).getPostAttachmentId() != null) {
-            postImageExists = true;
-        } else {
-            postImageExists = false;
-        }
-
-        Intent intent = new Intent(mContext, PostItemDetailsActivity.class);
-        intent.putExtra("full_name", fullName);
-        intent.putExtra("attachment_url_exists", postImageExists);
-        intent.putExtra("post_title", postsDataList.get(i).getTitle());
-        intent.putExtra("post_message", postsDataList.get(i).getMessage());
-        intent.putExtra("post_timestamp", postsDataList.get(i).getPostCreatedDate());
-        mContext.startActivity(intent);
-
     }
 
     private void setPostsCreatorName(PostsData postsData, PostsViewHolder postsViewHolder, int i) {
@@ -214,7 +185,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
     }
 
 
-    class PostsViewHolder extends RecyclerView.ViewHolder {
+    class PostsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView imgView_icon;
         TextView txtView_name;
         TextView txtView_title;
@@ -225,9 +196,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
         ImageView postImg;
         ConstraintLayout cardTopHeader;
         CardView cardView;
+        OnPostItemClickListener onPostItemClickListener;
 
-        public PostsViewHolder(@NonNull View itemView) {
+        public PostsViewHolder(@NonNull View itemView, OnPostItemClickListener onPostItemClickListener) {
             super(itemView);
+            itemView.setOnClickListener(this);
+
+            this.onPostItemClickListener = onPostItemClickListener;
             postImg = itemView.findViewById(R.id.iv_event_img);
             imgView_icon = itemView.findViewById(R.id.person_image);
             txtView_name = itemView.findViewById(R.id.tv_full_name);
@@ -240,6 +215,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostsViewHol
             txtView_view_more = itemView.findViewById(R.id.textViewMore);
         }
 
+        @Override
+        public void onClick(View view) {
+            onPostItemClickListener.onPostClick(getAdapterPosition());
+        }
+    }
+
+    public interface OnPostItemClickListener {
+        void onPostClick(int position);
     }
 }
 

@@ -3,6 +3,7 @@ package com.at2t.blipandroid.view.ui.fragments;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 
 import com.at2t.blipandroid.utils.BaseFragment;
 import com.at2t.blipandroid.utils.BlipUtility;
+import com.at2t.blipandroid.utils.Constants;
 import com.at2t.blipandroid.utils.DatePickerFragment;
 import com.at2t.blipandroid.view.ui.AddPostActivity;
 import com.google.android.material.navigation.NavigationView;
@@ -41,12 +43,13 @@ import com.at2t.blipandroid.model.PostsData;
 import com.at2t.blipandroid.view.adapters.PostsAdapter;
 import com.at2t.blipandroid.viewmodel.DashBoardViewModel;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
 public class AllPostsFragment extends BaseFragment implements
-        DatePickerDialog.OnDateSetListener {
+        DatePickerDialog.OnDateSetListener, PostsAdapter.OnPostItemClickListener {
     public static final String TAG = "AllPostsFragment";
 
     AllPostsFragment context;
@@ -67,8 +70,9 @@ public class AllPostsFragment extends BaseFragment implements
     private int instructorId;
     private int userId;
     String todaysDateString;
+    private long postCreatedDate;
 
-    private List<PostsData> postsDataModelList;
+    private List<PostsData> postsDataModelList = new ArrayList<>();
     private LiveData<List<PostsData>> liveData;
     private Observer<List<PostsData>> observer = new Observer<List<PostsData>>() {
         @Override
@@ -93,16 +97,19 @@ public class AllPostsFragment extends BaseFragment implements
     };
 
     private void setRecyclerView(List<PostsData> postsDataList) {
+        postsDataModelList = postsDataList;
         postsRecyclerViewAdapter = (PostsAdapter) recyclerView.getAdapter();
         if (postsRecyclerViewAdapter == null) {
-            postsRecyclerViewAdapter = new PostsAdapter(getContext(), postsDataList);
-            Collections.reverse(postsDataList);
+            postsRecyclerViewAdapter = new PostsAdapter(getContext(), postsDataModelList, this);
+            Collections.reverse(postsDataModelList);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(linearLayoutManager);
             recyclerView.setAdapter(postsRecyclerViewAdapter);
+            postsRecyclerViewAdapter.notifyDataSetChanged();
         } else {
-            Collections.reverse(postsDataList);
-            postsRecyclerViewAdapter.setdata(postsDataList);
+            Collections.reverse(postsDataModelList);
+            postsRecyclerViewAdapter.setdata(postsDataModelList);
+            postsRecyclerViewAdapter.notifyDataSetChanged();
         }
         noDataTV.setVisibility(View.GONE);
     }
@@ -233,27 +240,30 @@ public class AllPostsFragment extends BaseFragment implements
         startActivity(new Intent(getActivity(), AddPostActivity.class));
     }
 
-//    @Override
-//    public void onItemClicked(int position) {
-//        PostsData postsData = postsDataModelList.get(position);
-//        PostItemDetailsActivity postItemDetailFragment = new PostItemDetailsActivity();
-//        String firstName = postsData.getFirstname();
-//        String lastName = postsData.getLastName();
-//        String fullName = firstName + " " + lastName;
-//
-//        Bundle bundle = new Bundle();
-//        bundle.putInt(Constants.POSITION, position);
-//        bundle.putString(Constants.POSTS_USER_NAME, fullName);
-//        bundle.putString(Constants.POSTS_TITLE, postsData.getTitle());
-//        bundle.putString(Constants.POSTS_DESCRIPTION, postsData.getMessage());
-//        bundle.putString(Constants.POSTS_ATTACHMENT, postsData.getPostAttachmentId());
-//        bundle.putString(Constants.POSTS_INSTITUTE, postsData.getInstitutionName());
-//
-//        postItemDetailFragment.setArguments(bundle);
-//        FragmentManager fragmentManager = getFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.add(R.id.container, postItemDetailFragment, PostItemDetailsActivity.TAG);
-//        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.commit();
-//    }
+    @Override
+    public void onPostClick(int position) {
+        PostItemDetailsFragment postItemDetailFragment = new PostItemDetailsFragment();
+        Bundle bundle = new Bundle();
+        PostsData postsData = postsDataModelList.get(position);
+        String firstName = postsData.getFirstname();
+        String lastName = postsData.getLastName();
+        String fullName = firstName + " " + lastName;
+
+        bundle.putInt(Constants.POSITION, position);
+        bundle.putString(Constants.POSTS_USER_NAME, fullName);
+        bundle.putString(Constants.POSTS_TITLE, postsDataModelList.get(position).getTitle());
+        bundle.putString(Constants.POSTS_DESCRIPTION, postsDataModelList.get(position).getMessage());
+        bundle.putString(Constants.POSTS_ATTACHMENT, postsDataModelList.get(position).getPostAttachmentId());
+        bundle.putString(Constants.POSTS_INSTITUTE, postsDataModelList.get(position).getInstitutionName());
+        bundle.putLong(Constants.POSTS_TIME, postsDataModelList.get(position).getPostCreatedDate());
+        postItemDetailFragment.setArguments(bundle);
+
+        final FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, postItemDetailFragment, PostItemDetailsFragment.TAG);
+        transaction.addToBackStack(PostItemDetailsFragment.TAG);
+        transaction.commit();
+
+        Log.d(TAG, "onPostClick: clicked" + position);
+    }
+
 }

@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -120,8 +119,8 @@ public class UserProfileDetailsFragment extends BaseFragment {
         llUserYear = view.findViewById(R.id.ll_user_year);
 
         retrieveData();
-        String role = BlipUtility.getRole(getContext());
-        if (role.equals("Instructor")) {
+        int instructorId = BlipUtility.getInstructorId(getContext());
+        if (instructorId != 0) {
             setDataForInstructor();
         } else {
             setDataForParent();
@@ -164,9 +163,9 @@ public class UserProfileDetailsFragment extends BaseFragment {
 
         fullName = firstName + " " + lastName;
 
-        String userType = BlipUtility.getRole(getContext());
+        int parentId = BlipUtility.getParentId(getContext());
 
-        if (userType.equals("Parent")) {
+        if(parentId != 0) {
             String fullChildName = BlipUtility.getChildrenName(getContext());
             tvUserFullName.setText(fullChildName);
             tvUserFatherName.setText(fullName);

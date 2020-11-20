@@ -20,13 +20,11 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.at2t.blipandroid.R;
 import com.at2t.blipandroid.model.BannerDetailsDataModel;
-import com.at2t.blipandroid.model.EventSlides;
 import com.at2t.blipandroid.utils.BaseFragment;
 import com.at2t.blipandroid.utils.BlipUtility;
 import com.at2t.blipandroid.utils.Enums;
@@ -114,13 +112,15 @@ public class HomePageFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        String userType = BlipUtility.getRole(getContext());
-        if (userType.equals("Parent")) {
+        int parentId = BlipUtility.getParentId(getContext());
+        int instructorId = BlipUtility.getInstructorId(getContext());
+
+        if(parentId != 0) {
             userFirstName = BlipUtility.getChildrenName(getContext());
             if (userFirstName != null) {
                 tvUserName.setText("Hello" + " " + userFirstName);
             }
-        } else if (userType.equals("Instructor")) {
+        } else if (instructorId != 0) {
             userFirstName = BlipUtility.getFirstName(getContext());
             tvUserName.setText("Hello" + " " + userFirstName);
         }

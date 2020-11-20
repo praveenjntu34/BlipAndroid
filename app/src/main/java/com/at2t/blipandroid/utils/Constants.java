@@ -61,4 +61,5 @@ public class Constants {
     public static final String POSTS_DESCRIPTION = "post_description";
     public static final String POSTS_ATTACHMENT = "posts_attachment";
     public static final String POSTS_INSTITUTE = "posts_institute";
+    public static final String POSTS_TIME = "posts_time";
 }

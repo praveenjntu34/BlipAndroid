@@ -110,8 +110,8 @@ public class LoginUsingOtpActivity extends AppCompatActivity implements Verifica
     }
 
     private void changeOtpScreenColor() {
-        String role = BlipUtility.getRole(this);
-        if (role != null && role.equals("Instructor")) {
+        int instructorId = BlipUtility.getInstructorId(getApplicationContext());
+        if (instructorId != 0) {
             customButton.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
             llLoginTopHeader.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
             tvResendOtpTextView.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
